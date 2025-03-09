@@ -1,53 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &452902106600186174
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7275938668909171542}
-  - component: {fileID: 6159033754473949830}
-  m_Layer: 0
-  m_Name: GridMonoSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7275938668909171542
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 452902106600186174}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7145500405845998433}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6159033754473949830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 452902106600186174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ded9b60e618e54aae84899d38b63732d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bounds: {x: 20, y: 10}
-  _tileSize: {x: 1, y: 1}
-  _spawnerSettings: {fileID: 11400000, guid: e36837efc88f2cf47a304a28683f5be6, type: 2}
-  _player: {x: 1, y: 1}
 --- !u!1 &2615027720858706772
 GameObject:
   m_ObjectHideFlags: 0
@@ -72,16 +24,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2615027720858706772}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2745516771681424635}
-  - {fileID: 7275938668909171542}
+  - {fileID: 6868126646274810628}
   m_Father: {fileID: 2597502276157494864}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6616461321034836633
+--- !u!1 &4968811716920623616
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,22 +40,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2745516771681424635}
-  - component: {fileID: 4317079573408971311}
+  - component: {fileID: 6868126646274810628}
+  - component: {fileID: 414039933724787913}
   m_Layer: 0
-  m_Name: UISystem
+  m_Name: GridMonoSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2745516771681424635
+--- !u!4 &6868126646274810628
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6616461321034836633}
+  m_GameObject: {fileID: 4968811716920623616}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -113,18 +64,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7145500405845998433}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4317079573408971311
+--- !u!114 &414039933724787913
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6616461321034836633}
+  m_GameObject: {fileID: 4968811716920623616}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3f199a0eab3cb642a586f6ba358f0f2, type: 3}
+  m_Script: {fileID: 11500000, guid: ded9b60e618e54aae84899d38b63732d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bounds: {x: 20, y: 10}
+  _tileSize: {x: 1, y: 1}
+  _spawnerSettings: {fileID: 11400000, guid: e36837efc88f2cf47a304a28683f5be6, type: 2}
+  _player: {x: 1, y: 1}
 --- !u!1 &8287916512371415765
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,5 +126,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _msHolder: {fileID: 2615027720858706772}
-  _grid: {fileID: 6159033754473949830}
-  _uiSystem: {fileID: 4317079573408971311}
+  _grid: {fileID: 414039933724787913}
