@@ -1,4 +1,5 @@
 using LoJam.Core;
+using LoJam.MonoSystem;
 using UnityEngine;
 
 namespace LoJam
@@ -9,14 +10,15 @@ namespace LoJam
         [Header("MonoSystem Holder")]
         [SerializeField] private GameObject _msHolder;
 
-        //[Header("MonoSystems")]
+        [Header("MonoSystems")]
+        [SerializeField] private GridMonoSystem _grid;
 
         private void AddEvents() {
             //AddEvent<GameEvents.TestEvent>(DeleteMe);
         }
 
         private void AttachMonoSystems() {
-            // Add MonoSystems Here
+            AddMonoSystem<GridMonoSystem, IGridMonoSystem>(_grid);
         }
 
         protected override void OnLoad() {
