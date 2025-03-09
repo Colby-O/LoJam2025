@@ -45,3 +45,7 @@ PaperSoulsServer/build/
 PaperSoulsServer/.editorconfig
 PaperSoulsServer/*.exe
 PaperSoulsServer/*.a
+UserSettings/
+.vscode/
+.DS_Store
+.vsconfig

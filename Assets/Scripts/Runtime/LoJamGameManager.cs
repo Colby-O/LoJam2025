@@ -9,7 +9,8 @@ namespace LoJam
         [Header("MonoSystem Holder")]
         [SerializeField] private GameObject _msHolder;
 
-        //[Header("MonoSystems")]
+        [Header("MonoSystems")]
+        [SerializeField] private UIMonoSystem _uiSystem;
 
         private void AddEvents() {
             //AddEvent<GameEvents.TestEvent>(DeleteMe);
@@ -17,6 +18,7 @@ namespace LoJam
 
         private void AttachMonoSystems() {
             // Add MonoSystems Here
+            AddMonoSystem<UIMonoSystem, IUIMonoSystem>(_uiSystem);
         }
 
         protected override void OnLoad() {
