@@ -7,7 +7,7 @@ namespace LoJam.Interactable
         public void OnPlayerEnter() {
             Debug.Log("Get off of me YO!");
         }
-        public void OnPlayerAdjacent() {
+        public void OnPlayerAdjancent() {
             Debug.Log("Don't come any closer!");
         }
     }

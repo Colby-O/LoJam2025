@@ -76,8 +76,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded9b60e618e54aae84899d38b63732d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bounds: {x: 10, y: 10}
-  _gridSize: {x: 1, y: 1}
+  _bounds: {x: 10, y: 20}
+  _tileSize: {x: 1, y: 1}
+  _tickRate: 5
+  _powerUpSpawnRate: 0
   _player: {x: 0, y: 0}
 --- !u!1 &8287916512371415765
 GameObject:
