@@ -76,11 +76,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded9b60e618e54aae84899d38b63732d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bounds: {x: 10, y: 20}
+  _bounds: {x: 20, y: 10}
   _tileSize: {x: 1, y: 1}
-  _tickRate: 5
-  _powerUpSpawnRate: 0
-  _player: {x: 0, y: 0}
+  _spawnerSettings: {fileID: 11400000, guid: e36837efc88f2cf47a304a28683f5be6, type: 2}
+  _player: {x: 1, y: 1}
 --- !u!1 &8287916512371415765
 GameObject:
   m_ObjectHideFlags: 0

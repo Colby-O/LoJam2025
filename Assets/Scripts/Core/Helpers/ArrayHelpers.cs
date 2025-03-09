@@ -8,18 +8,18 @@ namespace LoJam.Core
     {
         public static void Fill<T>(T[,] arr, Func<int, int, T> generator)
         {
-            for (int i = 0; i < arr.GetLength(0); i++)
+            for (int y = 0; y < arr.GetLength(0); y++)
             {
-                for (int j = 0; j < arr.GetLength(1); j++)
+                for (int x = 0; x < arr.GetLength(1); x++)
                 {
-                    arr[i, j] = generator(j, i);
+                    arr[y, x] = generator(x, y);
                 }
             }
         }
 
         public static void CreateAndFill<T>(out T[,] arr, Vector2Int size, Func<int, int, T> generator)
         {
-            arr = new T[size.x, size.y];
+            arr = new T[size.y, size.x];
             Fill(arr, generator);
         }
 
@@ -27,23 +27,23 @@ namespace LoJam.Core
         {
             T[,] subArr = new T[size, size];
 
-            for (int i = -Mathf.FloorToInt(size / 2); i <= Mathf.CeilToInt(size / 2); i++)
+            for (int y = 0; y < size; y++)
             {
-                for (int j = -Mathf.FloorToInt(size / 2); j <= Mathf.CeilToInt(size / 2); j++)
+                for (int x = 0; x < size; x++)
                 {
                     if 
                     (
-                        center.x + i >= 0 &&
-                        center.x + i < arr.GetLength(0) &&
-                        center.y + j >= 0 &&
-                        center.y + j < arr.GetLength(1)
+                        center.y + y - Mathf.FloorToInt(size / 2f) >= 0               &&
+                        center.y + y - Mathf.FloorToInt(size / 2f) < arr.GetLength(0) &&
+                        center.x + x - Mathf.FloorToInt(size / 2f) >= 0               &&
+                        center.x + x - Mathf.FloorToInt(size / 2f) < arr.GetLength(1)
                     )
                     {
-                        subArr[i + Mathf.FloorToInt(size / 2), j + Mathf.FloorToInt(size / 2)] = arr[center.x + i, center.y + j];
+                        subArr[y, x] = arr[center.y + y - Mathf.FloorToInt(size / 2f), center.x + x - Mathf.FloorToInt(size / 2f)];
                     }
                     else
                     {
-                        subArr[i + Mathf.FloorToInt(size / 2), j + Mathf.FloorToInt(size / 2)] = default;
+                        subArr[y, x] = default;
 
                     }
                 }
