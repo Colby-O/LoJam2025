@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace LoJam.Core
 {
-    public class MonoSystemManager : MonoBehaviour
+    public class MonoSystemManager 
     {
-        private Dictionary<Type, IMonoSystem> _monoSystems;
+        private Dictionary<Type, IMonoSystem> _monoSystems = new Dictionary<Type, IMonoSystem>();
 
         public void AddMonoSystem<TMonoSystem, TBindTo>(TMonoSystem ms) where TMonoSystem : TBindTo, IMonoSystem {
             if (_monoSystems.ContainsKey(typeof(TBindTo))) return;
