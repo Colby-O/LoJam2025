@@ -7,7 +7,7 @@ namespace System.Runtime.CompilerServices {
     }
 }
 
-namespace LoJam.Core
+namespace LoJam
 {
     public class GameEvents
     {

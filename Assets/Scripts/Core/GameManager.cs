@@ -1,20 +1,14 @@
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem.iOS;
+using UnityEngine.Events;
 
 namespace LoJam.Core
 {
-    public class GameManager : MonoBehaviour
+    public abstract class GameManager : MonoBehaviour
     {
-        private static GameManager _instance;
+        protected static GameManager _instance;
         private MonoSystemManager _ms;
         private EventManager _eventManager;
-
-
-        [Header("MonoSystem Holder")]
-        [SerializeField] private GameObject _msHolder;
-
-        //[Header("MonoSystems")]
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void OnInitalized() {
@@ -35,32 +29,17 @@ namespace LoJam.Core
             DontDestroyOnLoad(_instance);
 
             // Runs on load logic.
-            OnLoad();
+            _instance.OnLoad();
         }
 
-        private void DeleteMe(Component senderm, object data) {
-            Debug.Log(((GameEvents.TestEvent)data).test);
+        protected abstract void OnLoad();
+
+        public void AddEvent<TEvent>(UnityAction<Component, object> callback) {
+            _eventManager.AddEvent<TEvent>(callback);
         }
 
-        private void AddEvents() {
-            _eventManager.AddEvent<GameEvents.TestEvent>(DeleteMe);
-        }
-
-        private void AttachMonoSystems() {
-            // Add MonoSystems Here
-        }
-
-        private static void OnLoad() {
-            // Attaches MonoSystem
-            _instance.AttachMonoSystems();
-            
-            // Added Events
-            _instance.AddEvents();
-
-            // Ensure all MonoSystems call Awake at the same time
-            _instance._msHolder.SetActive(true);
-
-            //_instance._eventManager.InvokeEvent<GameEvents.TestEvent>(null, new GameEvents.TestEvent("Works!"));
+        public void EmitEvent<TEvent>(Component sender, object data) {
+            _eventManager.InvokeEvent<TEvent>(sender, data);
         }
 
         public void AddMonoSystem<TMonoSystem, TBindTo>(TMonoSystem ms) where TMonoSystem : TBindTo, IMonoSystem {
