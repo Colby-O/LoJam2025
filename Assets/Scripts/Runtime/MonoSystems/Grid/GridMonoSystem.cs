@@ -84,6 +84,7 @@ namespace LoJam.MonoSystem
                     tile.SetIsEdge(false);
                 }
 
+                tile.transform.localScale = new Vector3(_tileSize.x, _tileSize.y, 1f);
                 tile.transform.parent = transform;
                 return tile;
             });
