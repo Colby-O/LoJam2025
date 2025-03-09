@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using LoJam.Grid;
 using LoJam.Interactable;
 using LoJam.Core;
+using LoJam.Logic;
 
 namespace LoJam.MonoSystem
 {
@@ -19,6 +21,9 @@ namespace LoJam.MonoSystem
         [SerializeField] private Vector2Int _player;
 
         private Tile[,] _tiles;
+
+        // I don't know if firewall shit should be here but frig it for the time being
+        private FirewallController _firewall;
 
         private Tile _backgroundTile;
         private Tile _edgeTile;
@@ -39,6 +44,25 @@ namespace LoJam.MonoSystem
         public Tile GetTileAt(int x, int y) => _tiles[y, x];
 
         public Tile GetTileAt(Vector2Int pos) => GetTileAt(pos.x, pos.y);
+
+        public bool IsNearEdge(Vector2Int gridPos) => ArrayHelpers.ExtractRegion(_tiles, gridPos, 3).Cast<Tile>().Any(val => val.IsEdge());
+
+        public bool IsNearEdge(Vector2 worldPos) => IsNearEdge(WorldToGrid(worldPos));
+
+        public void AddFirewallDaemon(Side side) => _firewall.AddDaemon(side);
+
+        public void RemoveFirewallDaemon(Side side) => _firewall.RemoveDaemon(side);
+
+        public int GetDaemonCount(Side side) => _firewall.GetDaemonCount(side);
+
+        public bool IsNearFirewall(Vector2 worldPos, Side side) => IsNearFirewall(WorldToGrid(worldPos), side);
+
+        public bool IsNearFirewall(Vector2Int gridPos, Side side)
+        {
+            Vector2Int firwallPos = WorldToGrid(_firewall.transform.position);
+
+            return (side == Side.Left) ? firwallPos.x > gridPos.x : firwallPos.x < gridPos.x;
+        }
 
         public Vector2Int WorldToGrid(Vector2 pos) {
             Vector2 clamped = pos / _tileSize;
@@ -64,7 +88,8 @@ namespace LoJam.MonoSystem
                             GridToWorld(new Vector2Int(x, y)).y, 
                             0
                         ),
-                        Quaternion.identity
+                        Quaternion.identity,
+                        transform
                     );
 
                     tile.SetIsEdge(true);
@@ -78,14 +103,14 @@ namespace LoJam.MonoSystem
                             GridToWorld(new Vector2Int(x, y)).y, 
                             0
                         ),
-                        Quaternion.identity
+                        Quaternion.identity,
+                        transform
                     );
 
                     tile.SetIsEdge(false);
                 }
 
-                tile.transform.localScale = new Vector3(_tileSize.x, _tileSize.y, 1f);
-                tile.transform.parent = transform;
+                tile.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
                 return tile;
             });
         }
@@ -148,14 +173,14 @@ namespace LoJam.MonoSystem
                             GridToWorld(new Vector2Int(gridPT.x, gridPT.y)).y,
                             0
                         ),
-                        Quaternion.identity
+                        Quaternion.identity,
+                        transform
                     );
                      
                     _tiles[gridPT.y, gridPT.x].SetInteractable(powerUp);
 
 
-                    powerUp.transform.localScale = new Vector3(_tileSize.x, _tileSize.y, 1f);
-                    powerUp.transform.parent = transform;
+                    powerUp.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
                     break;
                 }
             }
@@ -166,8 +191,18 @@ namespace LoJam.MonoSystem
             _backgroundTile = Resources.Load<Tile>("Tiles/Background");
             _edgeTile = Resources.Load<Tile>("Tiles/Edge");
 
+            _firewall = Instantiate<FirewallController>(
+                Resources.Load<FirewallController>("Firewall"), 
+                new Vector3(_bounds.x / 2f - _tileSize.x / 2f, _bounds.y / 2f - _tileSize.y / 2f, 0), 
+                Quaternion.identity,
+                transform
+            );
+
+            _firewall.transform.localScale = Vector3.one.SetY(_bounds.y).SetX(_tileSize.x);
+
             GenerateMap();
 
+            // !! NOTE: This is bias as fuck please fix me at some point !!
             _sampler = new PoissonSampler(_tiles.GetLength(1), _tiles.GetLength(0), _spawnerSettings.radius, (_spawnerSettings.seed >= 0) ? _spawnerSettings.seed : null, _spawnerSettings.k);
         }
 
@@ -188,6 +223,18 @@ namespace LoJam.MonoSystem
                         ),
                         Quaternion.identity
             );
+
+            // Delete: For testing (Old input system don't use)
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                Debug.Log("Adding Left!");
+                AddFirewallDaemon(Side.Left);
+            }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                Debug.Log("Adding Right!");
+                AddFirewallDaemon(Side.Right);
+            }
 
             _playerTest.transform.localScale = new Vector3(_tileSize.x, _tileSize.y, 1f);
         }
