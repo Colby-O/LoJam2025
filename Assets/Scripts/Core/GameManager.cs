@@ -34,20 +34,20 @@ namespace LoJam.Core
 
         protected abstract void OnLoad();
 
-        public void AddEvent<TEvent>(UnityAction<Component, object> callback) {
-            _eventManager.AddEvent<TEvent>(callback);
+        public static void AddEvent<TEvent>(UnityAction<Component, object> callback) {
+            _instance._eventManager.AddEvent<TEvent>(callback);
         }
 
-        public void EmitEvent<TEvent>(Component sender, object data) {
-            _eventManager.InvokeEvent<TEvent>(sender, data);
+        public static void EmitEvent<TEvent>(Component sender, object data) {
+            _instance._eventManager.InvokeEvent<TEvent>(sender, data);
         }
 
-        public void AddMonoSystem<TMonoSystem, TBindTo>(TMonoSystem ms) where TMonoSystem : TBindTo, IMonoSystem {
-            _ms.AddMonoSystem<TMonoSystem, TBindTo>(ms);
+        public static void AddMonoSystem<TMonoSystem, TBindTo>(TMonoSystem ms) where TMonoSystem : TBindTo, IMonoSystem {
+            _instance._ms.AddMonoSystem<TMonoSystem, TBindTo>(ms);
         }
 
-        public TMonoSystem GetMonoSystem<TMonoSystem>() {
-            return _ms.GetMonoSystem<TMonoSystem>();
+        public static  TMonoSystem GetMonoSystem<TMonoSystem>() {
+            return _instance._ms.GetMonoSystem<TMonoSystem>();
         }
     }
 }

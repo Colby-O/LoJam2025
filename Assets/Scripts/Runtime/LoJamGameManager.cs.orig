@@ -10,7 +10,7 @@ namespace LoJam
         [Header("MonoSystem Holder")]
         [SerializeField] private GameObject _msHolder;
 
-        [Header("MonoSystems")]
+        [Header("MonoSystems")
         [SerializeField] private GridMonoSystem _grid;
         [SerializeField] private UIMonoSystem _uiSystem;
 
