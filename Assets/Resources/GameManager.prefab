@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bounds: {x: 20, y: 10}
-  _tileSize: {x: 0.1, y: 0.1}
+  _tileSize: {x: 0.5, y: 0.5}
   _spawnerSettings: {fileID: 11400000, guid: e36837efc88f2cf47a304a28683f5be6, type: 2}
   _player: {x: 1, y: 1}
 --- !u!1 &2615027720858706772

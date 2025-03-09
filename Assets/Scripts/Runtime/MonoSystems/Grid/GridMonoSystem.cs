@@ -153,6 +153,8 @@ namespace LoJam.MonoSystem
                      
                     _tiles[gridPT.y, gridPT.x].SetInteractable(powerUp);
 
+
+                    powerUp.transform.localScale = new Vector3(_tileSize.x, _tileSize.y, 1f);
                     powerUp.transform.parent = transform;
                     break;
                 }
@@ -175,7 +177,7 @@ namespace LoJam.MonoSystem
             CheckPlayer(_player);
 
             // Test Code
-            DestroyImmediate(_playerTest);
+            Destroy(_playerTest);
 
             _playerTest = Instantiate<GameObject>(
                         Resources.Load<GameObject>("PlayerTest"),
@@ -186,6 +188,8 @@ namespace LoJam.MonoSystem
                         ),
                         Quaternion.identity
             );
+
+            _playerTest.transform.localScale = new Vector3(_tileSize.x, _tileSize.y, 1f);
         }
 
         private void FixedUpdate()
