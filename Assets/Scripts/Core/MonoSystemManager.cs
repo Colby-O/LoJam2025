@@ -8,17 +8,20 @@ namespace LoJam.Core
     {
         private Dictionary<Type, IMonoSystem> _monoSystems;
 
-        public void AddMonoSystem<TMonoSystem>(IMonoSystem ms) where TMonoSystem : IMonoSystem {
-            if (_monoSystems.ContainsKey(typeof(TMonoSystem))) return;
-            else _monoSystems.Add(typeof(TMonoSystem), ms);
+        public void AddMonoSystem<TMonoSystem, TBindTo>(TMonoSystem ms) where TMonoSystem : TBindTo, IMonoSystem {
+            if (_monoSystems.ContainsKey(typeof(TBindTo))) return;
+            else _monoSystems.Add(typeof(TBindTo), ms);
         }
 
         public void RemoveMonoSystem<TMonoSystem>() where TMonoSystem : IMonoSystem {
             if (_monoSystems.ContainsKey(typeof(TMonoSystem))) _monoSystems.Remove(typeof(TMonoSystem));
         }
 
-        public TMonoSystem GetMonoSystem<TMonoSystem>() where TMonoSystem : IMonoSystem {
-            return (TMonoSystem)_monoSystems[typeof(TMonoSystem)];   
+        public TMonoSystem GetMonoSystem<TMonoSystem>() {
+            if (_monoSystems.TryGetValue(typeof(TMonoSystem), out IMonoSystem ms)) return (TMonoSystem)ms;
+            else {
+                throw new Exception($"MonoSystem of type {typeof(TMonoSystem)} cannot be found.");
+            }
         }
     }
 }

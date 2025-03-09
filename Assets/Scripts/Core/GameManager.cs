@@ -45,11 +45,11 @@ namespace LoJam.Core
             _instance._msHolder.SetActive(true);
         }
 
-        public void AddMonoSystem<TMonoSystem>(IMonoSystem ms) where TMonoSystem : IMonoSystem {
-            _ms.AddMonoSystem<TMonoSystem>(ms);
+        public void AddMonoSystem<TMonoSystem, TBindTo>(TMonoSystem ms) where TMonoSystem : TBindTo, IMonoSystem {
+            _ms.AddMonoSystem<TMonoSystem, TBindTo>(ms);
         }
 
-        public TMonoSystem GetMonoSystem<TMonoSystem>() where TMonoSystem : IMonoSystem {
+        public TMonoSystem GetMonoSystem<TMonoSystem>() {
             return _ms.GetMonoSystem<TMonoSystem>();
         }
     }
