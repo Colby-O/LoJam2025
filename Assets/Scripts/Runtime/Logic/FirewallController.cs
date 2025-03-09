@@ -1,4 +1,5 @@
 using LoJam.Core;
+using LoJam.MonoSystem;
 using UnityEngine;
 
 namespace LoJam.Logic
@@ -12,7 +13,7 @@ namespace LoJam.Logic
 
     public class FirewallController : MonoBehaviour
     {
-        [SerializeField] private float _movementUnit = 0.1f;
+        [SerializeField] private float _movementUnit = 0.001f;
 
         private int _leftDaemonCount;
         private int _rightDaemonCount;
@@ -38,7 +39,12 @@ namespace LoJam.Logic
 
         public void ProcessMovement()
         {
-            transform.position = transform.position.SetX(transform.position.x + _netMovement * _movementUnit);
+            Vector2Int bounds = GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds();
+
+            if (transform.position.x > 0 && _netMovement < 0 || transform.position.x < bounds.x - 1 && _netMovement > 0)
+            {
+                transform.position = transform.position.SetX(transform.position.x + _netMovement * _movementUnit);
+            }
         }
 
         private void Update()
