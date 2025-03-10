@@ -26,8 +26,8 @@ namespace LoJam.Logic
 
             _camera.transform.position = new Vector3
             (
-                (GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x / 2f) - GameManager.GetMonoSystem<IGridMonoSystem>().GetTileSize().x / 2f, 
-                (GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().y / 2f) - GameManager.GetMonoSystem<IGridMonoSystem>().GetTileSize().y / 2f,
+                (GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x / 2f), 
+                (GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().y / 2f),
                 -10
             );
 
