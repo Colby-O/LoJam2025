@@ -10,6 +10,8 @@ namespace LoJam.Core
         private MonoSystemManager _ms;
         private EventManager _eventManager;
 
+        public static GameManager Instance => _instance;
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void OnInitalized() {
 
