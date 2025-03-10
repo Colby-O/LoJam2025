@@ -19,5 +19,8 @@ namespace LoJam
 
         public virtual void Show() => gameObject.SetActive(true);
         public virtual void Hide() => gameObject.SetActive(false);
+
+        public virtual void OnPush() { }
+        public virtual void OnPop() { }
     }
 }

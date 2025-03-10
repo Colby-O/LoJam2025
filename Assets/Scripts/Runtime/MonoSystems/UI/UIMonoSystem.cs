@@ -14,6 +14,7 @@ namespace LoJam
         {
             _viewStack.Push(view);
             view.Show();
+            view.OnPush();
 
             view.transform.SetAsLastSibling();
         }
@@ -25,6 +26,7 @@ namespace LoJam
 
             View topView = _viewStack.Pop();
             topView.Hide();
+            topView.OnPop();
 
             if (_viewStack.Count > 0)
             {
