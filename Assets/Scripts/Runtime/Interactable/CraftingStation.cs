@@ -47,6 +47,13 @@ namespace LoJam.Interactable
 
                 foreach (SpriteRenderer sr in _itemsUI) sr.sprite = null;
                 _resUI.sprite = null;
+
+                for (int i = 0; i < _materials.Count; i++)
+                {
+                    Destroy(_materials[i].gameObject);
+                }
+
+                _materials.Clear();
             }
         }
 
