@@ -1,10 +1,8 @@
-using LoJam.Core;
 using UnityEngine;
 
 namespace LoJam
 {
-
-    public class UIMonoSystem : MonoBehaviour, IUIMonoSystem
+    public class SettingsMenu : View
     {
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
