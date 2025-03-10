@@ -17,7 +17,7 @@ namespace LoJam
         public int k = 30;
 
         [Header("Powerups")]
-        [Range(0, 1)] public float powerUpSpawnRate;
-        public List<BasePowerup> powerupList;
+        [Range(0, 1)] public float materialSpawnRate;
+        public List<CraftingMaterial> matieralList;
     }
 }

@@ -5,6 +5,7 @@ using LoJam.Grid;
 using LoJam.Interactable;
 using LoJam.Core;
 using LoJam.Logic;
+using LoJam.Player;
 
 namespace LoJam.MonoSystem
 {
@@ -17,9 +18,6 @@ namespace LoJam.MonoSystem
         [Header("Spawner Settings")]
         [SerializeField] private SpawnerSettings _spawnerSettings;
 
-        [Header("Testing")]
-        [SerializeField] private Vector2Int _player;
-
         private Tile[,] _tiles;
 
         // I don't know if firewall shit should be here but frig it for the time being
@@ -30,10 +28,9 @@ namespace LoJam.MonoSystem
 
         private PoissonSampler _sampler;
 
-        private float _lastTick;
+        private List<Vector2Int> _playerLastPos;
 
-        // Testing Varible
-        private GameObject _playerTest;
+        private float _lastTick;
 
         public Vector2Int GetNumberOfTile() => new Vector2Int(Mathf.RoundToInt(_bounds.x / _tileSize.x), Mathf.RoundToInt(_bounds.y / _tileSize.y));
 
@@ -115,10 +112,9 @@ namespace LoJam.MonoSystem
             });
         }
 
-        // This will take a reference to the player script which will be passed to OnPlayerEnter and OnPlayerAdjancent from IInteractable Interface.
-        // For testing until player scripts are ready it's taking a vec2
-        private void CheckPlayer(Vector2Int pos)
+        private void CheckPlayerEnter(Interactor player)
         {
+            Vector2Int pos = WorldToGrid(player.transform.position);
             Tile[,] region = ArrayHelpers.ExtractRegion(_tiles, pos, 3);
             for (int y = 0; y < region.GetLength(0); y++)
             {
@@ -130,7 +126,7 @@ namespace LoJam.MonoSystem
                             region[y, x] != null && 
                             !region[y, x].IsEdge() && 
                             region[y, x].HasInteractable()
-                        ) region[y, x].GetInteractable().OnPlayerEnter(/* Player */);
+                        ) region[y, x].GetInteractable().OnPlayerEnter(player);
                     }
                     else
                     {
@@ -138,7 +134,35 @@ namespace LoJam.MonoSystem
                             region[y, x] != null && 
                             !region[y, x].IsEdge() &&
                             region[y, x].HasInteractable()
-                       ) region[y, x].GetInteractable().OnPlayerAdjancent(/* Player */);
+                       ) region[y, x].GetInteractable().OnPlayerAdjancent(player);
+                    }
+                }
+            }
+        }
+
+        private void CheckPlayerExit(Interactor player, Vector2Int _lastPos)
+        {
+            Vector2Int pos= _lastPos;
+            Tile[,] region = ArrayHelpers.ExtractRegion(_tiles, pos, 3);
+            for (int y = 0; y < region.GetLength(0); y++)
+            {
+                for (int x = 0; x < region.GetLength(1); x++)
+                {
+                    if (x == 1 && y == 1)
+                    {
+                        if (
+                            region[y, x] != null &&
+                            !region[y, x].IsEdge() &&
+                            region[y, x].HasInteractable()
+                        ) region[y, x].GetInteractable().OnPlayerExit(player);
+                    }
+                    else
+                    {
+                        if (
+                            region[y, x] != null &&
+                            !region[y, x].IsEdge() &&
+                            region[y, x].HasInteractable()
+                       ) region[y, x].GetInteractable().OnPlayerAdjancentExit(player);
                     }
                 }
             }
@@ -148,7 +172,7 @@ namespace LoJam.MonoSystem
         {
             _lastTick = Time.time;
 
-            if (Random.value < _spawnerSettings.powerUpSpawnRate)
+            if (Random.value < _spawnerSettings.materialSpawnRate)
             {
                 Debug.Log("Spawning Powerup");
                 foreach (Vector2 sample in _sampler.Sample(true))
@@ -166,8 +190,8 @@ namespace LoJam.MonoSystem
                         _tiles[gridPT.y, gridPT.x].HasInteractable()
                     ) continue;
 
-                    BasePowerup powerUp = Instantiate(
-                        _spawnerSettings.powerupList[Random.Range(0, _spawnerSettings.powerupList.Count)],
+                    CraftingMaterial powerUp = Instantiate(
+                        _spawnerSettings.matieralList[Random.Range(0, _spawnerSettings.matieralList.Count)],
                         new Vector3(
                             GridToWorld(new Vector2Int(gridPT.x, gridPT.y)).x,
                             GridToWorld(new Vector2Int(gridPT.x, gridPT.y)).y,
@@ -193,7 +217,7 @@ namespace LoJam.MonoSystem
 
             _firewall = Instantiate<FirewallController>(
                 Resources.Load<FirewallController>("Firewall"), 
-                new Vector3(_bounds.x / 2f - _tileSize.x / 2f, _bounds.y / 2f - _tileSize.y / 2f, 0), 
+                new Vector3(_bounds.x / 2f, _bounds.y / 2f, 0), 
                 Quaternion.identity,
                 transform
             );
@@ -202,27 +226,56 @@ namespace LoJam.MonoSystem
 
             GenerateMap();
 
+            CraftingStation cs = Instantiate(
+                Resources.Load<CraftingStation>("CraftingStation"),
+                new Vector3(
+                            GridToWorld(new Vector2Int(5, 5)).x,
+                            GridToWorld(new Vector2Int(5, 5)).y,
+                            0
+                        ),
+                        Quaternion.identity,
+                        transform
+            );
+            cs.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
+            _tiles[5, 5].SetInteractable(cs);
             // !! NOTE: This is bias as fuck please fix me at some point !!
             _sampler = new PoissonSampler(_tiles.GetLength(1), _tiles.GetLength(0), _spawnerSettings.radius, (_spawnerSettings.seed >= 0) ? _spawnerSettings.seed : null, _spawnerSettings.k);
         }
 
+        private void Start()
+        {
+            _playerLastPos = new List<Vector2Int>();
+            for (int i = 0; i < LoJamGameManager.players.Count; i++)
+            {
+                _playerLastPos.Add(WorldToGrid(LoJamGameManager.players[i].transform.position));
+            }
+        }
+
         private void Update()
         {
-            // Should be ran for each player
-            CheckPlayer(_player);
+            for (int i = 0; i < LoJamGameManager.players.Count; i++)
+            {
+                if (_playerLastPos.Count > i)
+                {
+                    CheckPlayerExit(LoJamGameManager.players[i], _playerLastPos[i]);
+                    CheckPlayerEnter(LoJamGameManager.players[i]);
+                }
+
+                _playerLastPos[i] = WorldToGrid(LoJamGameManager.players[i].transform.position);
+            }
 
             // Test Code
-            Destroy(_playerTest);
+            //Destroy(_playerTest);
 
-            _playerTest = Instantiate<GameObject>(
-                        Resources.Load<GameObject>("PlayerTest"),
-                        new Vector3(
-                            GridToWorld(new Vector2Int(_player.x, _player.y)).x,
-                            GridToWorld(new Vector2Int(_player.x, _player.y)).y,
-                            0
-                        ),
-                        Quaternion.identity
-            );
+            //_playerTest = Instantiate<GameObject>(
+            //            Resources.Load<GameObject>("PlayerTest"),
+            //            new Vector3(
+            //                GridToWorld(new Vector2Int(_player.x, _player.y)).x,
+            //                GridToWorld(new Vector2Int(_player.x, _player.y)).y,
+            //                0
+            //            ),
+            //            Quaternion.identity
+            //);
 
             // Delete: For testing (Old input system don't use)
             if (Input.GetKeyDown(KeyCode.A))
@@ -235,8 +288,6 @@ namespace LoJam.MonoSystem
                 Debug.Log("Adding Right!");
                 AddFirewallDaemon(Side.Right);
             }
-
-            _playerTest.transform.localScale = new Vector3(_tileSize.x, _tileSize.y, 1f);
         }
 
         private void FixedUpdate()
