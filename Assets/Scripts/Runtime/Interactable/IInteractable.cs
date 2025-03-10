@@ -1,4 +1,5 @@
 using LoJam.Grid;
+using LoJam.Player;
 using UnityEngine;
 
 namespace LoJam.Interactable
@@ -6,10 +7,10 @@ namespace LoJam.Interactable
     public interface IInteractable
     {
         public Tile Tile { get; set; }
-
-        // NOTE: Will take in a reference to player script
-        public void OnPlayerEnter();
-        // NOTE: Will take in a reference to player script
-        public void OnPlayerAdjancent(); 
+        public Sprite GetSprite();
+        public void OnPlayerEnter(Interactor player);
+        public void OnPlayerAdjancent(Interactor player);
+        public void OnPlayerExit(Interactor player);
+        public void OnPlayerAdjancentExit(Interactor player);
     }
 }
