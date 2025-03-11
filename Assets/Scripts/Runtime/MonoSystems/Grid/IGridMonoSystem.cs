@@ -15,6 +15,8 @@ namespace LoJam.MonoSystem
         public Tile GetTileAt(Vector2Int pos);
         public bool IsNearEdge(Vector2Int gridPos);
         public bool IsNearEdge(Vector2 worldPos);
+        public Side GetSide(Vector2Int gridPos);
+        public Side GetSide(Vector2 worldPos);
         public Vector2Int WorldToGrid(Vector2 pos);
         public Vector2 GridToWorld(Vector2Int pos);
         public void AddFirewallDaemon(Side side);
@@ -23,5 +25,6 @@ namespace LoJam.MonoSystem
         public bool IsNearFirewall(Vector2 worldPos, Side side);
         public bool IsNearFirewall(Vector2Int gridPos, Side side);
         public void AddToGrid(int x, int y, IInteractable obj);
+        public bool Spawn<T>(Side side, T obj) where T : MonoBehaviour, IInteractable;
     }
 }

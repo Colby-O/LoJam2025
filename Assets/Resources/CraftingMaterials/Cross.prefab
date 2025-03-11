@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 6825056889849012882}
-  _type: 0
+  _type: 3
   _animationSpeed: 0.2
   _frames:
   - {fileID: 874309099, guid: 02aaeb7d2e0e4844e90ae45ed4474685, type: 3}

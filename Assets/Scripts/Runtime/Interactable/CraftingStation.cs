@@ -4,7 +4,10 @@ using LoJam.Grid;
 using LoJam.MonoSystem;
 using LoJam.Player;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,11 +18,21 @@ namespace LoJam.Interactable
     {
         [SerializeField] protected SpriteRenderer _spriteRenderer;
 
-        [SerializeField] private List<CraftingMaterial> _materials;
-        [SerializeField] private List<SpriteRenderer> _itemsUI;
-        [SerializeField] private SpriteRenderer _resUI;
+        [SerializeField] private TMP_Text _label;
 
-        private List<Recipe> _possibleResults;
+        [SerializeField] private List<SpriteRenderer> _itemsUI;
+
+        [SerializeField] private GameObject _lighting;
+
+        [SerializeField] private List<Sprite> _computerSprites;
+
+        [SerializeField] private SerializableDictionary<MaterialType, List<Sprite>> _sprites;
+
+        [SerializeField] float _craftingAnimSpeed = 1f;
+
+        private Recipe _selectedRecipe;
+
+        private int _ptr;
 
         public List<Tile> Tiles { get; set; }
 
@@ -45,75 +58,95 @@ namespace LoJam.Interactable
 
         public void CompleteRecipe(Interactor player)
         {
-            if (_possibleResults.Count > 0 && _possibleResults[0].CanCraft(_materials)) 
+            if (_selectedRecipe.Craft(player)) 
             {
-                foreach (SpriteRenderer sr in _itemsUI) sr.sprite = null;
-                _resUI.sprite = null;
-
-                for (int i = 0; i < _materials.Count; i++)
-                {
-                    Destroy(_materials[i].gameObject);
-                }
-
-                _materials.Clear();
+                StartCoroutine(CraftingAnimation());
             }
+        }
+
+        public void SwitchRecipe(Interactor player)
+        {
+            _selectedRecipe = GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(player)[++_ptr % GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(player).Count];
+            ShowRecipe(_selectedRecipe);
         }
 
         public void UseCraftingStation(Interactor player)
         {
             Debug.Log("Uisng Crafting Bench!");
-            //if (player.HasCraftingMaterial())
-            //{
-            //    if (_materials.Count < 3)
-            //    {
-            //        AddCraftingMaterial(player.Item as CraftingMaterial);
-            //        player.Item = null;
-            //    }
-            //}
-            //else
-            //{
-            //    if (!player.HasAnyItem() && _materials.Count > 0)
-            //    {
-            //        player.Item = _materials[0];
-            //        RemoveCraftingMaterial(0);
-            //    }
-            //}
+            if (player.HasCraftingMaterial())
+            {
+                CraftingMaterial cm = player.Item as CraftingMaterial;
+
+                if (
+                    _selectedRecipe.GetMaterials().Contains(cm.GetMaterialType()) && 
+                    _selectedRecipe.GetProgress().Select(
+                        m => m.GetMaterialType() == cm.GetMaterialType()
+                    ).Count() != 
+                    _selectedRecipe.GetMaterials().Select(
+                        m => m == cm.GetMaterialType()
+                    ).Count()
+                )
+                {
+                    _selectedRecipe.GetProgress().Add(cm);
+                    ShowRecipe(_selectedRecipe);
+                    player.Item = null;
+                }
+            }
         }
 
-        private void AddCraftingMaterial(CraftingMaterial mat)
+        private IEnumerator CraftingAnimation()
         {
-            //_materials.Add(mat);
+            foreach (SpriteRenderer sr in _itemsUI) sr.gameObject.SetActive(false);
+            _lighting.SetActive(true);
 
-            //_itemsUI[_materials.Count - 1].sprite = mat.GetSprite();
+            yield return new WaitForSeconds(_craftingAnimSpeed);
 
-            //_possibleResults = GameManager.GetMonoSystem<ICraftingMonoSystem>().FetchPossibleRecipes(_materials);
-            //_resUI.sprite = _possibleResults[0].result.GetSprite();
-            //_resUI.color = new Color(_resUI.color.r, _resUI.color.g, _resUI.color.b, (_possibleResults[0].CanCraft(_materials)) ? 1 : 0.5f);
+            _lighting.SetActive(false);
+            foreach (SpriteRenderer sr in _itemsUI) sr.gameObject.SetActive(true);
+
+            ShowRecipe(_selectedRecipe);
         }
 
-        private void RemoveCraftingMaterial(int index)
+        private void ShowRecipe(Recipe recipe)
         {
-            //_materials.RemoveAt(index);
+            _label.text = $"Crafting: {recipe.Label}";
 
-            //foreach (SpriteRenderer sr in _itemsUI) sr.sprite = null;
-            //for (int i = 0; i < _materials.Count; i++) _itemsUI[i].sprite = _materials[i].GetSprite();
-            
-            //_possibleResults = GameManager.GetMonoSystem<ICraftingMonoSystem>().FetchPossibleRecipes(_materials);
-            //if (_possibleResults.Count > 0)
-            //{
-            //    _resUI.sprite = _possibleResults[0].result.GetSprite();
-            //    _resUI.color = new Color(_resUI.color.r, _resUI.color.g, _resUI.color.b, (_possibleResults[0].CanCraft(_materials)) ? 1f : 0.5f);
-            //}
-            //else _resUI.sprite = null;
+            List<MaterialType> copyRecipe = new List<MaterialType>(recipe.GetMaterials());
+
+            for (int i = 0; i < _itemsUI.Count; i++)
+            {
+                List<Sprite> cs = _sprites[recipe.GetMaterials()[i]];
+
+                _itemsUI[i].sprite = cs[0];
+                Debug.Log(recipe.GetMaterials()[i]);
+            }
+
+            for (int i = 0; i < _itemsUI.Count; i++)
+            {
+                if (i < recipe.GetProgress().Count && copyRecipe.Contains(recipe.GetProgress()[i].GetMaterialType()))
+                {
+                    int index = copyRecipe.IndexOf(recipe.GetProgress()[i].GetMaterialType());
+                    List<Sprite> cs = _sprites[recipe.GetMaterials()[index]];
+                    Debug.Log(index);
+                    copyRecipe[index] = MaterialType.None;
+                    _itemsUI[index].sprite = cs[1];
+                }
+            }
+
+            if (recipe.CanCraft(recipe.GetProgress())) _spriteRenderer.sprite = _computerSprites[1];
+            else _spriteRenderer.sprite = _computerSprites[0];
+        }
+
+        private void Init()
+        {
+            _selectedRecipe = GameManager.GetMonoSystem<ICraftingMonoSystem>().GetFirewallRecipe();
+            ShowRecipe(_selectedRecipe);
         }
 
         private void Awake()
         {
-            //if (_spriteRenderer == null) _spriteRenderer  = GetComponent<SpriteRenderer>();
-
-            //foreach (SpriteRenderer renderer in _itemsUI) renderer.sprite = null;
-            //_resUI.sprite = null;
+            GameManager.GetMonoSystem<ICraftingMonoSystem>().OnInit.AddListener(Init);
+            _lighting.SetActive(false);
         }
-
     }
 }
