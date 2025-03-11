@@ -6,6 +6,7 @@ using LoJam.Interactable;
 using LoJam.Core;
 using LoJam.Logic;
 using LoJam.Player;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 namespace LoJam.MonoSystem
 {
@@ -23,8 +24,10 @@ namespace LoJam.MonoSystem
         // I don't know if firewall shit should be here but frig it for the time being
         private FirewallController _firewall;
 
+        private Tile _playAreaTile;
         private Tile _backgroundTile;
-        private Tile _edgeTile;
+        private Tile _sideTile;
+        private Tile _cornerTile;
 
         private PoissonSampler _sampler;
 
@@ -72,46 +75,99 @@ namespace LoJam.MonoSystem
             return new Vector2(pos.x * _tileSize.x, pos.y * _tileSize.y);
         }
 
+        private void FillBackground()
+        {
+            for (int y = -_tiles.GetLength(0); y <= 2 * _tiles.GetLength(0); y++)
+            {
+                for (int x = -_tiles.GetLength(1); x <= 2 * _tiles.GetLength(1); x++)
+                {
+                    if (x >= 0 && y >= 0 && x < _tiles.GetLength(1) && y < _tiles.GetLength(0)) continue;
+                    Tile tile = Instantiate(
+                        _backgroundTile,
+                        new Vector3(
+                            GridToWorld(new Vector2Int(x, y)).x,
+                            GridToWorld(new Vector2Int(x, y)).y,
+                            0
+                        ),
+                        Quaternion.identity,
+                        transform
+                    );
+
+                    tile.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
+                }
+            }
+        }
+
+        private Tile RotateTile(Tile tile, float rot)
+        {
+            tile.GetSpriteGameObject().gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, rot));
+            return tile;
+        }
+
+        private Tile SelectTile(int x, int y)
+        {
+            if (x == 0 && y == 0)
+            {
+                return RotateTile(_cornerTile, 90);
+            }
+            else if (x == _tiles.GetLength(1) - 1 && y == 0)
+            {
+                return RotateTile(_cornerTile, 180);
+            }
+            else if (x == 0 && y == _tiles.GetLength(0) - 1)
+            {
+                return RotateTile(_cornerTile, 0);
+            }
+            else if (x == _tiles.GetLength(1) - 1 && y == _tiles.GetLength(0) - 1)
+            {
+                return RotateTile(_cornerTile, 270);
+            }
+            else if (x == 0)
+            {
+                return RotateTile(_sideTile, 90);
+            }
+            else if (y == 0)
+            {
+                return RotateTile(_sideTile, 180);
+            }
+            else if (x == _tiles.GetLength(1) - 1)
+            {
+                return RotateTile(_sideTile, 270);
+            }
+            else if (y == _tiles.GetLength(0) - 1)
+            {
+                return RotateTile(_sideTile, 0);
+            }
+            else
+            {
+                return _playAreaTile;
+            }
+        }
+
         private void GenerateMap()
         {
             ArrayHelpers.CreateAndFill(out _tiles, GetNumberOfTile(), (int x, int y) =>
             {
                 Tile tile = null;
 
-                if (x == 0 || y == 0 || x == _tiles.GetLength(1) - 1 || y == _tiles.GetLength(0) - 1)
-                {
-                    tile = Instantiate(
-                        _edgeTile,
-                        new Vector3(
-                            GridToWorld(new Vector2Int(x, y)).x, 
-                            GridToWorld(new Vector2Int(x, y)).y, 
-                            0
-                        ),
-                        Quaternion.identity,
-                        transform
-                    );
+                tile = Instantiate(
+                    SelectTile(x, y),
+                    new Vector3(
+                        GridToWorld(new Vector2Int(x, y)).x,
+                        GridToWorld(new Vector2Int(x, y)).y,
+                        0
+                    ),
+                    Quaternion.identity,
+                    transform
+                );
 
-                    tile.SetIsEdge(true);
-                }
-                else
-                {
-                    tile = Instantiate(
-                        _backgroundTile,
-                        new Vector3(
-                            GridToWorld(new Vector2Int(x, y)).x, 
-                            GridToWorld(new Vector2Int(x, y)).y, 
-                            0
-                        ),
-                        Quaternion.identity,
-                        transform
-                    );
-
-                    tile.SetIsEdge(false);
-                }
+                tile.SetIsEdge(x == 0 || y == 0 || x == _tiles.GetLength(1) - 1 || y == _tiles.GetLength(0) - 1);
 
                 tile.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
                 return tile;
             });
+
+            FillBackground();
         }
 
         private void CheckPlayerEnter(Interactor player)
@@ -170,6 +226,19 @@ namespace LoJam.MonoSystem
             }
         }
 
+        public void AddToGrid(int x, int y, IInteractable obj)
+        {
+            Vector2Int space = obj.GetGridSize();
+
+            for (int j = -Mathf.FloorToInt(space.y / 2f); j < Mathf.CeilToInt(space.y / 2f); j++)
+            {
+                for (int i = -Mathf.FloorToInt(space.x / 2f); i < Mathf.CeilToInt(space.x / 2f); i++)
+                {
+                    _tiles[y + j, x + i].SetInteractable(obj);
+                }
+            }
+        }
+
         private void Tick()
         {
             _lastTick = Time.time;
@@ -210,9 +279,8 @@ namespace LoJam.MonoSystem
                         Quaternion.identity,
                         transform
                     );
-                     
-                    _tiles[gridPT.y, gridPT.x].SetInteractable(craftingMaterial);
 
+                    AddToGrid(gridPT.x, gridPT.y, craftingMaterial);
 
                     craftingMaterial.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
                     break;
@@ -222,8 +290,10 @@ namespace LoJam.MonoSystem
 
         private void Awake()
         {
+            _playAreaTile = Resources.Load<Tile>("Tiles/PlayArea");
             _backgroundTile = Resources.Load<Tile>("Tiles/Background");
-            _edgeTile = Resources.Load<Tile>("Tiles/Edge");
+            _sideTile = Resources.Load<Tile>("Tiles/Side");
+            _cornerTile = Resources.Load<Tile>("Tiles/Corner");
 
             _firewall = Instantiate<FirewallController>(
                 Resources.Load<FirewallController>("Firewall"), 
@@ -231,8 +301,6 @@ namespace LoJam.MonoSystem
                 Quaternion.identity,
                 transform
             );
-
-            _firewall.transform.localScale = Vector3.one.SetY(_bounds.y).SetX(_tileSize.x);
 
             GenerateMap();
 
@@ -247,8 +315,7 @@ namespace LoJam.MonoSystem
                         transform
             );
             cs.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
-            _tiles[5, 5].SetInteractable(cs);
-            // !! NOTE: This is bias as fuck please fix me at some point !!
+            AddToGrid(5, 5, cs);
             _sampler = new PoissonSampler(_tiles.GetLength(1), _tiles.GetLength(0), _spawnerSettings.radius, (_spawnerSettings.seed >= 0) ? _spawnerSettings.seed : null, _spawnerSettings.k);
             _spawnPoints = _sampler.Sample(int.MaxValue);
         }

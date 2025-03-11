@@ -15,17 +15,19 @@ namespace LoJam.Interactable
     {
         [SerializeField] protected SpriteRenderer _spriteRenderer;
 
-        public Tile Tile { get; set; }
-
-        public Transform GetTransform() => transform;
-
-        public Sprite GetSprite() => _spriteRenderer.sprite;
-
         [SerializeField] private List<CraftingMaterial> _materials;
         [SerializeField] private List<SpriteRenderer> _itemsUI;
         [SerializeField] private SpriteRenderer _resUI;
 
         private List<Recipe> _possibleResults;
+
+        public List<Tile> Tiles { get; set; }
+
+        public Transform GetTransform() => transform;
+
+        public Sprite GetSprite() => _spriteRenderer.sprite;
+
+        public Vector2Int GetGridSize() => new Vector2Int(3, 3);
 
         public void OnPlayerAdjancent(Interactor player)
         {

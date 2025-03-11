@@ -1,5 +1,6 @@
 using LoJam.Core;
 using LoJam.Grid;
+using LoJam.Interactable;
 using LoJam.Logic;
 using UnityEngine;
 
@@ -21,5 +22,6 @@ namespace LoJam.MonoSystem
         public int GetDaemonCount(Side side);
         public bool IsNearFirewall(Vector2 worldPos, Side side);
         public bool IsNearFirewall(Vector2Int gridPos, Side side);
+        public void AddToGrid(int x, int y, IInteractable obj);
     }
 }

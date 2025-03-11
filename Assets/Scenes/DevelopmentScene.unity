@@ -231,7 +231,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 1.0283333
+  orthographic size: 1.07
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -275,6 +275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 488255444}
+  _padding: 1
 --- !u!1001 &729348888
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -330,6 +331,26 @@ PrefabInstance:
     - target: {fileID: 2042425285338154590, guid: 018e1d77653b56c41a568a24efcd255e, type: 3}
       propertyPath: m_Name
       value: Player2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2042425285338154590, guid: 018e1d77653b56c41a568a24efcd255e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7636177588692690962, guid: 018e1d77653b56c41a568a24efcd255e, type: 3}
+      propertyPath: m_Animation
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8137124698251266841, guid: 018e1d77653b56c41a568a24efcd255e, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8137124698251266841, guid: 018e1d77653b56c41a568a24efcd255e, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8137124698251266841, guid: 018e1d77653b56c41a568a24efcd255e, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

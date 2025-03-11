@@ -1,3 +1,4 @@
+using LoJam.Grid;
 using LoJam.Interactable;
 using UnityEngine;
 
@@ -11,10 +12,16 @@ namespace LoJam
 
         private void HandleCollection()
         {
-            Component interactable = gameObject.GetComponent(typeof(IInteractable));
-            if (interactable != null)
+            Component comp = gameObject.GetComponent(typeof(IInteractable));
+            if (comp != null)
             {
-                (interactable as IInteractable).Tile.SetInteractable(null);
+                IInteractable interactable = comp as IInteractable;
+                foreach (Tile tile in interactable.Tiles)
+                {
+                    tile.SetInteractable(null);
+                }
+
+                interactable.Tiles.Clear();
             }
 
             Destroy(gameObject);
@@ -23,6 +30,7 @@ namespace LoJam
         private void Awake()
         {
             _life = 0;
+            _lifeSpan += Random.Range(-10, 11);
         }
 
         private void Update()

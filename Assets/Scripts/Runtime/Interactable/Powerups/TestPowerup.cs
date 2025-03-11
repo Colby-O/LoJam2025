@@ -1,3 +1,4 @@
+using LoJam.Grid;
 using LoJam.Player;
 using UnityEngine;
 
@@ -18,7 +19,12 @@ namespace LoJam.Interactable
         public override void OnPlayerEnter(Interactor player)
         {
             Debug.Log("Picking Up Powerup!");
-            Tile.SetInteractable(null);
+            foreach (Tile tile in Tiles)
+            {
+                tile.SetInteractable(null);
+            }
+
+            Tiles.Clear();
             Destroy(gameObject);
         }
 
