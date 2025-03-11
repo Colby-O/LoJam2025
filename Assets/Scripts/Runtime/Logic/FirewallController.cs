@@ -1,5 +1,6 @@
 using LoJam.Core;
 using LoJam.MonoSystem;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace LoJam.Logic
@@ -19,6 +20,10 @@ namespace LoJam.Logic
         private int _rightDaemonCount;
 
         private float _netMovement;
+
+        private FireElement _firewallTile;
+
+        private List<FireElement> _tiles;
 
         public void AddDaemon(Side side)
         {
@@ -45,6 +50,37 @@ namespace LoJam.Logic
             {
                 transform.position = transform.position.SetX(transform.position.x + _netMovement * _movementUnit);
             }
+        }
+
+        private void ConstructSprite(Vector2Int bounds, Vector2 tileSize)
+        {
+            _tiles = new List<FireElement>();
+
+            for (int i = 0; i < Mathf.RoundToInt(bounds.y / tileSize.y); i++)
+            {
+                FireElement tile = Instantiate<FireElement>(
+                    _firewallTile,
+                    new Vector3(
+                         bounds.x / 2f,
+                        i * tileSize.y,
+                        0
+                    ),
+                    Quaternion.identity,
+                    transform
+                );
+
+                tile.transform.localScale = Vector3.one.SetX(tileSize.x).SetY(tileSize.y);
+            }
+        }
+
+        private void Start()
+        {
+            Vector2 tileSize = GameManager.GetMonoSystem<IGridMonoSystem>().GetTileSize();
+            Vector2Int bounds = GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds();
+
+            _firewallTile = Resources.Load<FireElement>("Tiles/Firewall");
+
+            ConstructSprite(bounds, tileSize);
         }
 
         private void Update()

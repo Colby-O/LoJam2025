@@ -8,16 +8,15 @@ namespace LoJam.Logic
     public class CameraController : MonoBehaviour
     {
         [SerializeField] private Camera _camera;
-
+        [SerializeField] private float _padding = 1f;
         private void FitOrthoCamera()
         {
-            float aspect = (float)Screen.width / Screen.height;
-            _camera.orthographicSize = (GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().y + GameManager.GetMonoSystem<IGridMonoSystem>().GetTileSize().y / 2f) / aspect;
+            float targetHeight= GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().y / 2f;
+            float targetWidth = GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x / 2f;
 
-            float targetWidth = (GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x + GameManager.GetMonoSystem<IGridMonoSystem>().GetTileSize().x / 2f) / 2f;
-            float currentWidth = _camera.orthographicSize * aspect;
+            float requiredSize = Mathf.Max(targetHeight, (targetWidth / _camera.aspect));
 
-            if (currentWidth < targetWidth) _camera.orthographicSize = targetWidth / aspect;
+            _camera.orthographicSize = requiredSize * _padding;
         } 
 
         private void Start()
@@ -31,6 +30,11 @@ namespace LoJam.Logic
                 -10
             );
 
+            FitOrthoCamera();
+        }
+
+        private void Update()
+        {
             FitOrthoCamera();
         }
     }

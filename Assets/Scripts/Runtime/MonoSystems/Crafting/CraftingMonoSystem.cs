@@ -1,37 +1,33 @@
 using LoJam.Crafting;
 using LoJam.Interactable;
+using LoJam.Logic;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace LoJam.MonoSystem
 {
     public class CraftingMonoSystem : MonoBehaviour, ICraftingMonoSystem
     {
-        [SerializeField] private RecipeDatabase _db;
+        private const int RECIPE_SIZE = 3;
 
-        public List<RecipeSO> FetchPossibleRecipes(List<CraftingMaterial> materials)
+        private Recipe _firewallRecipe;
+        private List<Recipe> _powerupRecipe;
+
+        public List<Recipe> GetAllRecipes(Side side) => new List<Recipe> { _firewallRecipe, _powerupRecipe[(int)side]};
+
+        private void Start()
         {
-            List<RecipeSO> recipes = _db.GetAllEntries();
-
-            List<RecipeSO> possibleRecipes = recipes.FindAll(recipe => materials.All(mat => recipe.recipe.Contains(mat.GetMaterialType())));
-
-            return possibleRecipes;
-        }
-
-        public PowerupBase CraftRequest(List<CraftingMaterial> materials)
-        {
-            List<RecipeSO> recipes = _db.GetAllEntries();
-
-            RecipeSO recipe = recipes.Find(recipe => recipe.CanCraft(materials));
-
-            return (recipe != null) ? recipe.result : null;
-        }
-
-        private void Awake()
-        {
-            _db.InitDatabase();
+            _firewallRecipe = new Recipe(RECIPE_SIZE, true);
+            _powerupRecipe = new List<Recipe>();
+            for (int i = 0; i < LoJamGameManager.players.Count; i++)
+            {
+                Recipe r = new Recipe(RECIPE_SIZE, false);
+                //r.OnCraft.AddListener(/*Spawn Powerup */);
+                _powerupRecipe.Add(r);
+            }
         }
     }
 }

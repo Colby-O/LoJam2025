@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c376ee315d80c8449a6a817df7a9c5df, type: 3}
   m_Name: DefaultSpawnerSettings
   m_EditorClassIdentifier: 
-  tickRate: 1
+  tickRate: 5
   seed: -1
   radius: 1
   k: 30
@@ -21,3 +21,4 @@ MonoBehaviour:
   - {fileID: 6770530441651440910, guid: 26bab8eb975fee44d8ae1295f14cb149, type: 3}
   - {fileID: 5923193029577481616, guid: 9416b0662f11a504686a1921dee248e9, type: 3}
   - {fileID: 2082002870037787409, guid: 5c6a537df6d7bbb48a071138370a1763, type: 3}
+  - {fileID: 2082002870037787409, guid: 560b29527de17e345a7f7f3855f3401e, type: 3}

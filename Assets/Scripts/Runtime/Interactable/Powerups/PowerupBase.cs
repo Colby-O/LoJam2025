@@ -1,5 +1,6 @@
 using LoJam.Grid;
 using LoJam.Player;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace LoJam.Interactable
@@ -8,7 +9,11 @@ namespace LoJam.Interactable
     {
         [SerializeField] protected SpriteRenderer _spriteRenderer;
 
-        public Tile Tile { get; set; }
+        public List<Tile> Tiles { get; set; }
+
+        public Vector2Int GetGridSize() => new Vector2Int(1, 1);
+
+        public Transform GetTransform() => transform;
 
         public Sprite GetSprite() => _spriteRenderer.sprite;
 

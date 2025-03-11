@@ -1,6 +1,7 @@
 using UnityEngine;
 using LoJam.Interactable;
 using LoJam.Core;
+using System.Collections.Generic;
 
 namespace LoJam.Grid
 {
@@ -12,16 +13,21 @@ namespace LoJam.Grid
         private IInteractable _interactable;
         private bool _isEdge = false;
 
+        public GameObject GetSpriteGameObject() => _spriteRenderer.gameObject;
+
         public bool IsEdge() => _isEdge;
+
         public void SetIsEdge(bool isEdge) => _isEdge = isEdge;
 
         public bool HasInteractable() => _interactable != null;
+
         public IInteractable GetInteractable() => _interactable;
+
         public void SetInteractable(IInteractable interactable) 
         {
-            if (_interactable != null) _interactable.Tile = null;
             _interactable = interactable;
-            if (_interactable != null) _interactable.Tile = this;
+            if (_interactable != null && _interactable.Tiles == null) _interactable.Tiles = new List<Tile>();
+            if (_interactable != null) _interactable.Tiles.Add(this);
         }
 
         public void Refresh()
