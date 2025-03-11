@@ -32,6 +32,8 @@ namespace LoJam.MonoSystem
 
         private float _lastTick;
 
+        private List<Vector2> _spawnPoints;
+
         public Vector2Int GetNumberOfTile() => new Vector2Int(Mathf.RoundToInt(_bounds.x / _tileSize.x), Mathf.RoundToInt(_bounds.y / _tileSize.y));
 
         public Vector2 GetTileSize() => _tileSize;
@@ -175,22 +177,30 @@ namespace LoJam.MonoSystem
             if (Random.value < _spawnerSettings.materialSpawnRate)
             {
                 Debug.Log("Spawning Powerup");
-                foreach (Vector2 sample in _sampler.Sample(true))
-                {
-                    Vector2Int gridPT = WorldToGrid(sample);
 
-                    if 
+                int maxTries = 100;
+                int tries = 0;
+
+                while (true)
+                {
+                    Vector2Int gridPT = WorldToGrid(_spawnPoints[Random.Range(0, _spawnPoints.Count)]);
+
+                    if
                     (
-                        gridPT.x < 0                        || 
-                        gridPT.y < 0                        || 
-                        gridPT.x >= _tiles.GetLength(1)     || 
-                        gridPT.y >= _tiles.GetLength(0)     || 
-                        _tiles[gridPT.y, gridPT.x] == null  ||
+                        gridPT.x < 0 ||
+                        gridPT.y < 0 ||
+                        gridPT.x >= _tiles.GetLength(1) ||
+                        gridPT.y >= _tiles.GetLength(0) ||
+                        _tiles[gridPT.y, gridPT.x] == null ||
                         _tiles[gridPT.y, gridPT.x].IsEdge() ||
                         _tiles[gridPT.y, gridPT.x].HasInteractable()
-                    ) continue;
+                    )
+                    {
+                        if (++tries > maxTries) break;
+                        else continue;
+                    }
 
-                    CraftingMaterial powerUp = Instantiate(
+                    CraftingMaterial craftingMaterial = Instantiate(
                         _spawnerSettings.matieralList[Random.Range(0, _spawnerSettings.matieralList.Count)],
                         new Vector3(
                             GridToWorld(new Vector2Int(gridPT.x, gridPT.y)).x,
@@ -201,10 +211,10 @@ namespace LoJam.MonoSystem
                         transform
                     );
                      
-                    _tiles[gridPT.y, gridPT.x].SetInteractable(powerUp);
+                    _tiles[gridPT.y, gridPT.x].SetInteractable(craftingMaterial);
 
 
-                    powerUp.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
+                    craftingMaterial.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
                     break;
                 }
             }
@@ -240,6 +250,7 @@ namespace LoJam.MonoSystem
             _tiles[5, 5].SetInteractable(cs);
             // !! NOTE: This is bias as fuck please fix me at some point !!
             _sampler = new PoissonSampler(_tiles.GetLength(1), _tiles.GetLength(0), _spawnerSettings.radius, (_spawnerSettings.seed >= 0) ? _spawnerSettings.seed : null, _spawnerSettings.k);
+            _spawnPoints = _sampler.Sample(int.MaxValue);
         }
 
         private void Start()
@@ -257,25 +268,15 @@ namespace LoJam.MonoSystem
             {
                 if (_playerLastPos.Count > i)
                 {
-                    CheckPlayerExit(LoJamGameManager.players[i], _playerLastPos[i]);
-                    CheckPlayerEnter(LoJamGameManager.players[i]);
+                    if (!(WorldToGrid(LoJamGameManager.players[i].transform.position) == _playerLastPos[i]))
+                    {
+                        CheckPlayerExit(LoJamGameManager.players[i], _playerLastPos[i]);
+                        CheckPlayerEnter(LoJamGameManager.players[i]);
+                    }
                 }
 
                 _playerLastPos[i] = WorldToGrid(LoJamGameManager.players[i].transform.position);
             }
-
-            // Test Code
-            //Destroy(_playerTest);
-
-            //_playerTest = Instantiate<GameObject>(
-            //            Resources.Load<GameObject>("PlayerTest"),
-            //            new Vector3(
-            //                GridToWorld(new Vector2Int(_player.x, _player.y)).x,
-            //                GridToWorld(new Vector2Int(_player.x, _player.y)).y,
-            //                0
-            //            ),
-            //            Quaternion.identity
-            //);
 
             // Delete: For testing (Old input system don't use)
             if (Input.GetKeyDown(KeyCode.A))

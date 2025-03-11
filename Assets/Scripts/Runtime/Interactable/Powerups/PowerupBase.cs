@@ -10,6 +10,8 @@ namespace LoJam.Interactable
 
         public Tile Tile { get; set; }
 
+        public Transform GetTransform() => transform;
+
         public Sprite GetSprite() => _spriteRenderer.sprite;
 
         public abstract void OnPlayerAdjancent(Interactor player);

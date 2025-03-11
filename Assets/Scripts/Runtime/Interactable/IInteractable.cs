@@ -8,6 +8,7 @@ namespace LoJam.Interactable
     {
         public Tile Tile { get; set; }
         public Sprite GetSprite();
+        public Transform GetTransform();
         public void OnPlayerEnter(Interactor player);
         public void OnPlayerAdjancent(Interactor player);
         public void OnPlayerExit(Interactor player);

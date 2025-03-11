@@ -1,4 +1,5 @@
 using LoJam.Interactable;
+using LoJam.Logic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,7 @@ namespace LoJam.Player
     public class Interactor : MonoBehaviour
     {
         [SerializeField] private PlayerInput _input;
+        [SerializeField] private Side _side;
 
         public IInteractable Item { get; set; }
 
@@ -26,7 +28,7 @@ namespace LoJam.Player
         private void Craft(InputAction.CallbackContext e)
         {
             if (NearbyCraftingStation == null || HasAnyItem()) return;
-            NearbyCraftingStation.Craft(this);
+            NearbyCraftingStation.CompleteRecipe(this);
         }
 
         private void Awake()

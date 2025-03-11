@@ -8,7 +8,6 @@ namespace LoJam.MonoSystem
 {
     public interface ICraftingMonoSystem : IMonoSystem
     {
-        public List<RecipeSO> FetchPossibleRecipes(List<CraftingMaterial> materials);
-        public PowerupBase CraftRequest(List<CraftingMaterial> materials);
+
     }
 }
