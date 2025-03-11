@@ -10,7 +10,20 @@ namespace LoJam
 
         private float _life;
 
-        public bool Pause { get; set; }
+        public bool Pause 
+        { 
+            get 
+            {
+                return _isPaused;
+            } 
+            set 
+            {
+                _life = 0;
+                _isPaused = value;
+            } 
+        }
+
+        private bool _isPaused;
 
         private void HandleCollection()
         {
@@ -38,12 +51,8 @@ namespace LoJam
 
         private void Update()
         {
-            if (Pause)
-            {
-                _life = 0;
-                return;
-            }
-
+            if (Pause) return;
+            
             _life += Time.deltaTime;
 
             if (_life > _lifeSpan) HandleCollection();
