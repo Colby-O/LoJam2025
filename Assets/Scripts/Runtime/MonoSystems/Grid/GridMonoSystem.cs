@@ -327,6 +327,23 @@ namespace LoJam.MonoSystem
             }
         }
 
+        private void SpawnCraftingStations(int x, int y)
+        {
+            Debug.Log($"{x}, {y}");
+            CraftingStation cs = Instantiate(
+            Resources.Load<CraftingStation>("CraftingStation"),
+            new Vector3(
+                GridToWorld(new Vector2Int(x, y)).x,
+                GridToWorld(new Vector2Int(x, y)).y,
+                0
+            ),
+            Quaternion.identity,
+            transform
+            );
+            cs.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
+            AddToGrid(x, y, cs);
+        }
+
         private void Awake()
         {
             _playAreaTile = Resources.Load<Tile>("Tiles/PlayArea");
@@ -345,18 +362,9 @@ namespace LoJam.MonoSystem
 
             GenerateMap();
 
-            CraftingStation cs = Instantiate(
-                Resources.Load<CraftingStation>("CraftingStation"),
-                new Vector3(
-                            GridToWorld(new Vector2Int(5, 5)).x,
-                            GridToWorld(new Vector2Int(5, 5)).y,
-                            0
-                        ),
-                        Quaternion.identity,
-                        transform
-            );
-            cs.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
-            AddToGrid(5, 5, cs);
+            SpawnCraftingStations(GetNumberOfTile().x / 4, GetNumberOfTile().y / 2);
+            SpawnCraftingStations(3 * GetNumberOfTile().x / 4, GetNumberOfTile().y / 2);
+
             GenerateSpawnPoints();
         }
 
@@ -383,18 +391,6 @@ namespace LoJam.MonoSystem
                 }
 
                 _playerLastPos[i] = WorldToGrid(LoJamGameManager.players[i].transform.position);
-            }
-
-            // Delete: For testing (Old input system don't use)
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                Debug.Log("Adding Left!");
-                AddFirewallDaemon(Side.Left);
-            }
-            else if (Input.GetKeyDown(KeyCode.D))
-            {
-                Debug.Log("Adding Right!");
-                AddFirewallDaemon(Side.Right);
             }
         }
 
