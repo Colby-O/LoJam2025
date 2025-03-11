@@ -10,6 +10,8 @@ namespace LoJam
 
         private float _life;
 
+        public bool Pause { get; set; }
+
         private void HandleCollection()
         {
             Component comp = gameObject.GetComponent(typeof(IInteractable));
@@ -31,10 +33,17 @@ namespace LoJam
         {
             _life = 0;
             _lifeSpan += Random.Range(-10, 11);
+            Pause = false;
         }
 
         private void Update()
         {
+            if (Pause)
+            {
+                _life = 0;
+                return;
+            }
+
             _life += Time.deltaTime;
 
             if (_life > _lifeSpan) HandleCollection();

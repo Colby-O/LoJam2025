@@ -11,7 +11,9 @@ namespace LoJam.Interactable
     {
         Square,
         Circle,
-        Triangle
+        Triangle,
+        Cross,
+        None
     }
 
     public class CraftingMaterial : MonoBehaviour, IInteractable

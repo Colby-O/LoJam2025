@@ -1,9 +1,9 @@
 using LoJam.Core;
 using LoJam.Interactable;
+using LoJam.Player;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,19 +11,27 @@ namespace LoJam.Crafting
 {
     public class Recipe
     {
-        public UnityEvent<Inspector> OnCraft { get; set; }
+        public UnityEvent<Interactor> OnCraft { get; set; }
+
+        public string Label { get; set; }
 
         private List<MaterialType> _recipe;
+
+        private List<CraftingMaterial> _progress;
 
         private bool _isStatic;
         private int _size;
 
-        public Recipe(int size, bool isStatic = false)
+        public Recipe(int size, bool isStatic = false, string label = "")
         {
             _isStatic = isStatic;
             _size = size;
 
-            OnCraft = new UnityEvent<Inspector>();
+            Label = label;
+
+            _progress = new List<CraftingMaterial>();
+
+            OnCraft = new UnityEvent<Interactor>();
 
             GnerateNewRecipe(_size);
 
@@ -34,15 +42,32 @@ namespace LoJam.Crafting
 
         public bool CanCraft(List<CraftingMaterial> materials)
         {
-            return _recipe.All(mat => materials.FirstOrDefault(m => m.GetMaterialType() == mat) != null);
+            return _recipe.All(mat => materials.FirstOrDefault(m => m.GetMaterialType() == mat) != null) && _progress.Count == _recipe.Count;
         }
 
-        private void Refresh(Inspector _)
+        public List<CraftingMaterial> GetProgress()
+        {
+            return _progress;
+        }
+
+        public bool Craft(Interactor player)
+        {
+            if (CanCraft(_progress))
+            {
+                OnCraft.Invoke(player);
+                return true;
+            }
+            return false;
+        }
+
+        public void Refresh(Interactor _ = null)
         {
             if (!_isStatic)
             {
                 GnerateNewRecipe(_size);
             }
+
+            _progress.Clear();
         }
 
         private void GnerateNewRecipe(int size)

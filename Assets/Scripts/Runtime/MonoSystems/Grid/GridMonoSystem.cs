@@ -6,7 +6,6 @@ using LoJam.Interactable;
 using LoJam.Core;
 using LoJam.Logic;
 using LoJam.Player;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 namespace LoJam.MonoSystem
 {
@@ -34,8 +33,9 @@ namespace LoJam.MonoSystem
         private List<Vector2Int> _playerLastPos;
 
         private float _lastTick;
+        private int _tickID = 0;
 
-        private List<Vector2> _spawnPoints;
+        private Dictionary<Side, List<Vector2Int>> _spawnPoints;
 
         public Vector2Int GetNumberOfTile() => new Vector2Int(Mathf.RoundToInt(_bounds.x / _tileSize.x), Mathf.RoundToInt(_bounds.y / _tileSize.y));
 
@@ -58,6 +58,15 @@ namespace LoJam.MonoSystem
         public int GetDaemonCount(Side side) => _firewall.GetDaemonCount(side);
 
         public bool IsNearFirewall(Vector2 worldPos, Side side) => IsNearFirewall(WorldToGrid(worldPos), side);
+
+        public Side GetSide(Vector2Int gridPos)
+        {
+            return (GetNumberOfTile().x / 2 > gridPos.x) ? Side.Left : Side.Right;
+        }
+        public Side GetSide(Vector2 worldPos)
+        {
+            return GetSide(WorldToGrid(worldPos));
+        }
 
         public bool IsNearFirewall(Vector2Int gridPos, Side side)
         {
@@ -239,6 +248,39 @@ namespace LoJam.MonoSystem
             }
         }
 
+        public bool Spawn<T>(Side side, T obj) where T: MonoBehaviour, IInteractable
+        {
+            Vector2Int gridPT = _spawnPoints[side][Random.Range(0, _spawnPoints[side].Count)];
+            if
+            (
+                gridPT.x < 0 ||
+                gridPT.y < 0 ||
+                gridPT.x >= _tiles.GetLength(1) ||
+                gridPT.y >= _tiles.GetLength(0) ||
+                _tiles[gridPT.y, gridPT.x] == null ||
+                _tiles[gridPT.y, gridPT.x].IsEdge() ||
+                _tiles[gridPT.y, gridPT.x].HasInteractable() ||
+                gridPT.x == WorldToGrid(_firewall.transform.position).x ||
+                LoJamGameManager.players.Any(player => WorldToGrid(player.transform.position) == gridPT)
+            ) return false;
+
+            T objectInstance = Instantiate<T>(
+                obj,
+                new Vector3(
+                    GridToWorld(new Vector2Int(gridPT.x, gridPT.y)).x,
+                    GridToWorld(new Vector2Int(gridPT.x, gridPT.y)).y,
+                    0
+                ),
+                Quaternion.identity,
+                transform
+            );
+
+            AddToGrid(gridPT.x, gridPT.y, objectInstance);
+
+            objectInstance.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
+            return true;
+        }
+
         private void Tick()
         {
             _lastTick = Time.time;
@@ -250,40 +292,37 @@ namespace LoJam.MonoSystem
                 int maxTries = 100;
                 int tries = 0;
 
-                while (true)
-                {
-                    Vector2Int gridPT = WorldToGrid(_spawnPoints[Random.Range(0, _spawnPoints.Count)]);
-
-                    if
-                    (
-                        gridPT.x < 0 ||
-                        gridPT.y < 0 ||
-                        gridPT.x >= _tiles.GetLength(1) ||
-                        gridPT.y >= _tiles.GetLength(0) ||
-                        _tiles[gridPT.y, gridPT.x] == null ||
-                        _tiles[gridPT.y, gridPT.x].IsEdge() ||
-                        _tiles[gridPT.y, gridPT.x].HasInteractable()
+                while (
+                    !Spawn<CraftingMaterial>(
+                    (Side)(_tickID % 2), 
+                    _spawnerSettings.matieralList[Random.Range(0, _spawnerSettings.matieralList.Count)]
                     )
-                    {
-                        if (++tries > maxTries) break;
-                        else continue;
-                    }
+                )
+                {
+                    if (maxTries < ++tries) break;
+                }
+            }
 
-                    CraftingMaterial craftingMaterial = Instantiate(
-                        _spawnerSettings.matieralList[Random.Range(0, _spawnerSettings.matieralList.Count)],
-                        new Vector3(
-                            GridToWorld(new Vector2Int(gridPT.x, gridPT.y)).x,
-                            GridToWorld(new Vector2Int(gridPT.x, gridPT.y)).y,
-                            0
-                        ),
-                        Quaternion.identity,
-                        transform
-                    );
+            _tickID++;
+        }
 
-                    AddToGrid(gridPT.x, gridPT.y, craftingMaterial);
 
-                    craftingMaterial.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
-                    break;
+        private void GenerateSpawnPoints()
+        {
+            _spawnPoints = new Dictionary<Side, List<Vector2Int>>();
+            _spawnPoints[Side.Left] = new List<Vector2Int>();
+            _spawnPoints[Side.Right] = new List<Vector2Int>();
+
+            _sampler = new PoissonSampler(_tiles.GetLength(1), _tiles.GetLength(0), _spawnerSettings.radius, (_spawnerSettings.seed >= 0) ? _spawnerSettings.seed : null, _spawnerSettings.k);
+            foreach (Vector2 pt in _sampler.Sample())
+            {
+                if (GetSide(pt) == Side.Left)
+                {
+                    _spawnPoints[Side.Left].Add(WorldToGrid(pt));
+                }
+                else
+                {
+                    _spawnPoints[Side.Right].Add(WorldToGrid(pt));
                 }
             }
         }
@@ -294,6 +333,8 @@ namespace LoJam.MonoSystem
             _backgroundTile = Resources.Load<Tile>("Tiles/Background");
             _sideTile = Resources.Load<Tile>("Tiles/Side");
             _cornerTile = Resources.Load<Tile>("Tiles/Corner");
+
+            _tickID = Random.Range(0, 2);
 
             _firewall = Instantiate<FirewallController>(
                 Resources.Load<FirewallController>("Firewall"), 
@@ -316,8 +357,7 @@ namespace LoJam.MonoSystem
             );
             cs.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
             AddToGrid(5, 5, cs);
-            _sampler = new PoissonSampler(_tiles.GetLength(1), _tiles.GetLength(0), _spawnerSettings.radius, (_spawnerSettings.seed >= 0) ? _spawnerSettings.seed : null, _spawnerSettings.k);
-            _spawnPoints = _sampler.Sample(int.MaxValue);
+            GenerateSpawnPoints();
         }
 
         private void Start()
