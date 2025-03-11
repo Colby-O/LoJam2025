@@ -18,7 +18,9 @@ namespace LoJam
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            _input = GetComponent<PlayerInput>();
+            if (_input == null) _input = GetComponent<PlayerInput>();
+
+            _input.actions["Move"].performed += Move;
         }
 
         // Update is called once per frame
@@ -30,6 +32,7 @@ namespace LoJam
 
         public void Move(InputAction.CallbackContext context)
         {
+
             horizontalMovement = context.ReadValue<Vector2>().x;
             verticalMovement = context.ReadValue<Vector2>().y;
         }
