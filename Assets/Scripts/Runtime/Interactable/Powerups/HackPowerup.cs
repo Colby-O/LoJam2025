@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace LoJam
+namespace LoJam.Interactable
 {
     public class HackPowerup : MonoBehaviour
     {
