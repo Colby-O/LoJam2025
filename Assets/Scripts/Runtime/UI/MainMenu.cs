@@ -9,6 +9,12 @@ namespace LoJam
         [SerializeField] private Button _startButton;
         [SerializeField] private Button _settingsButton;
 
+        [SerializeField] private View _settingsOverlay;
+
+        private void Awake()
+        {
+        }
+
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
@@ -24,15 +30,14 @@ namespace LoJam
 
         private void OnStartClicked()
         {
-
+            LoJamGameManager.GetMonoSystem<IUIMonoSystem>().PopView();
+            Hud hud = FindFirstObjectByType<Hud>(FindObjectsInactive.Include);
+            LoJamGameManager.GetMonoSystem<IUIMonoSystem>().PushView(hud);
         }
 
         private void OnSettingsClicked()
         {
-            // bad
-            SettingsMenu settingsMenu = FindObjectsByType<SettingsMenu>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault();
-
-            LoJamGameManager.GetMonoSystem<IUIMonoSystem>().PushView(settingsMenu);
+            LoJamGameManager.GetMonoSystem<IUIMonoSystem>().PushView(_settingsOverlay);
         }
     }
 }

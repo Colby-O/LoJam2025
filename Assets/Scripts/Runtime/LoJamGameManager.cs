@@ -45,6 +45,8 @@ namespace LoJam
         private void Start()
         {
             players = FindObjectsByType<Interactor>(FindObjectsSortMode.None).ToList();
+
+            _uiSystem.PushView(FindObjectsByType<MainMenu>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault());
         }
     }
 }
