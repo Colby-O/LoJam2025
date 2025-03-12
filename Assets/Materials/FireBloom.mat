@@ -67,12 +67,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _DissolveAmount: 0
+    - _DissolveScale: 0.3
     - _EnableExternalAlpha: 0
+    - _NoiseScale: 100
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DissolveColor: {r: 1.984314, g: 0.4235294, b: 0.05490196, a: 1}
     - _Intensity: {r: 8.474189, g: 0.75060445, b: 0, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

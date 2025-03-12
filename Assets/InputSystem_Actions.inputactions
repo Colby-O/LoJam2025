@@ -920,7 +920,7 @@
                 {
                     "name": "",
                     "id": "f80c406c-ba99-4acd-af10-31ebec920f74",
-                    "path": "<Keyboard>/pageDown",
+                    "path": "<Keyboard>/rightAlt",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -931,7 +931,7 @@
                 {
                     "name": "",
                     "id": "22e4c226-8abe-44f4-8e28-603bb4b7a269",
-                    "path": "<Keyboard>/pageUp",
+                    "path": "<Keyboard>/rightCtrl",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

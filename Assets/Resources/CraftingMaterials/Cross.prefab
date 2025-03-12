@@ -52,6 +52,7 @@ MonoBehaviour:
   _frames:
   - {fileID: 874309099, guid: 02aaeb7d2e0e4844e90ae45ed4474685, type: 3}
   - {fileID: -1062659498, guid: 02aaeb7d2e0e4844e90ae45ed4474685, type: 3}
+  _dissolveRate: 0.01
 --- !u!114 &1981251919821347519
 MonoBehaviour:
   m_ObjectHideFlags: 0

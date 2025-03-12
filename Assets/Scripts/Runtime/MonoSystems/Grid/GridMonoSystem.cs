@@ -57,7 +57,9 @@ namespace LoJam.MonoSystem
 
         public int GetDaemonCount(Side side) => _firewall.GetDaemonCount(side);
 
-        public bool IsNearFirewall(Vector2 worldPos, Side side) => IsNearFirewall(WorldToGrid(worldPos), side);
+        public bool IsNearFirewall(Vector2 worldPos) => IsNearFirewall(WorldToGrid(worldPos));
+
+        public bool IsOnFirewall(Vector2 worldPos) => IsOnFirewall(WorldToGrid(worldPos));
 
         public Side GetSide(Vector2Int gridPos)
         {
@@ -68,11 +70,18 @@ namespace LoJam.MonoSystem
             return GetSide(WorldToGrid(worldPos));
         }
 
-        public bool IsNearFirewall(Vector2Int gridPos, Side side)
+        public bool IsNearFirewall(Vector2Int gridPos)
         {
             Vector2Int firwallPos = WorldToGrid(_firewall.transform.position);
 
-            return (side == Side.Left) ? firwallPos.x > gridPos.x : firwallPos.x < gridPos.x;
+            return  firwallPos.x == gridPos.x  || firwallPos.x == gridPos.x + 1 || firwallPos.x == gridPos.x - 1;
+        }
+
+        public bool IsOnFirewall(Vector2Int gridPos)
+        {
+            Vector2Int firwallPos = WorldToGrid(_firewall.transform.position);
+
+            return firwallPos.x == gridPos.x;
         }
 
         public Vector2Int WorldToGrid(Vector2 pos) {
