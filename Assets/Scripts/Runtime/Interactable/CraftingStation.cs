@@ -1,6 +1,7 @@
 using LoJam.Core;
 using LoJam.Crafting;
 using LoJam.Grid;
+using LoJam.Logic;
 using LoJam.MonoSystem;
 using LoJam.Player;
 using System;
@@ -29,6 +30,8 @@ namespace LoJam.Interactable
         [SerializeField] private SerializableDictionary<MaterialType, List<Sprite>> _sprites;
 
         [SerializeField] float _craftingAnimSpeed = 1f;
+
+        [SerializeField] Side _side;
 
         private Recipe _selectedRecipe;
 
@@ -64,9 +67,9 @@ namespace LoJam.Interactable
             }
         }
 
-        public void SwitchRecipe(Interactor player)
+        public void SwitchRecipe()
         {
-            _selectedRecipe = GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(player)[++_ptr % GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(player).Count];
+            _selectedRecipe = GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(_side)[++_ptr % GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(_side).Count];
             ShowRecipe(_selectedRecipe);
         }
 
@@ -127,7 +130,6 @@ namespace LoJam.Interactable
                 {
                     int index = copyRecipe.IndexOf(recipe.GetProgress()[i].GetMaterialType());
                     List<Sprite> cs = _sprites[recipe.GetMaterials()[index]];
-                    Debug.Log(index);
                     copyRecipe[index] = MaterialType.None;
                     _itemsUI[index].sprite = cs[1];
                 }
@@ -139,7 +141,7 @@ namespace LoJam.Interactable
 
         private void Init()
         {
-            _selectedRecipe = GameManager.GetMonoSystem<ICraftingMonoSystem>().GetFirewallRecipe();
+            _selectedRecipe = GameManager.GetMonoSystem<ICraftingMonoSystem>().GetFirewallRecipe(_side);
             ShowRecipe(_selectedRecipe);
         }
 

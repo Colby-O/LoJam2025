@@ -56,7 +56,7 @@ namespace LoJam.Logic
         {
             _tiles = new List<FireElement>();
 
-            for (int i = 0; i < Mathf.RoundToInt(bounds.y / tileSize.y); i++)
+            for (int i = -10; i < Mathf.RoundToInt(bounds.y / tileSize.y) + 10; i++)
             {
                 FireElement tile = Instantiate<FireElement>(
                     _firewallTile,

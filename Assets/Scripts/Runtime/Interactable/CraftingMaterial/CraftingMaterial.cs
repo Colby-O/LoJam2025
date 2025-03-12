@@ -2,7 +2,9 @@ using LoJam.Core;
 using LoJam.Grid;
 using LoJam.MonoSystem;
 using LoJam.Player;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LoJam.Interactable
@@ -24,6 +26,7 @@ namespace LoJam.Interactable
         [Header("Animation")]
         [SerializeField] private float _animationSpeed = 2f;
         [SerializeField] private List<Sprite> _frames;
+        [SerializeField] private float _dissolveRate = 0.01f;
 
         private float _time;
         private int _ptr = 0;
@@ -79,6 +82,25 @@ namespace LoJam.Interactable
             gameObject.SetActive(false);
         }
 
+        private IEnumerator Burn()
+        {
+            Debug.Log("Burning");
+
+            foreach (Tile tile in Tiles) tile.SetInteractable(null);
+            Tiles.Clear();
+
+            float prog = 0;
+            while (prog < 2)
+            {
+                Debug.Log("prog");
+                prog += _dissolveRate;
+                _spriteRenderer.material.SetFloat("_DissolveAmount", prog);
+                yield return new WaitForNextFrameUnit();
+            }
+
+            Destroy(gameObject);
+        }
+
         private void Awake()
         {
             if (_spriteRenderer == null) _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -98,6 +120,12 @@ namespace LoJam.Interactable
                 _spriteRenderer.sprite = _frames[++_ptr % _frames.Count];
                 _time = 0;
             }
+
+            if (GameManager.GetMonoSystem<IGridMonoSystem>().IsNearFirewall(transform.position))
+            {
+                StartCoroutine(Burn());
+            }
+
         }
     }
 }
