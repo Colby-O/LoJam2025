@@ -327,17 +327,16 @@ namespace LoJam.MonoSystem
             }
         }
 
-        private void SpawnCraftingStations(int x, int y)
+        private void SpawnCraftingStations(int x, int y, Side side)
         {
-            Debug.Log($"{x}, {y}");
             CraftingStation cs = Instantiate(
-            Resources.Load<CraftingStation>("CraftingStation"),
+            Resources.Load<CraftingStation>((side == Side.Left) ? "CraftingStationLeft" : "CraftingStationRight"),
             new Vector3(
                 GridToWorld(new Vector2Int(x, y)).x,
                 GridToWorld(new Vector2Int(x, y)).y,
                 0
             ),
-            Quaternion.identity,
+           Quaternion.Euler(0f, 0f, (side == Side.Left) ? 90f : -90f),
             transform
             );
             cs.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
@@ -362,8 +361,8 @@ namespace LoJam.MonoSystem
 
             GenerateMap();
 
-            SpawnCraftingStations(GetNumberOfTile().x / 4, GetNumberOfTile().y / 2);
-            SpawnCraftingStations(3 * GetNumberOfTile().x / 4, GetNumberOfTile().y / 2);
+            SpawnCraftingStations(3, GetNumberOfTile().y / 2, Side.Left);
+            SpawnCraftingStations(GetNumberOfTile().x - 3, GetNumberOfTile().y / 2, Side.Right);
 
             GenerateSpawnPoints();
         }
@@ -374,6 +373,11 @@ namespace LoJam.MonoSystem
             for (int i = 0; i < LoJamGameManager.players.Count; i++)
             {
                 _playerLastPos.Add(WorldToGrid(LoJamGameManager.players[i].transform.position));
+
+                if (LoJamGameManager.players[i].GetSide() == Side.Left)
+                    LoJamGameManager.players[i].transform.position = new Vector3(GridToWorld(new Vector2Int(GetNumberOfTile().x / 4, GetNumberOfTile().y / 2)).x, GridToWorld(new Vector2Int(GetNumberOfTile().x / 4, GetNumberOfTile().y / 2)).y, 0);
+                else
+                    LoJamGameManager.players[i].transform.position = new Vector3(GridToWorld(new Vector2Int(3 * GetNumberOfTile().x / 4, GetNumberOfTile().y / 2)).x, GridToWorld(new Vector2Int(3 * GetNumberOfTile().x / 4, GetNumberOfTile().y / 2)).y, 0);
             }
         }
 

@@ -60,7 +60,7 @@ namespace LoJam.Player
         private void NextReecipe(InputAction.CallbackContext e)
         {
             if (NearbyCraftingStation == null) return;
-            NearbyCraftingStation.SwitchRecipe(this);
+            NearbyCraftingStation.SwitchRecipe();
         }
 
         private void Awake()

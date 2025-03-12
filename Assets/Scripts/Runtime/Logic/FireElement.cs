@@ -18,7 +18,7 @@ namespace LoJam.Logic
         {
             if (_spriteRenderer == null) _spriteRenderer = GetComponent<SpriteRenderer>();
 
-            _ptr = 0;
+            _ptr = Random.Range(0, _idleFrames.Count);
             if (_idleFrames != null && _idleFrames.Count > 0 ) _spriteRenderer.sprite = _idleFrames[_ptr];
         }
 
