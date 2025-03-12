@@ -16,11 +16,31 @@ namespace LoJam
 
         private Vector2 _rawMovement;
 
+        private float _movementMul = 1;
+
+        private float _effectDuration = 0;
+        private float _effectTime = 0;
+
+        public void AddSpeedEffector(float boost, float time)
+        {
+            if (_movementMul != 1) RemoveSpeedEffector();
+
+            _effectDuration = time;
+            _movementMul = boost;
+            _effectTime = 0;
+        }
+
+        public void RemoveSpeedEffector()
+        {
+            _effectDuration = 0;
+            _movementMul = 1;
+        }
+
         private void Move(InputAction.CallbackContext e)
         {
             _rawMovement = e.ReadValue<Vector2>();
 
-            _rb.linearVelocity = _rawMovement * _movementSpeed;
+            _rb.linearVelocity = _rawMovement * _movementSpeed * _movementMul;
         }
 
         private void Awake()
@@ -35,7 +55,11 @@ namespace LoJam
 
         private void Update()
         {
-            
+            if (_effectDuration != 0)
+            {
+                _effectTime += Time.deltaTime;
+                if (_effectTime > _effectDuration) RemoveSpeedEffector();
+            }
         }
     }
 }

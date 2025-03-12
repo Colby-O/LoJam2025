@@ -43,11 +43,12 @@ namespace LoJam.Interactable
 
         public Sprite GetSprite() => _spriteRenderer.sprite;
 
-        public Vector2Int GetGridSize() => new Vector2Int(4, 4);
+        public Vector2Int GetGridSize() => new Vector2Int(4, 5);
 
         public void OnPlayerAdjancent(Interactor player)
         {
             player.NearbyCraftingStation = this;
+            UseCraftingStation(player);
         }
 
         public void OnPlayerEnter(Interactor player) { }
@@ -95,6 +96,8 @@ namespace LoJam.Interactable
                     player.Item = null;
                 }
             }
+
+            CompleteRecipe(player);
         }
 
         private IEnumerator CraftingAnimation()

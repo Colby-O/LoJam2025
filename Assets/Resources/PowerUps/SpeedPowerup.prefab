@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1776645750338753191}
-  - component: {fileID: 1246411553357901584}
+  - component: {fileID: 2707736168231649503}
   m_Layer: 0
-  m_Name: TestPowerup
+  m_Name: SpeedPowerup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 80792494324670274}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1246411553357901584
+--- !u!114 &2707736168231649503
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,10 +42,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5814733148427007514}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abd356edee9c85248abc25043437ae81, type: 3}
+  m_Script: {fileID: 11500000, guid: abd9d1cc05044304ebd18417c08e4d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteRenderer: {fileID: 64345901992051928}
+  _spriteRenderer: {fileID: 0}
+  _length: 20
+  _amount: 2
 --- !u!1 &6537812903131308629
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,7 +125,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 3625043607559282579, guid: 19fb86013d8c24d6cb8410c0aadf30fa, type: 3}
-  m_Color: {r: 1, g: 0, b: 0.8579731, a: 1}
+  m_Color: {r: 0, g: 0.040144444, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

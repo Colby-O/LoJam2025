@@ -25,6 +25,17 @@ namespace LoJam.Interactable
 
         public abstract void OnPlayerExit(Interactor player);
 
+        protected void RemovePowerup()
+        {
+            foreach (Tile tile in Tiles)
+            {
+                tile.SetInteractable(null);
+            }
+
+            Tiles.Clear();
+            Destroy(gameObject);
+        }
+
         protected virtual void Awake()
         {
             if (_spriteRenderer == null) _spriteRenderer = GetComponent<SpriteRenderer>();

@@ -45,18 +45,6 @@ namespace LoJam.Player
 
         public bool HasCraftingMaterial() => HasAnyItem() && Item is CraftingMaterial;
 
-        private void OpenCraftingStation(InputAction.CallbackContext e)
-        {
-            if (NearbyCraftingStation == null) return;
-            NearbyCraftingStation.UseCraftingStation(this);
-        }
-
-        private void Craft(InputAction.CallbackContext e)
-        {
-            if (NearbyCraftingStation == null || HasAnyItem()) return;
-            NearbyCraftingStation.CompleteRecipe(this);
-        }
-
         private void NextReecipe(InputAction.CallbackContext e)
         {
             if (NearbyCraftingStation == null) return;
@@ -69,14 +57,10 @@ namespace LoJam.Player
 
             if (_side == Side.Left)
             {
-                _input.actions["Interact"].performed += OpenCraftingStation;
-                _input.actions["Craft"].performed += Craft;
                 _input.actions["NextRecipe"].performed += NextReecipe;
             }
             else
             {
-                _input.actions["Interact2"].performed += OpenCraftingStation;
-                _input.actions["Craft2"].performed += Craft;
                 _input.actions["NextRecipe2"].performed += NextReecipe;
             }
         }
