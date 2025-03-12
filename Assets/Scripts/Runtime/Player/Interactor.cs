@@ -60,16 +60,25 @@ namespace LoJam.Player
         private void NextReecipe(InputAction.CallbackContext e)
         {
             if (NearbyCraftingStation == null) return;
-            NearbyCraftingStation.SwitchRecipe(this);
+            NearbyCraftingStation.SwitchRecipe();
         }
 
         private void Awake()
         {
             if (_input == null) _input = GetComponent<PlayerInput>();
 
-            _input.actions["Interact"].performed += OpenCraftingStation;
-            _input.actions["Craft"].performed += Craft;
-            _input.actions["NextRecipe"].performed += NextReecipe;
+            if (_side == Side.Left)
+            {
+                _input.actions["Interact"].performed += OpenCraftingStation;
+                _input.actions["Craft"].performed += Craft;
+                _input.actions["NextRecipe"].performed += NextReecipe;
+            }
+            else
+            {
+                _input.actions["Interact2"].performed += OpenCraftingStation;
+                _input.actions["Craft2"].performed += Craft;
+                _input.actions["NextRecipe2"].performed += NextReecipe;
+            }
         }
 
         private void Update()

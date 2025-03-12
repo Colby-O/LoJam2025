@@ -38,6 +38,23 @@ namespace LoJam.Crafting
             OnCraft.AddListener(Refresh);
         }
 
+        public Recipe(Recipe recipe)
+        {
+            _isStatic = recipe.GetIsStatic();
+            _size = recipe.GetSize();
+            Label = recipe.Label;
+
+            _recipe = new List<MaterialType>(recipe.GetMaterials());
+
+            _progress = new List<CraftingMaterial>();
+            OnCraft = new UnityEvent<Interactor>();
+            OnCraft.AddListener(Refresh);
+        }
+
+        public bool GetIsStatic() => _isStatic;
+
+        public int GetSize() => _size;
+
         public List<MaterialType> GetMaterials() => _recipe;
 
         public bool CanCraft(List<CraftingMaterial> materials)

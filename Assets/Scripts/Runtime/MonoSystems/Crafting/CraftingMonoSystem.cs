@@ -18,7 +18,7 @@ namespace LoJam.MonoSystem
 
         [SerializeField] private List<PowerupBase> _powerups;
 
-        private Recipe _firewallRecipe;
+        private List<Recipe> _firewallRecipe;
         private List<Recipe> _powerupRecipe;
 
         public UnityEvent OnInit
@@ -40,13 +40,13 @@ namespace LoJam.MonoSystem
 
         private UnityEvent _0nInit;
 
-        public List<Recipe> GetAllRecipes(Interactor player) => new List<Recipe> { _firewallRecipe, _powerupRecipe[(int)player.GetSide()]};
+        public List<Recipe> GetAllRecipes(Side side) => new List<Recipe> { _firewallRecipe[(int)side], _powerupRecipe[(int)side] };
 
-        public Recipe GetFirewallRecipe() => _firewallRecipe;
+        public Recipe GetFirewallRecipe(Side side) => _firewallRecipe[(int)side];
 
-        public void RefreshPowerupRecipe(Interactor player)
+        public void RefreshPowerupRecipe(Side side)
         {
-            _powerupRecipe[(int)player.GetSide()].Refresh();
+            _powerupRecipe[(int)side].Refresh();
         }
 
         private void AddPushingStrength(Interactor player)
@@ -77,15 +77,19 @@ namespace LoJam.MonoSystem
 
         private void Start()
         {
-            _firewallRecipe = new Recipe(RECIPE_SIZE, true, "Firewall");
-            _firewallRecipe.OnCraft.AddListener(AddPushingStrength);
+            Recipe firewallRecipe = new Recipe(RECIPE_SIZE, true, "Firewall");
 
             _powerupRecipe = new List<Recipe>();
+            _firewallRecipe = new List<Recipe>();
             for (int i = 0; i < LoJamGameManager.players.Count; i++)
             {
-                Recipe r = new Recipe(RECIPE_SIZE, false, "Powerup");
-                r.OnCraft.AddListener(SpawnPowerup);
-                _powerupRecipe.Add(r);
+                Recipe r1 = new Recipe(firewallRecipe);
+                r1.OnCraft.AddListener(AddPushingStrength);
+                _firewallRecipe.Add(r1);
+
+                Recipe r2 = new Recipe(RECIPE_SIZE, false, "Powerup");
+                r2.OnCraft.AddListener(SpawnPowerup);
+                _powerupRecipe.Add(r2);
             }
 
             OnInit?.Invoke();

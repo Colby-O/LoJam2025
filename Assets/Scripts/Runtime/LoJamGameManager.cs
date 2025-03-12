@@ -17,6 +17,7 @@ namespace LoJam
         [SerializeField] private GridMonoSystem _gridSystem;
         [SerializeField] private UIMonoSystem _uiSystem;
         [SerializeField] private CraftingMonoSystem _craftingSystem;
+        [SerializeField] private AudioMonoSystem _audioSystem;
 
         public static List<Interactor> players;
 
@@ -29,6 +30,7 @@ namespace LoJam
             AddMonoSystem<GridMonoSystem, IGridMonoSystem>(_gridSystem);
             AddMonoSystem<UIMonoSystem, IUIMonoSystem>(_uiSystem);
             AddMonoSystem<CraftingMonoSystem, ICraftingMonoSystem>(_craftingSystem);
+            AddMonoSystem<AudioMonoSystem, IAudioMonoSystem>(_audioSystem);
         }
 
         protected override void OnLoad() {
