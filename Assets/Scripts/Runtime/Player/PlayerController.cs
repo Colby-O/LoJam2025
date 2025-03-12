@@ -1,6 +1,7 @@
+using LoJam.Logic;
+using LoJam.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Windows;
 
 namespace LoJam
 {
@@ -9,6 +10,7 @@ namespace LoJam
     {
         [SerializeField] private PlayerInput _input;
         [SerializeField] private Rigidbody2D _rb;
+        [SerializeField] private Interactor _interator;
 
         [SerializeField] private float _movementSpeed;
 
@@ -24,9 +26,11 @@ namespace LoJam
         private void Awake()
         {
             if (_input == null) _input = GetComponent<PlayerInput>();
-            if (_rb != null) _rb = GetComponent<Rigidbody2D>();
+            if (_rb == null) _rb = GetComponent<Rigidbody2D>();
+            if (_interator == null) _interator = GetComponent<Interactor>();
 
-            _input.actions["Move"].performed += Move;
+            if (_interator.GetSide() == Side.Left) _input.actions["Move"].performed += Move;
+            else _input.actions["Move2"].performed += Move;
         }
 
         private void Update()
