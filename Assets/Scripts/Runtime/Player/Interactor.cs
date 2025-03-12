@@ -67,9 +67,18 @@ namespace LoJam.Player
         {
             if (_input == null) _input = GetComponent<PlayerInput>();
 
-            _input.actions["Interact"].performed += OpenCraftingStation;
-            _input.actions["Craft"].performed += Craft;
-            _input.actions["NextRecipe"].performed += NextReecipe;
+            if (_side == Side.Left)
+            {
+                _input.actions["Interact"].performed += OpenCraftingStation;
+                _input.actions["Craft"].performed += Craft;
+                _input.actions["NextRecipe"].performed += NextReecipe;
+            }
+            else
+            {
+                _input.actions["Interact2"].performed += OpenCraftingStation;
+                _input.actions["Craft2"].performed += Craft;
+                _input.actions["NextRecipe2"].performed += NextReecipe;
+            }
         }
 
         private void Update()

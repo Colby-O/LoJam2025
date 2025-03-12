@@ -43,7 +43,7 @@ namespace LoJam.Interactable
 
         public Sprite GetSprite() => _spriteRenderer.sprite;
 
-        public Vector2Int GetGridSize() => new Vector2Int(3, 3);
+        public Vector2Int GetGridSize() => new Vector2Int(4, 4);
 
         public void OnPlayerAdjancent(Interactor player)
         {
