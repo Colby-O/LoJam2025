@@ -33,9 +33,13 @@ namespace LoJam.Interactable
 
         [SerializeField] Side _side;
 
-        private Recipe _selectedRecipe;
+        [SerializeField] private Recipe _selectedRecipe;
 
         private int _ptr;
+
+        private float _hackDuration;
+        private float _hackedTIme = 0;
+        private bool _hacked = false;
 
         public List<Tile> Tiles { get; set; }
 
@@ -43,11 +47,22 @@ namespace LoJam.Interactable
 
         public Sprite GetSprite() => _spriteRenderer.sprite;
 
-        public Vector2Int GetGridSize() => new Vector2Int(4, 4);
+        public Vector2Int GetGridSize() => new Vector2Int(4, 5);
+
+        public Side GetSide() => _side;
+
+        public void Hack(bool state, float duration)
+        {
+            _hackedTIme = 0;
+            _hackDuration = duration;
+            _hacked = state;
+            _spriteRenderer.sprite = state ? _computerSprites[0] : _computerSprites[1];
+        }
 
         public void OnPlayerAdjancent(Interactor player)
         {
             player.NearbyCraftingStation = this;
+            UseCraftingStation(player);
         }
 
         public void OnPlayerEnter(Interactor player) { }
@@ -69,32 +84,39 @@ namespace LoJam.Interactable
 
         public void SwitchRecipe()
         {
+            if (_hacked) return;
+
             _selectedRecipe = GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(_side)[++_ptr % GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(_side).Count];
             ShowRecipe(_selectedRecipe);
         }
 
         public void UseCraftingStation(Interactor player)
         {
-            Debug.Log("Uisng Crafting Bench!");
+            if (_hacked) return;
+
             if (player.HasCraftingMaterial())
             {
                 CraftingMaterial cm = player.Item as CraftingMaterial;
 
                 if (
                     _selectedRecipe.GetMaterials().Contains(cm.GetMaterialType()) && 
-                    _selectedRecipe.GetProgress().Select(
+                    _selectedRecipe.GetProgress().Where(
                         m => m.GetMaterialType() == cm.GetMaterialType()
                     ).Count() != 
-                    _selectedRecipe.GetMaterials().Select(
+                    _selectedRecipe.GetMaterials().Where(
                         m => m == cm.GetMaterialType()
                     ).Count()
                 )
                 {
+                    GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(2);
                     _selectedRecipe.GetProgress().Add(cm);
                     ShowRecipe(_selectedRecipe);
+                    GameManager.GetMonoSystem<IGridMonoSystem>().RemoveItemReference(cm);
                     player.Item = null;
                 }
             }
+
+            CompleteRecipe(player);
         }
 
         private IEnumerator CraftingAnimation()
@@ -121,7 +143,6 @@ namespace LoJam.Interactable
                 List<Sprite> cs = _sprites[recipe.GetMaterials()[i]];
 
                 _itemsUI[i].sprite = cs[0];
-                Debug.Log(recipe.GetMaterials()[i]);
             }
 
             for (int i = 0; i < _itemsUI.Count; i++)
@@ -134,9 +155,6 @@ namespace LoJam.Interactable
                     _itemsUI[index].sprite = cs[1];
                 }
             }
-
-            if (recipe.CanCraft(recipe.GetProgress())) _spriteRenderer.sprite = _computerSprites[1];
-            else _spriteRenderer.sprite = _computerSprites[0];
         }
 
         private void Init()
@@ -149,6 +167,16 @@ namespace LoJam.Interactable
         {
             GameManager.GetMonoSystem<ICraftingMonoSystem>().OnInit.AddListener(Init);
             _lighting.SetActive(false);
+            _spriteRenderer.sprite = _computerSprites[1];
+        }
+
+        private void Update()
+        {
+            if (_hacked)
+            {
+                _hackedTIme += Time.deltaTime;
+                if (_hackedTIme > +_hackDuration) Hack(false, 0);
+            }
         }
     }
 }

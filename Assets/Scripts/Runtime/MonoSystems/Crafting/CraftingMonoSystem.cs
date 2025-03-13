@@ -56,6 +56,8 @@ namespace LoJam.MonoSystem
 
         private void SpawnPowerup(Interactor player)
         {
+            GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(1);
+
             if (_powerups == null || _powerups.Count == 0)
             {
                 Debug.LogWarning("Trying to spawn powerup but no prefabs are set.");

@@ -9,6 +9,7 @@ using UnityEngine.Events;
 
 namespace LoJam.Crafting
 {
+    [System.Serializable]
     public class Recipe
     {
         public UnityEvent<Interactor> OnCraft { get; set; }
@@ -17,7 +18,7 @@ namespace LoJam.Crafting
 
         private List<MaterialType> _recipe;
 
-        private List<CraftingMaterial> _progress;
+        public List<CraftingMaterial> _progress;
 
         private bool _isStatic;
         private int _size;

@@ -1,4 +1,6 @@
+using LoJam.Core;
 using LoJam.Grid;
+using LoJam.MonoSystem;
 using LoJam.Player;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,9 +23,23 @@ namespace LoJam.Interactable
 
         public abstract void OnPlayerAdjancentExit(Interactor player);
 
-        public abstract void OnPlayerEnter(Interactor player);
+        public virtual void OnPlayerEnter(Interactor player)
+        {
+            GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(0);
+        }
 
         public abstract void OnPlayerExit(Interactor player);
+
+        protected void RemovePowerup()
+        {
+            foreach (Tile tile in Tiles)
+            {
+                tile.SetInteractable(null);
+            }
+
+            Tiles.Clear();
+            Destroy(gameObject);
+        }
 
         protected virtual void Awake()
         {

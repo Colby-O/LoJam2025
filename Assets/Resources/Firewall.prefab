@@ -45,3 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _movementUnit: 0.0003
+  _movementStep: 0.25
+  _baseColor: {r: 8.474189, g: 0.75060445, b: 0, a: 1}
+  _leftColor: {r: 0, g: 8.47419, b: 7.7514343, a: 0.13725491}
+  _rightColor: {r: 8.47419, g: 0, b: 5.4472604, a: 0.13725491}
+  _virtualPosition: 0

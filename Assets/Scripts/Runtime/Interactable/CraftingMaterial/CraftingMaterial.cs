@@ -51,6 +51,8 @@ namespace LoJam.Interactable
 
         public void OnPlayerEnter(Interactor player)
         {
+            GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(0);
+
             if (player.Item != null)
             {
                 Vector2Int playerPos = GameManager.GetMonoSystem<IGridMonoSystem>().WorldToGrid(player.transform.position);
@@ -84,23 +86,31 @@ namespace LoJam.Interactable
             gameObject.SetActive(false);
         }
 
-        private IEnumerator Burn()
+        public void Remove()
         {
-            Debug.Log("Burning");
+            SoftRemove();
+            Destroy(gameObject);
+        }
 
+        public void SoftRemove()
+        {
             foreach (Tile tile in Tiles) tile.SetInteractable(null);
             Tiles.Clear();
+            GameManager.GetMonoSystem<IGridMonoSystem>().RemoveItemReference(this);
+        }
+
+        private IEnumerator Burn()
+        {
+            SoftRemove();
 
             float prog = 0;
             while (prog < 2)
             {
-                Debug.Log("prog");
                 prog += _dissolveRate;
                 _spriteRenderer.material.SetFloat("_DissolveAmount", prog);
                 yield return new WaitForNextFrameUnit();
             }
-
-            Destroy(gameObject);
+            Remove();
         }
 
         private void Awake()
