@@ -754,7 +754,9 @@ MonoBehaviour:
   _input: {fileID: 498064820}
   _rb: {fileID: 498064817}
   _interator: {fileID: 0}
+  _sr: {fileID: 0}
   _movementSpeed: 2
+  _dissolveRate: 0.05
 --- !u!114 &498064819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -828,7 +830,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &768144491
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1113,6 +1115,14 @@ PrefabInstance:
     - target: {fileID: 4021923289205502338, guid: 3a85f170732062e47b1f0ad428519e8d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6701005075970299776, guid: 3a85f170732062e47b1f0ad428519e8d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6701005075970299776, guid: 3a85f170732062e47b1f0ad428519e8d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 8445876087653059753, guid: 3a85f170732062e47b1f0ad428519e8d, type: 3}
       propertyPath: m_Name
@@ -2493,7 +2503,9 @@ MonoBehaviour:
   _input: {fileID: 2021219795}
   _rb: {fileID: 2021219792}
   _interator: {fileID: 0}
+  _sr: {fileID: 0}
   _movementSpeed: 2
+  _dissolveRate: 0.05
 --- !u!114 &2021219794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2768,6 +2780,14 @@ PrefabInstance:
     - target: {fileID: 4021923289205502338, guid: 3a85f170732062e47b1f0ad428519e8d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6701005075970299776, guid: 3a85f170732062e47b1f0ad428519e8d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6701005075970299776, guid: 3a85f170732062e47b1f0ad428519e8d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 8445876087653059753, guid: 3a85f170732062e47b1f0ad428519e8d, type: 3}
       propertyPath: m_Name
