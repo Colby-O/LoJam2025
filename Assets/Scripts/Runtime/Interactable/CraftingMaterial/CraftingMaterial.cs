@@ -84,15 +84,12 @@ namespace LoJam.Interactable
 
         private IEnumerator Burn()
         {
-            Debug.Log("Burning");
-
             foreach (Tile tile in Tiles) tile.SetInteractable(null);
             Tiles.Clear();
 
             float prog = 0;
             while (prog < 2)
             {
-                Debug.Log("prog");
                 prog += _dissolveRate;
                 _spriteRenderer.material.SetFloat("_DissolveAmount", prog);
                 yield return new WaitForNextFrameUnit();

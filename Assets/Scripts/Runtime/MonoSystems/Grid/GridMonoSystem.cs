@@ -296,8 +296,6 @@ namespace LoJam.MonoSystem
 
             if (Random.value < _spawnerSettings.materialSpawnRate)
             {
-                Debug.Log("Spawning Powerup");
-
                 int maxTries = 100;
                 int tries = 0;
 

@@ -33,7 +33,7 @@ namespace LoJam.Interactable
 
         [SerializeField] Side _side;
 
-        private Recipe _selectedRecipe;
+        [SerializeField] private Recipe _selectedRecipe;
 
         private int _ptr;
 
@@ -76,17 +76,16 @@ namespace LoJam.Interactable
 
         public void UseCraftingStation(Interactor player)
         {
-            Debug.Log("Uisng Crafting Bench!");
             if (player.HasCraftingMaterial())
             {
                 CraftingMaterial cm = player.Item as CraftingMaterial;
 
                 if (
                     _selectedRecipe.GetMaterials().Contains(cm.GetMaterialType()) && 
-                    _selectedRecipe.GetProgress().Select(
+                    _selectedRecipe.GetProgress().Where(
                         m => m.GetMaterialType() == cm.GetMaterialType()
                     ).Count() != 
-                    _selectedRecipe.GetMaterials().Select(
+                    _selectedRecipe.GetMaterials().Where(
                         m => m == cm.GetMaterialType()
                     ).Count()
                 )
@@ -124,7 +123,6 @@ namespace LoJam.Interactable
                 List<Sprite> cs = _sprites[recipe.GetMaterials()[i]];
 
                 _itemsUI[i].sprite = cs[0];
-                Debug.Log(recipe.GetMaterials()[i]);
             }
 
             for (int i = 0; i < _itemsUI.Count; i++)
