@@ -53,6 +53,8 @@ namespace LoJam.MonoSystem
 
         public bool IsNearEdge(Vector2 worldPos) => IsNearEdge(WorldToGrid(worldPos));
 
+        public Vector3 GetFirewallPos() => _firewall.transform.position;
+
         public void AddFirewallDaemon(Side side) => _firewall.AddDaemon(side);
 
         public void RemoveFirewallDaemon(Side side) => _firewall.RemoveDaemon(side);

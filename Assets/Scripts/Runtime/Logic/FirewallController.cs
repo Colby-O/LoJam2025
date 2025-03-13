@@ -26,7 +26,7 @@ namespace LoJam.Logic
 
         private List<FireElement> _tiles;
 
-        private float _virtualPosition;
+       [SerializeField]  private float _virtualPosition;
 
         public void AddDaemon(Side side)
         {

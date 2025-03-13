@@ -47,6 +47,9 @@ MonoBehaviour:
   _bounds: {x: 20, y: 10}
   _tileSize: {x: 0.5, y: 0.5}
   _spawnerSettings: {fileID: 11400000, guid: e36837efc88f2cf47a304a28683f5be6, type: 2}
+  _itemsReference:
+    list: []
+    keyCollision: 0
 --- !u!1 &2615027720858706772
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,8 +349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _powerups:
-  - {fileID: 2707736168231649503, guid: 35d409ba701013d48bba6cd09f166df3, type: 3}
-  - {fileID: 6258837037526855172, guid: 8f0824cb414d6ef4db5863fe448909af, type: 3}
+  - {fileID: 3292371552893427652, guid: 1b8c59dd23aacca40978b19135046dea, type: 3}
 --- !u!1 &8287916512371415765
 GameObject:
   m_ObjectHideFlags: 0
