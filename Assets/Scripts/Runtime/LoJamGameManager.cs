@@ -1,4 +1,5 @@
 using LoJam.Core;
+using LoJam.Interactable;
 using LoJam.MonoSystem;
 using LoJam.Player;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace LoJam
         [SerializeField] private AudioMonoSystem _audioSystem;
 
         public static List<Interactor> players;
+        public static List<CraftingStation> craftingStations;
 
         private void AddEvents() {
             //AddEvent<GameEvents.TestEvent>(DeleteMe);
@@ -42,6 +44,11 @@ namespace LoJam
 
             // Ensure all MonoSystems call Awake at the same time
             _msHolder.SetActive(true);
+        }
+
+        private void Awake()
+        {
+            craftingStations = new List<CraftingStation>();
         }
 
         private void Start()

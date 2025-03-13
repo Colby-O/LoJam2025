@@ -24,42 +24,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Interact",
-                    "type": "Button",
-                    "id": "852140f2-7766-474d-8707-702459ba45f3",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Interact2",
-                    "type": "Button",
-                    "id": "84edaefa-b946-4bf3-83ee-fc59ffb8b72d",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Craft",
-                    "type": "Button",
-                    "id": "19200e5b-f6c6-4374-a954-c80fa98ef149",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Craft2",
-                    "type": "Button",
-                    "id": "cd418700-a55c-43bf-8bbe-bb600ce6adad",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "NextRecipe",
                     "type": "Button",
                     "id": "2484969f-ea39-4da4-aeac-a4fcbea7207f",
@@ -148,10 +112,10 @@
                 {
                     "name": "up",
                     "id": "b67bfad8-e043-4ff9-9aab-6e1114e360fa",
-                    "path": "<Keyboard>/upArrow",
+                    "path": "<Keyboard>/i",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": "",
                     "action": "Move2",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -159,7 +123,7 @@
                 {
                     "name": "down",
                     "id": "b026c587-9caa-4267-ab4a-d3c6bef6449d",
-                    "path": "<Keyboard>/downArrow",
+                    "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
@@ -170,7 +134,7 @@
                 {
                     "name": "left",
                     "id": "e78303f5-69fc-48e6-8312-b958d1cb2dcb",
-                    "path": "<Keyboard>/leftArrow",
+                    "path": "<Keyboard>/j",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
@@ -181,68 +145,13 @@
                 {
                     "name": "right",
                     "id": "4a4ca70a-c1e9-4eba-aa86-9bf0396ec1f6",
-                    "path": "<Keyboard>/rightArrow",
+                    "path": "<Keyboard>/l",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Move2",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "1c04ea5f-b012-41d1-a6f7-02e963b52893",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1d5a63ce-a5bb-462b-91ba-be8020047b23",
-                    "path": "<Keyboard>/enter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Interact2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "228ce7c4-adfe-4d2e-9d13-8cd9dc672b3f",
-                    "path": "<Keyboard>/numpadEnter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Interact2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "eaebef27-80c4-4a28-93d3-c44eba80a581",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Craft",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3e04f921-db49-4fd2-94a2-30811bd429d2",
-                    "path": "<Keyboard>/rightShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Craft2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -268,8 +177,30 @@
                 },
                 {
                     "name": "",
+                    "id": "5134279b-6ae3-4682-bdec-ddd45dde68ad",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NextRecipe",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aa6bf23d-5715-438c-9246-f50649161cb1",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NextRecipe",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "bac70b92-c4f8-47b1-8841-a7d06f986a67",
-                    "path": "<Keyboard>/rightAlt",
+                    "path": "<Keyboard>/o",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
@@ -280,10 +211,32 @@
                 {
                     "name": "",
                     "id": "95c7e1f6-3fed-43ce-9337-c23b255720dd",
-                    "path": "<Keyboard>/rightCtrl",
+                    "path": "<Keyboard>/u",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
+                    "action": "NextRecipe2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3a3bdd82-e080-409e-a78e-45b1db6c0b99",
+                    "path": "<Keyboard>/8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NextRecipe2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ffcb02fe-08f3-4ad8-93ce-7f76e9df7ee6",
+                    "path": "<Keyboard>/9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "NextRecipe2",
                     "isComposite": false,
                     "isPartOfComposite": false

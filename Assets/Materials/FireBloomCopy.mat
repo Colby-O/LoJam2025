@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Player1Bloom
+  m_Name: FireBloomCopy
   m_Shader: {fileID: -6465566751694194690, guid: 2224c30aa95aa6646bc912a4a6ee8981, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -42,7 +42,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: b2a5f87debd5e634badd08701309814f, type: 3}
+        m_Texture: {fileID: 2800000, guid: 318cfbfae1b06f540ab55def02a89f36, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -76,8 +76,8 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DissolveColor: {r: 0, g: 11.984313, b: 11.984313, a: 1}
-    - _Intensity: {r: 1.0257404, g: 3.5648687, b: 3.0649498, a: 1}
+    - _DissolveColor: {r: 1.984314, g: 0.4235294, b: 0.05490196, a: 1}
+    - _Intensity: {r: 8.474189, g: 0.75060445, b: 0, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

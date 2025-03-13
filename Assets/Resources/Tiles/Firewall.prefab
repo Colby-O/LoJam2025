@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 1201439713423312739}
+  _collider: {fileID: 8890768840024876769}
   _idleFrames:
   - {fileID: 343884379, guid: 06df372d7e7c7cf429a8093f2be89041, type: 3}
   - {fileID: -808762867, guid: 06df372d7e7c7cf429a8093f2be89041, type: 3}
@@ -129,7 +130,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 20
   m_Sprite: {fileID: 1176198203, guid: 06df372d7e7c7cf429a8093f2be89041, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

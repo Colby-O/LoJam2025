@@ -47,6 +47,9 @@ MonoBehaviour:
   _bounds: {x: 20, y: 10}
   _tileSize: {x: 0.5, y: 0.5}
   _spawnerSettings: {fileID: 11400000, guid: e36837efc88f2cf47a304a28683f5be6, type: 2}
+  _itemsReference:
+    list: []
+    keyCollision: 0
 --- !u!1 &2615027720858706772
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,7 +349,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _powerups:
-  - {fileID: 1246411553357901584, guid: 35d409ba701013d48bba6cd09f166df3, type: 3}
+  - {fileID: 3844155752577393710, guid: 0b7197d84ece67a408f09501e19d9562, type: 3}
+  - {fileID: 4382498819002034249, guid: aaccf2e3526ff444cad7f24e924f4356, type: 3}
+  - {fileID: 6258837037526855172, guid: 8f0824cb414d6ef4db5863fe448909af, type: 3}
+  - {fileID: 2707736168231649503, guid: 35d409ba701013d48bba6cd09f166df3, type: 3}
+  - {fileID: 3292371552893427652, guid: 1b8c59dd23aacca40978b19135046dea, type: 3}
 --- !u!1 &8287916512371415765
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,4 +403,4 @@ MonoBehaviour:
   _gridSystem: {fileID: 6159033754473949830}
   _uiSystem: {fileID: 4317079573408971311}
   _craftingSystem: {fileID: 3592367805394270644}
-  _audioSystem: {fileID: 0}
+  _audioSystem: {fileID: 3127997554965664385}

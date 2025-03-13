@@ -19,13 +19,7 @@ namespace LoJam.Interactable
         public override void OnPlayerEnter(Interactor player)
         {
             Debug.Log("Picking Up Powerup!");
-            foreach (Tile tile in Tiles)
-            {
-                tile.SetInteractable(null);
-            }
-
-            Tiles.Clear();
-            Destroy(gameObject);
+            RemovePowerup();
         }
 
         public override void OnPlayerExit(Interactor player)

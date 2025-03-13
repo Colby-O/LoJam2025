@@ -6,6 +6,7 @@ namespace LoJam.Logic
     public class FireElement : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] private Collider2D _collider;
 
         [Header("Idle")]
         [SerializeField] private List<Sprite> _idleFrames;
@@ -14,9 +15,14 @@ namespace LoJam.Logic
         private int _ptr;
         private float _time;
 
+        public Collider2D Collider { get { return _collider; } }
+
+        public SpriteRenderer SpriteRenderer { get { return _spriteRenderer; } }
+
         private void Awake()
         {
             if (_spriteRenderer == null) _spriteRenderer = GetComponent<SpriteRenderer>();
+            if (_collider == null) _collider = _spriteRenderer.GetComponent<Collider2D>();
 
             _ptr = Random.Range(0, _idleFrames.Count);
             if (_idleFrames != null && _idleFrames.Count > 0 ) _spriteRenderer.sprite = _idleFrames[_ptr];
