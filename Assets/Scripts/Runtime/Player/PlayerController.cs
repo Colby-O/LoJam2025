@@ -10,7 +10,6 @@ using UnityEngine.InputSystem;
 
 namespace LoJam
 {
-    [RequireComponent(typeof(PlayerInput))]
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private PlayerInput _input;

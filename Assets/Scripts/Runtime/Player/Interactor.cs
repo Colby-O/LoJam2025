@@ -6,7 +6,6 @@ using static UnityEngine.Rendering.DebugUI;
 
 namespace LoJam.Player
 {
-    [RequireComponent(typeof(PlayerInput))]
     public class Interactor : MonoBehaviour
     {
         [SerializeField] private PlayerInput _input;
