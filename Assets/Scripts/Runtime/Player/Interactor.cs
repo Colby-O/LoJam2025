@@ -64,10 +64,5 @@ namespace LoJam.Player
                 _input.actions["NextRecipe2"].performed += NextReecipe;
             }
         }
-
-        private void Update()
-        {
-
-        }
     }
 }

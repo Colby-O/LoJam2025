@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 1201439713423312739}
+  _collider: {fileID: 8890768840024876769}
   _idleFrames:
   - {fileID: 343884379, guid: 06df372d7e7c7cf429a8093f2be89041, type: 3}
   - {fileID: -808762867, guid: 06df372d7e7c7cf429a8093f2be89041, type: 3}

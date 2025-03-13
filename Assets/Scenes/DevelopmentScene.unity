@@ -505,8 +505,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _input: {fileID: 8408879924742847963}
   _rb: {fileID: 4283570316431875111}
-  _interator: {fileID: 0}
+  _interator: {fileID: 1108663041482372676}
+  _sr: {fileID: 8137124697627947009}
   _movementSpeed: 3
+  _dissolveRate: 0.05
 --- !u!4 &1702162369145743490
 Transform:
   m_ObjectHideFlags: 0
@@ -752,8 +754,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _input: {fileID: 3094795771945905593}
   _rb: {fileID: 7292162769214164037}
-  _interator: {fileID: 0}
+  _interator: {fileID: 5846368098028594726}
+  _sr: {fileID: 3363173153578246243}
   _movementSpeed: 3
+  _dissolveRate: 0.05
 --- !u!4 &5323237505678096608
 Transform:
   m_ObjectHideFlags: 0

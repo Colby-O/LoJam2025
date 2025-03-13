@@ -37,6 +37,10 @@ namespace LoJam.Interactable
 
         private int _ptr;
 
+        private float _hackDuration;
+        private float _hackedTIme = 0;
+        private bool _hacked = false;
+
         public List<Tile> Tiles { get; set; }
 
         public Transform GetTransform() => transform;
@@ -44,6 +48,16 @@ namespace LoJam.Interactable
         public Sprite GetSprite() => _spriteRenderer.sprite;
 
         public Vector2Int GetGridSize() => new Vector2Int(4, 5);
+
+        public Side GetSide() => _side;
+
+        public void Hack(bool state, float duration)
+        {
+            _hackedTIme = 0;
+            _hackDuration = duration;
+            _hacked = state;
+            _spriteRenderer.sprite = state ? _computerSprites[0] : _computerSprites[1];
+        }
 
         public void OnPlayerAdjancent(Interactor player)
         {
@@ -70,12 +84,16 @@ namespace LoJam.Interactable
 
         public void SwitchRecipe()
         {
+            if (_hacked) return;
+
             _selectedRecipe = GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(_side)[++_ptr % GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(_side).Count];
             ShowRecipe(_selectedRecipe);
         }
 
         public void UseCraftingStation(Interactor player)
         {
+            if (_hacked) return;
+
             if (player.HasCraftingMaterial())
             {
                 CraftingMaterial cm = player.Item as CraftingMaterial;
@@ -136,9 +154,6 @@ namespace LoJam.Interactable
                     _itemsUI[index].sprite = cs[1];
                 }
             }
-
-            if (recipe.CanCraft(recipe.GetProgress())) _spriteRenderer.sprite = _computerSprites[1];
-            else _spriteRenderer.sprite = _computerSprites[0];
         }
 
         private void Init()
@@ -151,6 +166,16 @@ namespace LoJam.Interactable
         {
             GameManager.GetMonoSystem<ICraftingMonoSystem>().OnInit.AddListener(Init);
             _lighting.SetActive(false);
+            _spriteRenderer.sprite = _computerSprites[1];
+        }
+
+        private void Update()
+        {
+            if (_hacked)
+            {
+                _hackedTIme += Time.deltaTime;
+                if (_hackedTIme > +_hackDuration) Hack(false, 0);
+            }
         }
     }
 }

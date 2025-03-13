@@ -367,6 +367,8 @@ namespace LoJam.MonoSystem
             );
             cs.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
             AddToGrid(x, y, cs);
+
+            LoJamGameManager.craftingStations.Add(cs);
         }
 
         private void Awake()

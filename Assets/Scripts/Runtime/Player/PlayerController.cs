@@ -1,5 +1,10 @@
+using LoJam.Core;
 using LoJam.Logic;
+using LoJam.MonoSystem;
 using LoJam.Player;
+using System;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,8 +16,10 @@ namespace LoJam
         [SerializeField] private PlayerInput _input;
         [SerializeField] private Rigidbody2D _rb;
         [SerializeField] private Interactor _interator;
+        [SerializeField] private SpriteRenderer _sr;
 
         [SerializeField] private float _movementSpeed;
+        [SerializeField] private float _dissolveRate = 0.05f;
 
         private Vector2 _rawMovement;
 
@@ -34,6 +41,40 @@ namespace LoJam
         {
             _effectDuration = 0;
             _movementMul = 1;
+        }
+
+        public void ReturnPlayer()
+        {
+            StartCoroutine(ReturnAnimation());
+        }
+
+        private IEnumerator ReturnAnimation()
+        {
+            float prog = 0;
+            while (prog < 1.2)
+            {
+                prog += _dissolveRate;
+                _sr.material.SetFloat("_DissolveAmount", prog);
+                yield return new WaitForNextFrameUnit();
+            }
+
+            if (_interator.GetSide() == Side.Left)
+            {
+                transform.position = new Vector3(GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x / 4f, GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().y / 2f, 0);
+            }
+            else
+            {
+                transform.position = new Vector3(3f * GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x / 4f, GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().y / 2f, 0);
+            }
+
+            while (prog > 0)
+            {
+                prog -= _dissolveRate;
+                _sr.material.SetFloat("_DissolveAmount", prog);
+                yield return new WaitForNextFrameUnit();
+            }
+
+            _sr.material.SetFloat("_DissolveAmount", 0);
         }
 
         private void Move(InputAction.CallbackContext e)

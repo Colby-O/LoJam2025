@@ -76,7 +76,7 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DissolveColor: {r: 1.984314, g: 0.4235294, b: 0.05490196, a: 1}
+    - _DissolveColor: {r: 11.984313, g: 0.28264886, b: 8.740916, a: 1}
     - _Intensity: {r: 3.564869, g: 1.0265329, b: 2.783819, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
