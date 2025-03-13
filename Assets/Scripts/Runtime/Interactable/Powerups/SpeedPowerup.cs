@@ -16,6 +16,7 @@ namespace LoJam.Interactable
 
         public override void OnPlayerEnter(Interactor player)
         {
+            base.OnPlayerEnter(player);
             player.GetComponent<PlayerController>().AddSpeedEffector(_amount, _length);
             RemovePowerup();
         }

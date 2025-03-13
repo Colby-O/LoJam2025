@@ -16,6 +16,7 @@ namespace LoJam
 
         public override void OnPlayerEnter(Interactor player)
         {
+            base.OnPlayerEnter(player);
             FindFirstObjectByType<FirewallController>().Open(player, _duration);
             RemovePowerup();
         }
