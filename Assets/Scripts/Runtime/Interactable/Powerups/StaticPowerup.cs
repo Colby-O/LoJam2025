@@ -16,6 +16,8 @@ namespace LoJam.Interactable
 
         public override void OnPlayerEnter(Interactor player)
         {
+            base.OnPlayerEnter(player);
+
             Interactor other = LoJamGameManager.players.Find(p => p != player);
 
             SpawnStatic(other.GetSide());
@@ -25,7 +27,6 @@ namespace LoJam.Interactable
 
         private void SpawnStatic(Side side)
         {
-            Debug.Log("SpawningStatic");
             StaticController frame = Instantiate(
                 Resources.Load<StaticController>("Static"),
                 Vector3.zero,

@@ -49,6 +49,8 @@ namespace LoJam.Interactable
 
         public void OnPlayerEnter(Interactor player)
         {
+            GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(0);
+
             if (player.Item != null)
             {
                 Vector2Int playerPos = GameManager.GetMonoSystem<IGridMonoSystem>().WorldToGrid(player.transform.position);

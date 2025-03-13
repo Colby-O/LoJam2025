@@ -108,6 +108,7 @@ namespace LoJam.Interactable
                     ).Count()
                 )
                 {
+                    GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(2);
                     _selectedRecipe.GetProgress().Add(cm);
                     ShowRecipe(_selectedRecipe);
                     GameManager.GetMonoSystem<IGridMonoSystem>().RemoveItemReference(cm);

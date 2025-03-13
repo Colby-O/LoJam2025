@@ -19,6 +19,7 @@ namespace LoJam.Interactable
         public override void OnPlayerEnter(Interactor player)
         {
             Debug.Log("Picking Up Powerup!");
+            base.OnPlayerEnter(player);
             RemovePowerup();
         }
 

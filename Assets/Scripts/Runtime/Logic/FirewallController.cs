@@ -104,6 +104,7 @@ namespace LoJam.Logic
 
             if (Mathf.Abs(_virtualPosition - transform.position.x) >= _movementStep)
             {
+                GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(3);
                 transform.position = transform.position.SetX(_virtualPosition);
             }
         }
