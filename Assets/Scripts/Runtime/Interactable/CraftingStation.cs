@@ -92,6 +92,7 @@ namespace LoJam.Interactable
                 {
                     _selectedRecipe.GetProgress().Add(cm);
                     ShowRecipe(_selectedRecipe);
+                    GameManager.GetMonoSystem<IGridMonoSystem>().RemoveItemReference(cm);
                     player.Item = null;
                 }
             }

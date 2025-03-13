@@ -37,9 +37,11 @@ namespace LoJam
                 }
 
                 interactable.Tiles.Clear();
+
+                if (interactable is CraftingMaterial) (interactable as CraftingMaterial).Remove();
             }
 
-            Destroy(gameObject);
+            if (gameObject != null) Destroy(gameObject);
         }
 
         private void Awake()

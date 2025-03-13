@@ -82,10 +82,22 @@ namespace LoJam.Interactable
             gameObject.SetActive(false);
         }
 
-        private IEnumerator Burn()
+        public void Remove()
+        {
+            SoftRemove();
+            Destroy(gameObject);
+        }
+
+        public void SoftRemove()
         {
             foreach (Tile tile in Tiles) tile.SetInteractable(null);
             Tiles.Clear();
+            GameManager.GetMonoSystem<IGridMonoSystem>().RemoveItemReference(this);
+        }
+
+        private IEnumerator Burn()
+        {
+            SoftRemove();
 
             float prog = 0;
             while (prog < 2)
@@ -94,8 +106,7 @@ namespace LoJam.Interactable
                 _spriteRenderer.material.SetFloat("_DissolveAmount", prog);
                 yield return new WaitForNextFrameUnit();
             }
-
-            Destroy(gameObject);
+            Remove();
         }
 
         private void Awake()
