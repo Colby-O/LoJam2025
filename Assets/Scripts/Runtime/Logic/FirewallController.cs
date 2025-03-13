@@ -15,6 +15,7 @@ namespace LoJam.Logic
     public class FirewallController : MonoBehaviour
     {
         [SerializeField] private float _movementUnit = 0.001f;
+        [SerializeField] private float _movementStep = 0.25f;
 
         private int _leftDaemonCount;
         private int _rightDaemonCount;
@@ -24,6 +25,8 @@ namespace LoJam.Logic
         private FireElement _firewallTile;
 
         private List<FireElement> _tiles;
+
+        private float _virtualPosition;
 
         public void AddDaemon(Side side)
         {
@@ -48,8 +51,23 @@ namespace LoJam.Logic
 
             if (transform.position.x > 0 && _netMovement < 0 || transform.position.x < bounds.x - 1 && _netMovement > 0)
             {
-                transform.position = transform.position.SetX(transform.position.x + _netMovement * _movementUnit);
+                // Discrete movement
+                _virtualPosition = _virtualPosition + _netMovement * _movementUnit;
+
+                // Continuous movement
+                //transform.position = transform.position.SetX(transform.position.x + _netMovement * _movementUnit);
             }
+
+            if (Mathf.Abs(_virtualPosition - transform.position.x) >= _movementStep)
+            {
+                transform.position = transform.position.SetX(_virtualPosition);
+            }
+        }
+
+        public void SetPositon(Vector3 pos)
+        {
+            transform.position = pos;
+            _virtualPosition = transform.position.x;
         }
 
         private void ConstructSprite(Vector2Int bounds, Vector2 tileSize)
@@ -81,6 +99,8 @@ namespace LoJam.Logic
             _firewallTile = Resources.Load<FireElement>("Tiles/Firewall");
 
             ConstructSprite(bounds, tileSize);
+
+            _virtualPosition = transform.position.x;
         }
 
         private void Update()
