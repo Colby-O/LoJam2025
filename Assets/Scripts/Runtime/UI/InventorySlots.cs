@@ -24,7 +24,7 @@ namespace LoJam
 
         public void UpdateInventorySlot(Side side, IHoldable holdable)
         {
-            UpdateInventorySlot(side, holdable.GetInventorySprite());
+            UpdateInventorySlot(side, holdable?.GetInventorySprite());
         }
 
         public void UpdateInventorySlot(Side side, Sprite sprite)
