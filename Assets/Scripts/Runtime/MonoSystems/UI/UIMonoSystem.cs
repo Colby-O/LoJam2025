@@ -10,6 +10,26 @@ namespace LoJam
         [SerializeField] private Stack<View> _viewStack = new Stack<View>();
         [SerializeField] private Dictionary<string, View> _views = new Dictionary<string, View>();
 
+        public IReadOnlyDictionary<string, View> GetViews() => _views;
+
+        public void RegisterView(View view)
+        {
+            string key = view.gameObject.name;
+            if (!_views.ContainsKey(key) )
+            {
+                _views[key] = view;
+            }
+        }
+
+        public void UnregisterView(View view)
+        {
+            string key = view.gameObject.name;
+            if (_views.ContainsKey(key))
+            {
+                _views.Remove(key);
+            }
+        }
+
         public void PushView(View view)
         {
             _viewStack.Push(view);

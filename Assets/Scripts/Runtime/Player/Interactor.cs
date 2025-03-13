@@ -12,7 +12,7 @@ namespace LoJam.Player
         [SerializeField] private PlayerInput _input;
         [SerializeField] private Side _side;
 
-        public IInteractable Item
+        public IHoldable Item
         {
             get
             {
@@ -32,10 +32,16 @@ namespace LoJam.Player
                     GarbageCollecter gc = _item.GetTransform().GetComponent<GarbageCollecter>();
                     if (gc != null) gc.Pause = true;
                 }
+
+                bool found = LoJamGameManager.GetMonoSystem<IUIMonoSystem>().GetViews().TryGetValue("HUD", out View view);
+                if (found && view is Hud hud)
+                {
+                    hud.GetInventory().UpdateInventorySlot(GetSide(), _item);
+                }
             }
         }
 
-        private IInteractable _item;
+        private IHoldable _item;
 
         public CraftingStation NearbyCraftingStation { get; set; }
 

@@ -4,7 +4,7 @@ namespace LoJam
 {
     public class Hud : View
     {
-
+        [SerializeField] private InventorySlots _inventorySlots;
         // Use this for initialization
         void Start()
         {
@@ -15,6 +15,11 @@ namespace LoJam
         void Update()
         {
 
+        }
+
+        public InventorySlots GetInventory()
+        {
+            return _inventorySlots;
         }
     }
 }

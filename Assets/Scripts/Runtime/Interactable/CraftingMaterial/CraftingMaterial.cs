@@ -18,7 +18,7 @@ namespace LoJam.Interactable
         None
     }
 
-    public class CraftingMaterial : MonoBehaviour, IInteractable
+    public class CraftingMaterial : MonoBehaviour, IHoldable
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private MaterialType _type;
@@ -38,6 +38,8 @@ namespace LoJam.Interactable
         public MaterialType GetMaterialType() => _type;
 
         public Sprite GetSprite() => _spriteRenderer.sprite;
+
+        public Sprite GetInventorySprite() => _frames[0];
 
         public Vector2Int GetGridSize() => new Vector2Int(1, 1);
 

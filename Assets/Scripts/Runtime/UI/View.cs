@@ -22,5 +22,15 @@ namespace LoJam
 
         public virtual void OnPush() { }
         public virtual void OnPop() { }
+
+        private void Awake()
+        {
+            LoJamGameManager.GetMonoSystem<IUIMonoSystem>().RegisterView(this);
+        }
+
+        private void OnDestroy()
+        {
+            LoJamGameManager.GetMonoSystem<IUIMonoSystem>().UnregisterView(this);
+        }
     }
 }
