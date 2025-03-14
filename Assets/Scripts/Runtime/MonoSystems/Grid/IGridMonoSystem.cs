@@ -30,5 +30,6 @@ namespace LoJam.MonoSystem
         public void AddToGrid(int x, int y, IInteractable obj);
         public bool Spawn<T>(Side side, T obj) where T : MonoBehaviour, IInteractable;
         public void RemoveItemReference(CraftingMaterial cm);
+        public void FillBackground(Camera camera);
     }
 }

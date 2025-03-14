@@ -16,6 +16,7 @@ namespace LoJam.Logic
             float requiredSize = Mathf.Max(targetHeight, (targetWidth / _camera.aspect));
 
             _camera.orthographicSize = requiredSize * _padding;
+            GameManager.GetMonoSystem<IGridMonoSystem>().FillBackground(_camera);
         } 
 
         private void Start()
@@ -34,7 +35,6 @@ namespace LoJam.Logic
 
         private void Update()
         {
-            FitOrthoCamera();
         }
     }
 }
