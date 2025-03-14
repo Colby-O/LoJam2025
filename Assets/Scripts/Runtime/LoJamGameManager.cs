@@ -49,6 +49,7 @@ namespace LoJam
 
 		public static void EndGame(Side side)
 		{
+			Debug.Log($"Wow game is over! Side {side} won.");
 		}
 
 		public void ReassignControllers()
