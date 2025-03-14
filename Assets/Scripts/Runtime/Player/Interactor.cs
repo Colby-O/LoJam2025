@@ -14,9 +14,6 @@ namespace LoJam.Player
         static List<int> _registeredControllers = new();
         public int myId = -1;
 
-        static List<int> _registeredControllers = new();
-        public int myId = -1;
-
         public IHoldable Item
         {
             get
