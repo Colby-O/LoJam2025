@@ -173,8 +173,8 @@ namespace LoJam.Interactable
                 }
             }
 
-            _fireIcon.SetActive(!_hacked && _isFire);
-            _powerupIcon.SetActive(!_hacked && !_isFire);
+            _fireIcon.SetActive(!recipe.CanCraft(recipe.GetProgress()) && !_hacked && _isFire);
+            _powerupIcon.SetActive(!recipe.CanCraft(recipe.GetProgress()) && !_hacked && !_isFire);
 
             if (recipe.CanCraft(recipe.GetProgress())) _spriteRenderer.sprite = _computerSprites[1];
             else _spriteRenderer.sprite = _computerSprites[0];
