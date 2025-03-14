@@ -65,6 +65,14 @@ namespace LoJam.MonoSystem
 
         public bool IsOnFirewall(Vector2 worldPos) => IsOnFirewall(WorldToGrid(worldPos));
 
+        public Side GetFirewallSide(Vector2 worldPos) => GetFirewallSide(WorldToGrid(worldPos));
+
+        public Side GetFirewallSide(Vector2Int gridPos)
+        {
+            Vector2Int firwallPos = WorldToGrid(_firewall.transform.position);
+            return (firwallPos.x > gridPos.x) ? Side.Left : Side.Right;
+        }
+
         public Side GetSide(Vector2Int gridPos)
         {
             return (GetNumberOfTile().x / 2 > gridPos.x) ? Side.Left : Side.Right;
@@ -342,7 +350,7 @@ namespace LoJam.MonoSystem
             _sampler = new PoissonSampler(_tiles.GetLength(1), _tiles.GetLength(0), _spawnerSettings.radius, (_spawnerSettings.seed >= 0) ? _spawnerSettings.seed : null, _spawnerSettings.k);
             foreach (Vector2 pt in _sampler.Sample())
             {
-                if (GetSide(pt) == Side.Left)
+                if (GetFirewallSide(pt) == Side.Left)
                 {
                     _spawnPoints[Side.Left].Add(WorldToGrid(pt));
                 }
@@ -389,6 +397,8 @@ namespace LoJam.MonoSystem
                 Quaternion.identity,
                 transform
             );
+
+            _firewall.OnMove.AddListener(GenerateSpawnPoints);
 
             GenerateMap();
 

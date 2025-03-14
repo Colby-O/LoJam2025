@@ -35,6 +35,13 @@ namespace LoJam.Interactable
 
         [SerializeField] private Recipe _selectedRecipe;
 
+        [SerializeField, ColorUsage(true, true)] Color _wireOffColor;
+        [SerializeField, ColorUsage(true, true)] Color _wireOnColor;
+
+        private bool _isFire;
+        [SerializeField] private GameObject _fireIcon;
+        [SerializeField] private GameObject _powerupIcon;
+
         private int _ptr;
 
         private float _hackDuration;
@@ -56,7 +63,10 @@ namespace LoJam.Interactable
             _hackedTIme = 0;
             _hackDuration = duration;
             _hacked = state;
-            _spriteRenderer.sprite = state ? _computerSprites[0] : _computerSprites[1];
+            //_spriteRenderer.sprite = state ? _computerSprites[0] : _computerSprites[1];
+
+            _fireIcon.SetActive(!state && _isFire);
+            _powerupIcon.SetActive(!state && !_isFire);
         }
 
         public void OnPlayerAdjancent(Interactor player)
@@ -85,9 +95,11 @@ namespace LoJam.Interactable
         public void SwitchRecipe()
         {
             if (_hacked) return;
-
+            _isFire = !_isFire;
             _selectedRecipe = GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(_side)[++_ptr % GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(_side).Count];
             ShowRecipe(_selectedRecipe);
+
+
         }
 
         public void UseCraftingStation(Interactor player)
@@ -143,6 +155,9 @@ namespace LoJam.Interactable
                 List<Sprite> cs = _sprites[recipe.GetMaterials()[i]];
 
                 _itemsUI[i].sprite = cs[0];
+
+                _itemsUI[i].transform.parent.GetComponent<SpriteRenderer>().material.SetColor("_Intensity", _wireOffColor);
+                _itemsUI[i].transform.GetChild(0).GetComponent<SpriteRenderer>().material.SetColor("_Intensity", _wireOffColor);
             }
 
             for (int i = 0; i < _itemsUI.Count; i++)
@@ -153,13 +168,22 @@ namespace LoJam.Interactable
                     List<Sprite> cs = _sprites[recipe.GetMaterials()[index]];
                     copyRecipe[index] = MaterialType.None;
                     _itemsUI[index].sprite = cs[1];
+                    _itemsUI[index].transform.parent.GetComponent<SpriteRenderer>().material.SetColor("_Intensity", _wireOnColor);
+                    _itemsUI[index].transform.GetChild(0).GetComponent<SpriteRenderer>().material.SetColor("_Intensity", _wireOnColor);
                 }
             }
+
+            _fireIcon.SetActive(!_hacked && _isFire);
+            _powerupIcon.SetActive(!_hacked && !_isFire);
+
+            if (recipe.CanCraft(recipe.GetProgress())) _spriteRenderer.sprite = _computerSprites[1];
+            else _spriteRenderer.sprite = _computerSprites[0];
         }
 
         private void Init()
         {
             _selectedRecipe = GameManager.GetMonoSystem<ICraftingMonoSystem>().GetFirewallRecipe(_side);
+            _isFire = true;
             ShowRecipe(_selectedRecipe);
         }
 
