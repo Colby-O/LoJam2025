@@ -12,6 +12,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.Progress;
 
 namespace LoJam.Interactable
 {
@@ -154,6 +155,12 @@ namespace LoJam.Interactable
                     copyRecipe[index] = MaterialType.None;
                     _itemsUI[index].sprite = cs[1];
                 }
+            }
+
+            bool found = LoJamGameManager.GetMonoSystem<IUIMonoSystem>().GetViews().TryGetValue("HUD", out View view);
+            if (found && view is Hud hud)
+            {
+                hud.GetRecipes().SetRecipeText(GetSide(), recipe);
             }
         }
 
