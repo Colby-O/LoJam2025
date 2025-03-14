@@ -562,7 +562,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6502474415202989906, guid: efcde5079c18160458cc5bebf48a30e8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -100
+      value: -124
       objectReference: {fileID: 0}
     - target: {fileID: 6502474415202989906, guid: efcde5079c18160458cc5bebf48a30e8, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -585,8 +585,12 @@ PrefabInstance:
       value: RecipeR
       objectReference: {fileID: 0}
     - target: {fileID: 8718456424118726613, guid: efcde5079c18160458cc5bebf48a30e8, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 8718456424118726613, guid: efcde5079c18160458cc5bebf48a30e8, type: 3}
       propertyPath: m_HorizontalAlignment
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2917,7 +2921,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6502474415202989906, guid: efcde5079c18160458cc5bebf48a30e8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 6502474415202989906, guid: efcde5079c18160458cc5bebf48a30e8, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2953,7 +2957,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8718456424118726613, guid: efcde5079c18160458cc5bebf48a30e8, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4293125119
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 8718456424118726613, guid: efcde5079c18160458cc5bebf48a30e8, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
