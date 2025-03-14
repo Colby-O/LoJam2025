@@ -102,7 +102,7 @@ namespace LoJam.MonoSystem
 
             while (prog < 1)
             {
-                prog += 0.03f / (end - start).magnitude;
+                prog += 0.1f / (end - start).magnitude;
                 mat.transform.position = Vector3.Lerp(start, end, prog);
                 yield return new WaitForEndOfFrame();
             }
