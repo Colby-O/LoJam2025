@@ -7,6 +7,7 @@ using LoJam.Logic;
 public class UIPusher : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _daemonCountText; 
+
     [SerializeField] private List<Image> _arrowImages; 
     [SerializeField] private GameObject _firewallGameObject; 
 
