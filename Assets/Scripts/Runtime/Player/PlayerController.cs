@@ -79,8 +79,11 @@ namespace LoJam
         private void Move(InputAction.CallbackContext e)
         {
             _rawMovement = e.ReadValue<Vector2>();
+        }
 
-            _rb.linearVelocity = _rawMovement * _movementSpeed * _movementMul;
+        private void ProcessMovement()
+        {
+            _rb.linearVelocity = _rawMovement * _movementSpeed * _movementMul * Time.deltaTime;
         }
 
         private void Awake()
@@ -95,6 +98,8 @@ namespace LoJam
 
         private void Update()
         {
+            ProcessMovement();
+
             if (_effectDuration != 0)
             {
                 _effectTime += Time.deltaTime;
