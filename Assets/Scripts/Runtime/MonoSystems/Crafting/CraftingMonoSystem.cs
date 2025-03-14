@@ -4,6 +4,7 @@ using LoJam.Interactable;
 using LoJam.Logic;
 using LoJam.Player;
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -95,6 +96,18 @@ namespace LoJam.MonoSystem
             }
         }
 
+        private IEnumerator ItemAnimation(CraftingMaterial mat,  Vector3 start, Vector3 end)
+        {
+            float prog = 0;
+
+            while (prog < 1)
+            {
+                prog += 0.03f / (end - start).magnitude;
+                mat.transform.position = Vector3.Lerp(start, end, prog);
+                yield return new WaitForEndOfFrame();
+            }
+        }
+
         private void SpawnMaterial(Interactor player, CraftingStation cs)
         {
             GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(1);
@@ -121,24 +134,21 @@ namespace LoJam.MonoSystem
                 return;
             }
 
-            if (player.Item == null)
-            {
-                CraftingMaterial cm = Instantiate(mat, Vector3.zero, Quaternion.identity, transform);
-                cm.transform.localScale = Vector3.one.SetX(GameManager.GetMonoSystem<IGridMonoSystem>().GetTileSize().x).SetY(GameManager.GetMonoSystem<IGridMonoSystem>().GetTileSize().y);
-                cm.gameObject.SetActive(false);
-                player.Item = cm;
-            }
-            else
-            {
-                while (!GameManager.GetMonoSystem<IGridMonoSystem>().Spawn(player.GetSide(), mat))
+            CraftingMaterial instance = null;
+             while (!GameManager.GetMonoSystem<IGridMonoSystem>().Spawn(player.GetSide(), mat, out instance))
+             {
+                if (++tries > maxTries)
                 {
-                    if (++tries > maxTries)
-                    {
-                        Debug.LogWarning($"Failed to spawn material. no vaild spawn location found on side {player.GetSide()}.");
-                        break;
-                    }
+                    Debug.LogWarning($"Failed to spawn material. no vaild spawn location found on side {player.GetSide()}.");
+                    break;
                 }
-            }
+             }
+
+            if (instance == null) return;
+
+            Vector3 start = cs.transform.position;
+            Vector3 end = instance.transform.position;
+            StartCoroutine(ItemAnimation(instance, start, end));
         }
 
         private void Start()

@@ -36,9 +36,15 @@ namespace LoJam.Interactable
 
         [SerializeField] private List<Sprite> _computerSprites;
 
+        [SerializeField] protected SpriteRenderer _center;
+        [SerializeField] private List<Sprite> _centerSprites;
+
+
         [SerializeField] private SerializableDictionary<MaterialType, List<Sprite>> _sprites;
 
         [SerializeField] float _craftingAnimSpeed = 1f;
+
+        [SerializeField] Vector2Int _bounds = new Vector2Int(3, 4);
 
         [SerializeField] Side _side;
 
@@ -52,6 +58,7 @@ namespace LoJam.Interactable
         private bool _isFire;
         [SerializeField] private GameObject _fireIcon;
         [SerializeField] private GameObject _powerupIcon;
+        [SerializeField] private List<GameObject> _icon;
 
         private int _ptr;
 
@@ -69,7 +76,7 @@ namespace LoJam.Interactable
 
         public Sprite GetSprite() => _spriteRenderer.sprite;
 
-        public Vector2Int GetGridSize() => new Vector2Int(3, 4);
+        public Vector2Int GetGridSize() => _bounds;
 
         public Side GetSide() => _side;
 
@@ -181,29 +188,83 @@ namespace LoJam.Interactable
                 _itemsUI[i].transform.GetChild(0).GetComponent<SpriteRenderer>().material.SetColor("_Intensity", _wireOffColor);
             }
 
-            for (int i = 0; i < _itemsUI.Count; i++)
+            if (recipe.GetMaterials().Count == 1)
             {
-                if (i < recipe.GetProgress().Count && copyRecipe.Contains(recipe.GetProgress()[i].GetMaterialType()))
+                _itemsUI[0].gameObject.SetActive(false);
+                _itemsUI[1].gameObject.SetActive(false);
+                _itemsUI[2].gameObject.SetActive(true);
+
+                _itemsUI[2].sprite = _sprites[recipe.GetMaterials()[0]][(recipe.GetProgress().Count == 0) ? 0 : 1];
+
+                _itemsUI[2].transform.parent.GetComponent<SpriteRenderer>().material.SetColor("_Intensity", _wireOffColor);
+                _itemsUI[2].transform.GetChild(0).GetComponent<SpriteRenderer>().material.SetColor("_Intensity", _wireOffColor);
+            }
+            else
+            {
+                for (int i = 0; i < _itemsUI.Count; i++)
                 {
-                    int index = copyRecipe.IndexOf(recipe.GetProgress()[i].GetMaterialType());
-                    List<Sprite> cs = _sprites[recipe.GetMaterials()[index]];
-                    copyRecipe[index] = MaterialType.None;
-                    _itemsUI[index].sprite = cs[1];
-                    _itemsUI[index].transform.parent.GetComponent<SpriteRenderer>().material.SetColor("_Intensity", _wireOnColor);
-                    _itemsUI[index].transform.GetChild(0).GetComponent<SpriteRenderer>().material.SetColor("_Intensity", _wireOnColor);
+                    if (i < recipe.GetProgress().Count && copyRecipe.Contains(recipe.GetProgress()[i].GetMaterialType()))
+                    {
+                        int index = copyRecipe.IndexOf(recipe.GetProgress()[i].GetMaterialType());
+                        List<Sprite> cs = _sprites[recipe.GetMaterials()[index]];
+                        copyRecipe[index] = MaterialType.None;
+                        _itemsUI[index].sprite = cs[1];
+                        _itemsUI[index].transform.parent.GetComponent<SpriteRenderer>().material.SetColor("_Intensity", _wireOnColor);
+                        _itemsUI[index].transform.GetChild(0).GetComponent<SpriteRenderer>().material.SetColor("_Intensity", _wireOnColor);
+                    }
                 }
             }
 
-            _fireIcon.SetActive(!recipe.CanCraft(recipe.GetProgress()) && !_hacked && _isFire);
-            _powerupIcon.SetActive(!recipe.CanCraft(recipe.GetProgress()) && !_hacked && !_isFire);
+            if (_stationType == StationType.Main)
+            {
+                _fireIcon.SetActive(!recipe.CanCraft(recipe.GetProgress()) && !_hacked && _isFire);
+                _powerupIcon.SetActive(!recipe.CanCraft(recipe.GetProgress()) && !_hacked && !_isFire);
+            }
+            else if (_stationType == StationType.Circle)
+            {
+                _icon[0].SetActive(!_hacked);
+            }
+            else if (_stationType == StationType.Triangle) 
+            {
+                _icon[1].SetActive(!recipe.CanCraft(recipe.GetProgress()) && !_hacked);
+            }
+            else if (_stationType == StationType.Square)
+            {
+                _icon[2].SetActive(!recipe.CanCraft(recipe.GetProgress()) && !_hacked);
+            }
+            else if (_stationType == StationType.Cross)
+            {
+                _icon[3].SetActive(!recipe.CanCraft(recipe.GetProgress()) && !_hacked);
+            }
 
-            if (recipe.CanCraft(recipe.GetProgress())) _spriteRenderer.sprite = _computerSprites[1];
+            if (recipe.CanCraft(recipe.GetProgress()) && recipe.GetMaterials().Count > 0) _spriteRenderer.sprite = _computerSprites[1];
             else _spriteRenderer.sprite = _computerSprites[0];
         }
 
         private void Init()
         {
-            _selectedRecipe = GameManager.GetMonoSystem<ICraftingMonoSystem>().GetFirewallRecipe(_side);
+            if (_stationType == StationType.Main)
+            {
+                _center.sprite = _centerSprites[0];
+            }
+            else if (_stationType == StationType.Circle)
+            {
+                _center.sprite = _centerSprites[1];
+            }
+            else if (_stationType == StationType.Triangle)
+            {
+                _center.sprite = _centerSprites[2];
+            }
+            else if (_stationType == StationType.Square)
+            {
+                _center.sprite = _centerSprites[3];
+            }
+            else if (_stationType == StationType.Cross)
+            {
+                _center.sprite = _centerSprites[4];
+            }
+
+            _selectedRecipe = GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(_side, _stationType)[0];
             _isFire = true;
             ShowRecipe(_selectedRecipe);
         }
@@ -213,6 +274,10 @@ namespace LoJam.Interactable
             GameManager.GetMonoSystem<ICraftingMonoSystem>().OnInit.AddListener(Init);
             _lighting.SetActive(false);
             _spriteRenderer.sprite = _computerSprites[1];
+
+            _fireIcon.SetActive(false);
+            _powerupIcon.SetActive(false);
+            foreach (GameObject icon in _icon) icon.SetActive(false);
         }
 
         private void Update()

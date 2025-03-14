@@ -31,6 +31,7 @@ namespace LoJam.MonoSystem
         public Vector3 GetFirewallPos();
         public void AddToGrid(int x, int y, IInteractable obj);
         public bool Spawn<T>(Side side, T obj) where T : MonoBehaviour, IInteractable;
+        public bool Spawn<T>(Side side, T obj, out T cm) where T : MonoBehaviour, IInteractable;
         public void RemoveItemReference(CraftingMaterial cm);
     }
 }

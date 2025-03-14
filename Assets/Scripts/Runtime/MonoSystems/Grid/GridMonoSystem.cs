@@ -292,6 +292,8 @@ namespace LoJam.MonoSystem
                 _tiles[gridPT.y, gridPT.x].IsEdge()           ||
                 _tiles[gridPT.y, gridPT.x].HasInteractable()  ||
                 IsNearFirewall(gridPT)                        ||
+                gridPT.x < 5                                  ||
+                gridPT.x > GetNumberOfTile().x - 5            ||
                 LoJamGameManager.players.Any(player => WorldToGrid(player.transform.position) == gridPT)
             ) return false;
 
@@ -311,34 +313,35 @@ namespace LoJam.MonoSystem
             objectInstance.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
 
             cm = objectInstance;
-
+            Debug.Log(cm);
             return true;
         }
 
         private void Tick()
         {
-            _lastTick = Time.time;
+            // Random Spawning Code
+            //_lastTick = Time.time;
 
-            int maxTries = 100;
-            int tries = 0;
+            //int maxTries = 100;
+            //int tries = 0;
 
-            Side side = (Side)(_tickID % 2);
+            //Side side = (Side)(_tickID % 2);
 
-            CraftingMaterial cm = null;
-            while (
-                !Spawn(
-                side,
-                _spawnerSettings.FetchMaterial(_itemsReference[side]),
-                out cm
-                )
-            )
-            {
-                if (maxTries < ++tries) break;
-            }
+            //CraftingMaterial cm = null;
+            //while (
+            //    !Spawn(
+            //    side,
+            //    _spawnerSettings.FetchMaterial(_itemsReference[side]),
+            //    out cm
+            //    )
+            //)
+            //{
+            //    if (maxTries < ++tries) break;
+            //}
 
-            if (cm != null) _itemsReference[side].Add(cm);
+            //if (cm != null) _itemsReference[side].Add(cm);
 
-            _tickID++;
+            //_tickID++;
         }
 
         private void GenerateSpawnPoints()
@@ -379,6 +382,22 @@ namespace LoJam.MonoSystem
             LoJamGameManager.craftingStations.Add(cs);
         }
 
+        private void SpawnDisp(int x, int y, Side side, string name)
+        {
+            CraftingStation cs = Instantiate(
+            Resources.Load<CraftingStation>((side == Side.Left) ? $"Disp/{name}L" : $"Disp/{name}R"),
+            new Vector3(
+                GridToWorld(new Vector2Int(x, y)).x,
+                GridToWorld(new Vector2Int(x, y)).y,
+                0
+            ),
+           Quaternion.Euler(0f, 0f, (side == Side.Left) ? 90f : -90f),
+            transform
+            );
+            cs.transform.localScale = Vector3.one.SetX(_tileSize.x - 0.15f).SetY(_tileSize.y - 0.15f);
+            AddToGrid(x, y, cs);
+        }
+
         private void Awake()
         {
             _playAreaTile = Resources.Load<Tile>("Tiles/PlayArea");
@@ -403,7 +422,18 @@ namespace LoJam.MonoSystem
             GenerateMap();
 
             SpawnCraftingStations(3, GetNumberOfTile().y / 2, Side.Left);
+
+            SpawnDisp(3, 6 * GetNumberOfTile().y / 7, Side.Left, "Circle");
+            SpawnDisp(3, 5 * GetNumberOfTile().y / 7, Side.Left, "Triangle");
+            SpawnDisp(3, 2 * GetNumberOfTile().y / 7, Side.Left, "Square");
+            SpawnDisp(3, GetNumberOfTile().y / 7, Side.Left, "Cross");
+
             SpawnCraftingStations(GetNumberOfTile().x - 3, GetNumberOfTile().y / 2, Side.Right);
+
+            SpawnDisp(GetNumberOfTile().x - 3, 6 * GetNumberOfTile().y / 7, Side.Right, "Circle");
+            SpawnDisp(GetNumberOfTile().x - 3, 5 * GetNumberOfTile().y / 7, Side.Right, "Triangle");
+            SpawnDisp(GetNumberOfTile().x - 3, 2 * GetNumberOfTile().y / 7, Side.Right, "Square");
+            SpawnDisp(GetNumberOfTile().x - 3, GetNumberOfTile().y / 7, Side.Right, "Cross");
 
             GenerateSpawnPoints();
         }
