@@ -2,7 +2,7 @@ using LoJam.Interactable;
 using LoJam.Logic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.Rendering.DebugUI;
+using System.Collections.Generic;
 
 namespace LoJam.Player
 {
@@ -10,6 +10,12 @@ namespace LoJam.Player
     {
         [SerializeField] private PlayerInput _input;
         [SerializeField] private Side _side;
+
+        static List<int> _registeredControllers = new();
+        public int myId = -1;
+
+        static List<int> _registeredControllers = new();
+        public int myId = -1;
 
         public IHoldable Item
         {
@@ -42,6 +48,8 @@ namespace LoJam.Player
 
         private IHoldable _item;
 
+        private CraftingStation _lastNearbyCraftingStation;
+
         public CraftingStation NearbyCraftingStation { get; set; }
 
         public Side GetSide() => _side;
@@ -50,10 +58,37 @@ namespace LoJam.Player
 
         public bool HasCraftingMaterial() => HasAnyItem() && Item is CraftingMaterial;
 
+        public void RegisterController(int id)
+        {
+            if (_registeredControllers.Contains(id)) return;
+            _registeredControllers.Add(id);
+            myId = id;
+        }
+
+        public static void ResetRegisteredControllerList()
+        {
+            _registeredControllers.Clear();
+        }
+
         private void NextReecipe(InputAction.CallbackContext e)
         {
             if (NearbyCraftingStation == null) return;
-            NearbyCraftingStation.SwitchRecipe();
+            InputDevice device = e.control.device;
+            if (device != null)
+            {
+                if (device is Gamepad)
+                {
+                    if (this.myId == -1) RegisterController(device.deviceId);
+                    if (device.deviceId == this.myId)
+                    {
+                        NearbyCraftingStation.SwitchRecipe();
+                    }
+                }
+                else if (device is Keyboard)
+                {
+                    NearbyCraftingStation.SwitchRecipe();
+                }
+            }
         }
 
         private void Awake()
@@ -68,6 +103,12 @@ namespace LoJam.Player
             {
                 _input.actions["NextRecipe2"].performed += NextReecipe;
             }
+        }
+
+        private void LateUpdate()
+        {
+            if (NearbyCraftingStation != null && _lastNearbyCraftingStation != NearbyCraftingStation) NearbyCraftingStation.UseCraftingStation(this);
+            _lastNearbyCraftingStation = NearbyCraftingStation;
         }
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c376ee315d80c8449a6a817df7a9c5df, type: 3}
   m_Name: DefaultSpawnerSettings
   m_EditorClassIdentifier: 
-  tickRate: 2
+  tickRate: 1
   seed: -1
   radius: 1
   k: 30

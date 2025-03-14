@@ -47,7 +47,7 @@ namespace LoJam
         private void Awake()
         {
             _life = 0;
-            _lifeSpan += Random.Range(-10, 11);
+            _lifeSpan += Random.Range(-2, 3);
             Pause = false;
         }
 

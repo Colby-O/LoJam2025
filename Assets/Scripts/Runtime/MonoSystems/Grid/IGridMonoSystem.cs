@@ -26,9 +26,12 @@ namespace LoJam.MonoSystem
         public bool IsNearFirewall(Vector2Int gridPos);
         public bool IsOnFirewall(Vector2 worldPos);
         public bool IsOnFirewall(Vector2Int gridPos);
+        public Side GetFirewallSide(Vector2 worldPos);
+        public Side GetFirewallSide(Vector2Int gridPos);
         public Vector3 GetFirewallPos();
         public void AddToGrid(int x, int y, IInteractable obj);
         public bool Spawn<T>(Side side, T obj) where T : MonoBehaviour, IInteractable;
+        public bool Spawn<T>(Side side, T obj, out T cm) where T : MonoBehaviour, IInteractable;
         public void RemoveItemReference(CraftingMaterial cm);
         public void FillBackground(Camera camera);
     }
