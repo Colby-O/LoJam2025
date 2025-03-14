@@ -15,6 +15,15 @@ using UnityEngine.InputSystem;
 
 namespace LoJam.Interactable
 {
+    public enum StationType
+    {
+        Main,
+        Circle,
+        Triangle,
+        Square,
+        Cross
+    }
+
     public class CraftingStation : MonoBehaviour, IInteractable
     {
         [SerializeField] protected SpriteRenderer _spriteRenderer;
@@ -33,6 +42,8 @@ namespace LoJam.Interactable
 
         [SerializeField] Side _side;
 
+        [SerializeField] StationType _stationType;
+
         [SerializeField] private Recipe _selectedRecipe;
 
         [SerializeField, ColorUsage(true, true)] Color _wireOffColor;
@@ -50,11 +61,15 @@ namespace LoJam.Interactable
 
         public List<Tile> Tiles { get; set; }
 
+        public void SetStationType(StationType t) => _stationType = t;
+
+        public StationType GetStationType() => _stationType;
+
         public Transform GetTransform() => transform;
 
         public Sprite GetSprite() => _spriteRenderer.sprite;
 
-        public Vector2Int GetGridSize() => new Vector2Int(4, 5);
+        public Vector2Int GetGridSize() => new Vector2Int(3, 4);
 
         public Side GetSide() => _side;
 
@@ -63,7 +78,6 @@ namespace LoJam.Interactable
             _hackedTIme = 0;
             _hackDuration = duration;
             _hacked = state;
-            //_spriteRenderer.sprite = state ? _computerSprites[0] : _computerSprites[1];
 
             _fireIcon.SetActive(!state && _isFire);
             _powerupIcon.SetActive(!state && !_isFire);
@@ -72,7 +86,7 @@ namespace LoJam.Interactable
         public void OnPlayerAdjancent(Interactor player)
         {
             player.NearbyCraftingStation = this;
-            UseCraftingStation(player);
+            //UseCraftingStation(player);
         }
 
         public void OnPlayerEnter(Interactor player) { }
@@ -86,7 +100,7 @@ namespace LoJam.Interactable
 
         public void CompleteRecipe(Interactor player)
         {
-            if (_selectedRecipe.Craft(player)) 
+            if (_selectedRecipe.Craft(player, this)) 
             {
                 StartCoroutine(CraftingAnimation());
             }
@@ -96,7 +110,7 @@ namespace LoJam.Interactable
         {
             if (_hacked) return;
             _isFire = !_isFire;
-            _selectedRecipe = GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(_side)[++_ptr % GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(_side).Count];
+            _selectedRecipe = GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(_side, _stationType)[++_ptr % GameManager.GetMonoSystem<ICraftingMonoSystem>().GetAllRecipes(_side, _stationType).Count];
             ShowRecipe(_selectedRecipe);
 
 
@@ -152,9 +166,16 @@ namespace LoJam.Interactable
 
             for (int i = 0; i < _itemsUI.Count; i++)
             {
-                List<Sprite> cs = _sprites[recipe.GetMaterials()[i]];
-
-                _itemsUI[i].sprite = cs[0];
+                if (recipe.GetMaterials().Count <= i)
+                {
+                    _itemsUI[i].gameObject.SetActive(false);
+                }
+                else
+                {
+                    _itemsUI[i].gameObject.SetActive(true);
+                    List<Sprite> cs = _sprites[recipe.GetMaterials()[i]];
+                    _itemsUI[i].sprite = cs[0];
+                }
 
                 _itemsUI[i].transform.parent.GetComponent<SpriteRenderer>().material.SetColor("_Intensity", _wireOffColor);
                 _itemsUI[i].transform.GetChild(0).GetComponent<SpriteRenderer>().material.SetColor("_Intensity", _wireOffColor);

@@ -343,6 +343,7 @@ MonoBehaviour:
     keyCollision: 0
   _craftingAnimSpeed: 1
   _side: 0
+  _stationType: 1
   _selectedRecipe:
     _progress: []
   _wireOffColor: {r: 0.7427801, g: 0.7490197, b: 0.36391053, a: 1}

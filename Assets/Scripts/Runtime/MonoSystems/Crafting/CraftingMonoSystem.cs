@@ -17,9 +17,15 @@ namespace LoJam.MonoSystem
         private const int RECIPE_SIZE = 3;
 
         [SerializeField] private List<PowerupBase> _powerups;
+        [SerializeField] private List<CraftingMaterial> _materialPickups;
 
         private List<Recipe> _firewallRecipe;
         private List<Recipe> _powerupRecipe;
+
+        private List<Recipe> _circleRecipe;
+        private List<Recipe> _triangleRecipe;
+        private List<Recipe> _squareRecipe;
+        private List<Recipe> _crossRecipe;
 
         public UnityEvent OnInit
         {
@@ -40,7 +46,19 @@ namespace LoJam.MonoSystem
 
         private UnityEvent _0nInit;
 
-        public List<Recipe> GetAllRecipes(Side side) => new List<Recipe> { _firewallRecipe[(int)side], _powerupRecipe[(int)side] };
+        public List<Recipe> GetAllRecipes(Side side, StationType type) {
+
+            if (type == StationType.Main) return new List<Recipe> { _firewallRecipe[(int)side], _powerupRecipe[(int)side] };
+            else if (type == StationType.Circle) return new List<Recipe> { _circleRecipe[(int)side] };
+            else if (type == StationType.Triangle) return new List<Recipe> { _triangleRecipe[(int)side] };
+            else if (type == StationType.Square) return new List<Recipe> { _squareRecipe[(int)side] };
+            else if (type == StationType.Cross) return new List<Recipe> { _crossRecipe[(int)side] };
+            else
+            {
+                Debug.Log("Something is really wrong if this ever gets called. I'm in the CraftingMonoSystem.");
+                return null;
+            }
+        }
 
         public Recipe GetFirewallRecipe(Side side) => _firewallRecipe[(int)side];
 
@@ -49,12 +67,12 @@ namespace LoJam.MonoSystem
             _powerupRecipe[(int)side].Refresh();
         }
 
-        private void AddPushingStrength(Interactor player)
+        private void AddPushingStrength(Interactor player, CraftingStation _)
         {
             GameManager.GetMonoSystem<IGridMonoSystem>().AddFirewallDaemon(player.GetSide());
         }
 
-        private void SpawnPowerup(Interactor player)
+        private void SpawnPowerup(Interactor player, CraftingStation _)
         {
             GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(1);
 
@@ -77,12 +95,64 @@ namespace LoJam.MonoSystem
             }
         }
 
+        private void SpawnMaterial(Interactor player, CraftingStation cs)
+        {
+            GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(1);
+
+            if (_materialPickups == null || _materialPickups.Count == 0)
+            {
+                Debug.LogWarning("Trying to smaterial but no prefabs are set.");
+                return;
+            }
+
+            int maxTries = 100;
+            int tries = 0;
+
+            CraftingMaterial mat = null;
+
+            if (cs.GetStationType() == StationType.Circle) mat = _materialPickups[0];
+            else if (cs.GetStationType() == StationType.Triangle) mat = _materialPickups[1];
+            else if (cs.GetStationType() == StationType.Square) mat = _materialPickups[2];
+            else if (cs.GetStationType() == StationType.Cross) mat = _materialPickups[3];
+
+            if (mat == null) 
+            {
+                Debug.LogWarning("I Guess the main craftng station os calling this for some reason.");
+                return;
+            }
+
+            if (player.Item == null)
+            {
+                CraftingMaterial cm = Instantiate(mat, Vector3.zero, Quaternion.identity, transform);
+                cm.transform.localScale = Vector3.one.SetX(GameManager.GetMonoSystem<IGridMonoSystem>().GetTileSize().x).SetY(GameManager.GetMonoSystem<IGridMonoSystem>().GetTileSize().y);
+                cm.gameObject.SetActive(false);
+                player.Item = cm;
+            }
+            else
+            {
+                while (!GameManager.GetMonoSystem<IGridMonoSystem>().Spawn(player.GetSide(), mat))
+                {
+                    if (++tries > maxTries)
+                    {
+                        Debug.LogWarning($"Failed to spawn material. no vaild spawn location found on side {player.GetSide()}.");
+                        break;
+                    }
+                }
+            }
+        }
+
         private void Start()
         {
             Recipe firewallRecipe = new Recipe(RECIPE_SIZE, true, "Firewall");
 
             _powerupRecipe = new List<Recipe>();
             _firewallRecipe = new List<Recipe>();
+
+            _circleRecipe = new List<Recipe>();
+            _triangleRecipe = new List<Recipe>();
+            _squareRecipe = new List<Recipe>();
+            _crossRecipe = new List<Recipe>();
+
             for (int i = 0; i < LoJamGameManager.players.Count; i++)
             {
                 Recipe r1 = new Recipe(firewallRecipe);
@@ -92,6 +162,22 @@ namespace LoJam.MonoSystem
                 Recipe r2 = new Recipe(RECIPE_SIZE, false, "Powerup");
                 r2.OnCraft.AddListener(SpawnPowerup);
                 _powerupRecipe.Add(r2);
+
+                Recipe r3 = new Recipe(new List<MaterialType>() { }, true, "Cricle");
+                r3.OnCraft.AddListener(SpawnMaterial);
+                _circleRecipe.Add(r3);
+
+                Recipe r4 = new Recipe(new List<MaterialType>() { MaterialType.Circle }, true, "Cricle");
+                r4.OnCraft.AddListener(SpawnMaterial);
+                _triangleRecipe.Add(r4);
+
+                Recipe r5 = new Recipe(new List<MaterialType>() { MaterialType.Triangle, MaterialType.Triangle }, true, "Cricle");
+                r5.OnCraft.AddListener(SpawnMaterial);
+                _squareRecipe.Add(r5);
+
+                Recipe r6 = new Recipe(new List<MaterialType>() { MaterialType.Square, MaterialType.Square }, true, "Cricle");
+                r6.OnCraft.AddListener(SpawnMaterial);
+                _crossRecipe.Add(r6);
             }
 
             OnInit?.Invoke();
