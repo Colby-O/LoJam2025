@@ -1,5 +1,42 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6537441236121342782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d59615b8dc0df204e8d23c81e9d6678d, type: 3}
+  m_Name: CRTRendererFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  _shader: {fileID: 4800000, guid: 137b72128fa80b34e8b657206037e31f, type: 3}
+  _injectionPoint: 600
+  _screenResolution: {x: 512, y: 512}
+  _screenBend: 6
+  _screenRoundness: 0.141
+  _vignetteOpacity: 0.488
+  _scanLineVerticalOpacity: 0
+  _scanLineHoriztionalOpacity: 0.023
+  _scanLineVerticalSpeed: 0
+  _scanLineHoriztionalSpeed: 0.041
+  _scanLineStrength: 0.094
+  _noiseScale: 1
+  _noiseSpeed: 0.5
+  _noiseFade: 0.441
+  _chromaticOffset: 0
+  _chromaticOffsetSpeed: 0
+  _brightness: 0.51
+  _contrast: 0.65
+  _saturation: 0.74
+  _hue: 0
+  _redShift: 0
+  _blueShift: 0
+  _greenShift: 0
+  _isMonochrome: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24,8 +61,9 @@ MonoBehaviour:
     probeSamplingDebugMesh: {fileID: 0}
     probeSamplingDebugTexture: {fileID: 0}
     probeVolumeBlendStatesCS: {fileID: 0}
-  m_RendererFeatures: []
-  m_RendererFeatureMap: 
+  m_RendererFeatures:
+  - {fileID: -6537441236121342782}
+  m_RendererFeatureMap: c22cff24d55746a5
   m_UseNativeRenderPass: 0
   m_TransparencySortMode: 0
   m_TransparencySortAxis: {x: 0, y: 1, z: 0}

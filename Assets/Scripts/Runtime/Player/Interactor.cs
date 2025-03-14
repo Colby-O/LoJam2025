@@ -36,6 +36,8 @@ namespace LoJam.Player
 
         private IInteractable _item;
 
+        private CraftingStation _lastNearbyCraftingStation;
+
         public CraftingStation NearbyCraftingStation { get; set; }
 
         public Side GetSide() => _side;
@@ -62,6 +64,12 @@ namespace LoJam.Player
             {
                 _input.actions["NextRecipe2"].performed += NextReecipe;
             }
+        }
+
+        private void LateUpdate()
+        {
+            if (NearbyCraftingStation != null && _lastNearbyCraftingStation != NearbyCraftingStation) NearbyCraftingStation.UseCraftingStation(this);
+            _lastNearbyCraftingStation = NearbyCraftingStation;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace LoJam.Crafting
     [System.Serializable]
     public class Recipe
     {
-        public UnityEvent<Interactor> OnCraft { get; set; }
+        public UnityEvent<Interactor, CraftingStation> OnCraft { get; set; }
 
         public string Label { get; set; }
 
@@ -32,7 +32,7 @@ namespace LoJam.Crafting
 
             _progress = new List<CraftingMaterial>();
 
-            OnCraft = new UnityEvent<Interactor>();
+            OnCraft = new UnityEvent<Interactor, CraftingStation>();
 
             GnerateNewRecipe(_size);
 
@@ -48,7 +48,23 @@ namespace LoJam.Crafting
             _recipe = new List<MaterialType>(recipe.GetMaterials());
 
             _progress = new List<CraftingMaterial>();
-            OnCraft = new UnityEvent<Interactor>();
+            OnCraft = new UnityEvent<Interactor, CraftingStation>();
+            OnCraft.AddListener(Refresh);
+        }
+
+        public Recipe(List<MaterialType> recipe, bool isStatic = false, string label = "")
+        {
+            _isStatic = isStatic;
+            _size = recipe.Count;
+
+            Label = label;
+
+            _progress = new List<CraftingMaterial>();
+
+            OnCraft = new UnityEvent<Interactor, CraftingStation>();
+
+            _recipe = new List<MaterialType>(recipe);
+
             OnCraft.AddListener(Refresh);
         }
 
@@ -68,17 +84,17 @@ namespace LoJam.Crafting
             return _progress;
         }
 
-        public bool Craft(Interactor player)
+        public bool Craft(Interactor player, CraftingStation station)
         {
             if (CanCraft(_progress))
             {
-                OnCraft.Invoke(player);
+                OnCraft.Invoke(player, station);
                 return true;
             }
             return false;
         }
 
-        public void Refresh(Interactor _ = null)
+        public void Refresh(Interactor _ = null, CraftingStation __ = null)
         {
             if (!_isStatic)
             {

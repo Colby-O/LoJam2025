@@ -4,6 +4,7 @@ using LoJam.Player;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace LoJam.Logic
 {
@@ -37,6 +38,8 @@ namespace LoJam.Logic
         private bool _isOpen;
 
        [SerializeField]  private float _virtualPosition;
+
+        public UnityEvent OnMove = new UnityEvent();
 
         public void AddDaemon(Side side)
         {
@@ -106,6 +109,7 @@ namespace LoJam.Logic
             {
                 GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(3);
                 transform.position = transform.position.SetX(_virtualPosition);
+                OnMove.Invoke();
             }
         }
 
@@ -161,6 +165,11 @@ namespace LoJam.Logic
                 _openTime += Time.deltaTime;
 
                 if (_openTime > _openDuration) Close();
+            }
+
+            if (Mathf.Abs(GameManager.GetMonoSystem<IGridMonoSystem>().WorldToGrid(_firewallTile.transform.position).x - GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x) > 2.5)
+            {
+                LoJamGameManager.EndGame(GameManager.GetMonoSystem<IGridMonoSystem>().GetSide(transform.position));
             }
         }
 

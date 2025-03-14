@@ -1,5 +1,6 @@
 using LoJam.Core;
 using LoJam.Interactable;
+using LoJam.Logic;
 using LoJam.MonoSystem;
 using LoJam.Player;
 using System.Collections.Generic;
@@ -44,6 +45,11 @@ namespace LoJam
 
             // Ensure all MonoSystems call Awake at the same time
             _msHolder.SetActive(true);
+        }
+
+        public static void EndGame(Side side)
+        {
+            Debug.Log($"Side: {side} won!");
         }
 
         private void Awake()
