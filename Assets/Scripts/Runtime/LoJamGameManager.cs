@@ -140,7 +140,8 @@ namespace LoJam
             }
 			else if (time < 30f && !_playedSickMusic)
 			{
-                GameManager.GetMonoSystem<IAudioMonoSystem>().PlayMusic(2);
+				// I don't why this is causing Unity to have a stroke, it seems to only be an issue here not other calls to play music..... 
+                _audioSystem.PlayMusic(2);
 				_playedSickMusic = true;
             }
         }
