@@ -28,6 +28,8 @@ namespace LoJam
 		public static List<Interactor> players;
 		public static List<CraftingStation> craftingStations;
 
+		private bool _playedSickMusic = false;
+
 		public static string GetFormattedTime() 
 		{
 			if (time < 0) time = 0;
@@ -86,10 +88,14 @@ namespace LoJam
 		public static void RestartGame()
 		{
 			isPaused = true;
-			time = 5f * 60f;
+            time = 5f * 60f;
 
             LoJamGameManager.isPaused = true;
             GameManager.GetMonoSystem<IAudioMonoSystem>().PlayMusic(0);
+
+			(_instance as LoJamGameManager)._playedSickMusic = false;
+            (_instance as LoJamGameManager)._gridSystem.ResetGrid();
+            (_instance as LoJamGameManager)._craftingSystem.Restart();
 
             CraftingStation[] css = FindObjectsByType<CraftingStation>(FindObjectsSortMode.None);
 			foreach (CraftingStation cs in css) cs.Hack(false, 0);
@@ -99,10 +105,6 @@ namespace LoJam
 
             foreach (UIPusher u in up) u.UpdateDameonText();
 			foreach (InventorySlot s in islots) s.SetItemSprite(null);
-
-            (_instance as LoJamGameManager)._gridSystem.ResetGrid();
-            (_instance as LoJamGameManager)._craftingSystem.Restart();
-
 
             LoJamGameManager.GetMonoSystem<IUIMonoSystem>().PopView();
             LoJamGameManager.GetMonoSystem<IUIMonoSystem>().PopView();
@@ -114,6 +116,7 @@ namespace LoJam
 		{
 			craftingStations = new List<CraftingStation>();
 			LoJamGameManager.isPaused = true;
+			_playedSickMusic = false;
         }
 
 		private void Start()
@@ -135,9 +138,10 @@ namespace LoJam
             {
 				EndGame(GameManager.GetMonoSystem<IGridMonoSystem>().GetSide(GameManager.GetMonoSystem<IGridMonoSystem>().GetFirewallController().transform.position).Opposide());
             }
-			else if (time < 30f)
+			else if (time < 30f && !_playedSickMusic)
 			{
                 GameManager.GetMonoSystem<IAudioMonoSystem>().PlayMusic(2);
+				_playedSickMusic = true;
             }
         }
 	}

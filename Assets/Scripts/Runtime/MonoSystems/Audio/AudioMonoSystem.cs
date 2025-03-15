@@ -27,7 +27,7 @@ namespace LoJam.MonoSystem
 
         public void PlayMusic(int id)
         {
-            if (_musicSrc.clip == _music[id]) return;
+            //if (_musicSrc.clip == _music[id]) return;
             _musicSrc.Stop();
             _musicSrc.clip = _music[id];
             _musicSrc.Play();
