@@ -39,6 +39,7 @@ namespace LoJam
 
         private void OnStartClicked()
         {
+            GameManager.GetMonoSystem<IAudioMonoSystem>().PlayMusic(1);
             LoJamGameManager.GetMonoSystem<IUIMonoSystem>().PopView();
             Hud hud = FindFirstObjectByType<Hud>(FindObjectsInactive.Include);
             LoJamGameManager.GetMonoSystem<IUIMonoSystem>().PushView(hud);

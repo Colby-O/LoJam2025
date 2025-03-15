@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace LoJam
@@ -12,11 +13,16 @@ namespace LoJam
         private Vector2 hiddenPosition = new Vector2(0, -Screen.height); // Offscreen, below
         private Vector2 visiblePosition = Vector2.zero; // On-screen, centered
 
-        void Start()
+        private void Start()
         {
             Hide();
             _settingsPanel.anchoredPosition = hiddenPosition;
             _backButton.onClick.AddListener(OnBackClicked);
+        }
+
+        private void Update()
+        {
+            if (Keyboard.current.escapeKey.wasPressedThisFrame) OnBackClicked();
         }
 
         private void OnBackClicked()

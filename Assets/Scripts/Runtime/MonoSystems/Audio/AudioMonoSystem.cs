@@ -11,6 +11,7 @@ namespace LoJam.MonoSystem
         [SerializeField, Range(0f, 1f)] private float _volume;
 
         [SerializeField] private List<AudioClip> _sfx;
+        [SerializeField] private List<AudioClip> _music;
 
         private float _sfxBaseline;
         private float _musicBaseline;
@@ -22,6 +23,13 @@ namespace LoJam.MonoSystem
             _volume = volume;
             _musicSrc.volume = _musicBaseline * _volume;
             _sfxSrc.volume = _sfxBaseline * _volume;
+        }
+
+        public void PlayMusic(int id)
+        {
+            _musicSrc.Stop();
+            _musicSrc.clip = _music[id];
+            _musicSrc.Play();
         }
 
         public void PlaySfX(int id)
