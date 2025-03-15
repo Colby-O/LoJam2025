@@ -47,6 +47,17 @@ namespace LoJam.MonoSystem
 
         private UnityEvent _0nInit;
 
+        public void Restart()
+        {
+            foreach (Recipe r in _firewallRecipe) r.Refresh();
+            foreach (Recipe r in _powerupRecipe) r.Refresh();
+
+            foreach (Recipe r in _circleRecipe) r.Refresh();
+            foreach (Recipe r in _triangleRecipe) r.Refresh();
+            foreach (Recipe r in _squareRecipe) r.Refresh();
+            foreach (Recipe r in _crossRecipe) r.Refresh();
+        }
+
         public List<Recipe> GetAllRecipes(Side side, StationType type) {
 
             if (type == StationType.Main) return new List<Recipe> { _firewallRecipe[(int)side], _powerupRecipe[(int)side] };

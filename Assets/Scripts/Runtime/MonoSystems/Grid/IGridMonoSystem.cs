@@ -8,6 +8,7 @@ namespace LoJam.MonoSystem
 {
     public interface IGridMonoSystem : IMonoSystem
     {
+        public void ResetGrid();
         public Vector2Int GetNumberOfTile();
         public Vector2 GetTileSize();
         public Vector2Int GetBounds();

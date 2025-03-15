@@ -12,6 +12,7 @@ namespace LoJam.MonoSystem
     public interface ICraftingMonoSystem : IMonoSystem
     {
         public UnityEvent OnInit { get; set; }
+        public void Restart();
         public List<Recipe> GetAllRecipes(Side side, StationType type);
         public Recipe GetFirewallRecipe(Side side);
         public void RefreshPowerupRecipe(Side side);

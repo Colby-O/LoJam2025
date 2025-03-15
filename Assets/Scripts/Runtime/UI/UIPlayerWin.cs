@@ -1,13 +1,13 @@
 using DG.Tweening;
 using LoJam.Logic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace LoJam
 {
     public class UIPlayerWin : View
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         [SerializeField] private RectTransform _transform;
         [SerializeField] private Image _image;
 
@@ -23,12 +23,6 @@ namespace LoJam
             _transform.anchoredPosition = hiddenPosition;
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-
         public override void OnPush()
         {
             _transform.DOAnchorPos(visiblePosition, 1.0f).SetEase(Ease.OutBack);
@@ -36,7 +30,16 @@ namespace LoJam
 
         public void SetWinner(Side side)
         {
+            _image.gameObject.SetActive(true);
             _image.sprite = side == Side.Left ? _leftWinSprite : _rightWinSprite;
+        }
+
+        private void Update()
+        {
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                LoJamGameManager.RestartGame();
+            }
         }
     }
 }
