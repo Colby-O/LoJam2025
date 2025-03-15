@@ -1,6 +1,8 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using LoJam.Core;
+using LoJam.MonoSystem;
 
 namespace LoJam
 {
@@ -9,14 +11,25 @@ namespace LoJam
         [SerializeField] private Button _startButton;
         [SerializeField] private Button _settingsButton;
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        [SerializeField] private Slider _volume;
+
+        [SerializeField] private View _settingsOverlay;
+
+        private void ChangeVolume(float volume) 
+        {
+            GameManager.GetMonoSystem<IAudioMonoSystem>().SetVolume(volume);
+        }
+
         void Start()
         {
             _startButton.onClick.AddListener(OnStartClicked);
             _settingsButton.onClick.AddListener(OnSettingsClicked);
+
+            _volume.onValueChanged.AddListener(ChangeVolume);
+
+            _volume.value = GameManager.GetMonoSystem<IAudioMonoSystem>().GetVolume();
         }
 
-        // Update is called once per frame
         void Update()
         {
         
@@ -24,15 +37,14 @@ namespace LoJam
 
         private void OnStartClicked()
         {
-
+            LoJamGameManager.GetMonoSystem<IUIMonoSystem>().PopView();
+            Hud hud = FindFirstObjectByType<Hud>(FindObjectsInactive.Include);
+            LoJamGameManager.GetMonoSystem<IUIMonoSystem>().PushView(hud);
         }
 
         private void OnSettingsClicked()
         {
-            // bad
-            SettingsMenu settingsMenu = FindObjectsByType<SettingsMenu>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault();
-
-            LoJamGameManager.GetMonoSystem<IUIMonoSystem>().PushView(settingsMenu);
+            LoJamGameManager.GetMonoSystem<IUIMonoSystem>().PushView(_settingsOverlay);
         }
     }
 }

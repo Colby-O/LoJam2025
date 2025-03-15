@@ -22,6 +22,7 @@ namespace LoJam.MonoSystem
 
         // I don't know if firewall shit should be here but frig it for the time being
         private FirewallController _firewall;
+        public FirewallController GetFirewallController() => _firewall;
 
         private Tile _playAreaTile;
         private Tile _backgroundTile;
@@ -105,25 +106,28 @@ namespace LoJam.MonoSystem
             return new Vector2(pos.x * _tileSize.x, pos.y * _tileSize.y);
         }
 
-        private void FillBackground()
+        public void FillBackground(Camera camera)
         {
-            for (int y = -_tiles.GetLength(0); y <= 2 * _tiles.GetLength(0); y++)
+            Vector3 bottomLeft = camera.ViewportToWorldPoint(new Vector3(0, 0, 0));
+            Vector3 topRight = camera.ViewportToWorldPoint(new Vector3(1, 1, 0));
+
+            Vector2Int minGrid = WorldToGrid(bottomLeft);
+            Vector2Int maxGrid = WorldToGrid(topRight);
+
+            for (int y = minGrid.y; y <= maxGrid.y; y++)
             {
-                for (int x = -_tiles.GetLength(1); x <= 2 * _tiles.GetLength(1); x++)
+                for (int x = minGrid.x; x <= maxGrid.x; x++)
                 {
                     if (x >= 0 && y >= 0 && x < _tiles.GetLength(1) && y < _tiles.GetLength(0)) continue;
+
                     Tile tile = Instantiate(
                         _backgroundTile,
-                        new Vector3(
-                            GridToWorld(new Vector2Int(x, y)).x,
-                            GridToWorld(new Vector2Int(x, y)).y,
-                            0
-                        ),
+                        GridToWorld(new Vector2Int(x, y)),
                         Quaternion.identity,
                         transform
                     );
 
-                    tile.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
+                    tile.transform.localScale = new Vector3(_tileSize.x, _tileSize.y, 1);
                 }
             }
         }
@@ -196,8 +200,6 @@ namespace LoJam.MonoSystem
                 tile.transform.localScale = Vector3.one.SetX(_tileSize.x).SetY(_tileSize.y);
                 return tile;
             });
-
-            FillBackground();
         }
 
         private void CheckPlayerEnter(Interactor player)

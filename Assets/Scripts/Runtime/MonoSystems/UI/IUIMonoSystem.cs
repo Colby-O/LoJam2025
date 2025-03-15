@@ -1,4 +1,5 @@
 ﻿using LoJam.Core;
+using System.Collections.Generic;
 
 namespace LoJam
 {
@@ -6,5 +7,10 @@ namespace LoJam
     {
         public void PushView(View view);
         public void PopView();
+
+        public void RegisterView(View view);
+        public void UnregisterView(View view);
+
+        public IReadOnlyDictionary<string, View> GetViews();
     }
 }

@@ -262,6 +262,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _musicSrc: {fileID: 4542828426736501533}
   _sfxSrc: {fileID: 942485413006151320}
+  _volume: 1
   _sfx:
   - {fileID: 8300000, guid: b9ca00571d4e4594bb533646a3a6f877, type: 3}
   - {fileID: 8300000, guid: b5ebc382d6c421f4594c3b4d74ed8ecc, type: 3}

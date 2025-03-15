@@ -31,8 +31,8 @@ namespace LoJam.Logic
         [SerializeField, ColorUsage(true, true)] private Color _leftColor;
         [SerializeField, ColorUsage(true, true)] private Color _rightColor;
 
-        private int _leftDaemonCount;
-        private int _rightDaemonCount;
+        private int _leftDaemonCount = 0;
+        private int _rightDaemonCount = 0;
 
         private float _netMovement;
 
@@ -48,17 +48,22 @@ namespace LoJam.Logic
        [SerializeField]  private float _virtualPosition;
 
         public UnityEvent OnMove = new UnityEvent();
+        public UnityEvent OnDameonChange = new UnityEvent();
 
         public void AddDaemon(Side side)
         {
             if (side == Side.Left) _leftDaemonCount++;
             else _rightDaemonCount++;
+
+            OnDameonChange.Invoke();
         }
 
         public void RemoveDaemon(Side side)
         {
             if (side == Side.Left) _leftDaemonCount--;
             else _rightDaemonCount--;
+
+            OnDameonChange.Invoke();
         }
 
         public int GetDaemonCount(Side side)
