@@ -40,17 +40,22 @@ namespace LoJam.Logic
        [SerializeField]  private float _virtualPosition;
 
         public UnityEvent OnMove = new UnityEvent();
+        public UnityEvent OnDameonChange = new UnityEvent();
 
         public void AddDaemon(Side side)
         {
             if (side == Side.Left) _leftDaemonCount++;
             else _rightDaemonCount++;
+
+            OnDameonChange.Invoke();
         }
 
         public void RemoveDaemon(Side side)
         {
             if (side == Side.Left) _leftDaemonCount--;
             else _rightDaemonCount--;
+
+            OnDameonChange.Invoke();
         }
 
         public int GetDaemonCount(Side side)

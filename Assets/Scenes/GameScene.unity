@@ -1074,6 +1074,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inventorySlots: {fileID: 161702668}
   _recipes: {fileID: 489807140}
+  _pusher: {fileID: 1877052684}
 --- !u!1 &834688457
 GameObject:
   m_ObjectHideFlags: 0
@@ -3117,7 +3118,6 @@ MonoBehaviour:
   - {fileID: 1660255719}
   - {fileID: 1868899853}
   - {fileID: 1764032813}
-  _firewallGameObject: {fileID: 129194772968961020, guid: c3b5cc8e112c2434f9fa5350fab09cc1, type: 3}
 --- !u!1 &2021219789
 GameObject:
   m_ObjectHideFlags: 0
@@ -3244,7 +3244,7 @@ MonoBehaviour:
   _rb: {fileID: 2021219792}
   _interator: {fileID: 0}
   _sr: {fileID: 0}
-  _movementSpeed: 2
+  _movementSpeed: 4
   _dissolveRate: 0.05
 --- !u!114 &2021219794
 MonoBehaviour:

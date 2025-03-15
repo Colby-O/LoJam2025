@@ -22,6 +22,7 @@ namespace LoJam.MonoSystem
 
         // I don't know if firewall shit should be here but frig it for the time being
         private FirewallController _firewall;
+        public FirewallController GetFirewallController() => _firewall;
 
         private Tile _playAreaTile;
         private Tile _backgroundTile;
