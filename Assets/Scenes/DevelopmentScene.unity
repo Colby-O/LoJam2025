@@ -553,6 +553,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _input: {fileID: 1824665090}
   _side: 1
+  myId: -1
 --- !u!114 &1595246298229917597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -569,7 +570,7 @@ MonoBehaviour:
   _rb: {fileID: 4283570316431875111}
   _interator: {fileID: 1108663041482372676}
   _sr: {fileID: 8137124697627947009}
-  _movementSpeed: 3
+  _movementSpeed: 5
   _dissolveRate: 0.05
 --- !u!4 &1702162369145743490
 Transform:
@@ -786,7 +787,7 @@ MonoBehaviour:
   _rb: {fileID: 7292162769214164037}
   _interator: {fileID: 5846368098028594726}
   _sr: {fileID: 3363173153578246243}
-  _movementSpeed: 3
+  _movementSpeed: 5
   _dissolveRate: 0.05
 --- !u!4 &5323237505678096608
 Transform:
@@ -818,6 +819,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _input: {fileID: 1824665090}
   _side: 0
+  myId: -1
 --- !u!1 &6137277530950208169
 GameObject:
   m_ObjectHideFlags: 0

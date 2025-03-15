@@ -86,6 +86,9 @@ namespace LoJam.Interactable
             _hackDuration = duration;
             _hacked = state;
 
+            if (state) _spriteRenderer.color = Color.red;
+            else _spriteRenderer.color = Color.white;
+
             _fireIcon.SetActive(!state && _isFire);
             _powerupIcon.SetActive(!state && !_isFire);
         }
@@ -126,6 +129,8 @@ namespace LoJam.Interactable
         public void UseCraftingStation(Interactor player)
         {
             if (_hacked) return;
+
+            if (player.GetSide() != _side) Hack(true, 20f);
 
             if (player.HasCraftingMaterial())
             {
@@ -226,7 +231,7 @@ namespace LoJam.Interactable
             }
             else if (_stationType == StationType.Triangle) 
             {
-                _icon[1].SetActive(!recipe.CanCraft(recipe.GetProgress()) && !_hacked);
+                _icon[1].SetActive(!_hacked);
             }
             else if (_stationType == StationType.Square)
             {
