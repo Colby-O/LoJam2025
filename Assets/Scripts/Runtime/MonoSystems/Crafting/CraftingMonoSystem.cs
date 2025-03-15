@@ -177,15 +177,15 @@ namespace LoJam.MonoSystem
                 r3.OnCraft.AddListener(SpawnMaterial);
                 _circleRecipe.Add(r3);
 
-                Recipe r4 = new Recipe(new List<MaterialType>() { MaterialType.Circle }, true, "Cricle");
+                Recipe r4 = new Recipe(new List<MaterialType>() { }, true, "Cricle");
                 r4.OnCraft.AddListener(SpawnMaterial);
                 _triangleRecipe.Add(r4);
 
-                Recipe r5 = new Recipe(new List<MaterialType>() { MaterialType.Triangle, MaterialType.Triangle }, true, "Cricle");
+                Recipe r5 = new Recipe(new List<MaterialType>() { MaterialType.Circle, MaterialType.Triangle }, true, "Cricle");
                 r5.OnCraft.AddListener(SpawnMaterial);
                 _squareRecipe.Add(r5);
 
-                Recipe r6 = new Recipe(new List<MaterialType>() { MaterialType.Square, MaterialType.Square }, true, "Cricle");
+                Recipe r6 = new Recipe(new List<MaterialType>() { MaterialType.Square, MaterialType.Triangle }, true, "Cricle");
                 r6.OnCraft.AddListener(SpawnMaterial);
                 _crossRecipe.Add(r6);
             }
