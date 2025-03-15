@@ -96,12 +96,6 @@ namespace LoJam
 
 		private void Update()
 		{
-			Debug.Log(GetFormattedTime());
-			time = time - Time.deltaTime;
-		}
-
-		private void Update()
-		{
 			time = time - Time.deltaTime;
 		}
 	}
