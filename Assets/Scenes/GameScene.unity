@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &14170707
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1281,7 +1281,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &768144491
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1781,7 +1781,7 @@ RectTransform:
   m_Father: {fileID: 1146283517}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2956,7 +2956,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1407545799
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2990,6 +2990,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transform: {fileID: 1407545799}
+  _image: {fileID: 0}
+  _leftWinSprite: {fileID: 0}
+  _rightWinSprite: {fileID: 0}
 --- !u!224 &1447674908 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4724839294499396988, guid: ad9fd4a9318311140ae1180457bae851, type: 3}
@@ -3296,7 +3299,7 @@ RectTransform:
   m_Father: {fileID: 850082054}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4580,7 +4583,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2052196440
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4964,10 +4967,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2134285463}
     m_Modifications:
-    - target: {fileID: 1081579572873085000, guid: f0462c247e1fb584092a2c0001657611, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1081579572873085000, guid: f0462c247e1fb584092a2c0001657611, type: 3}
       propertyPath: m_Sprite
       value: 
