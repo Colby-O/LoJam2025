@@ -1,6 +1,8 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using LoJam.Core;
+using LoJam.MonoSystem;
 
 namespace LoJam
 {
@@ -9,20 +11,25 @@ namespace LoJam
         [SerializeField] private Button _startButton;
         [SerializeField] private Button _settingsButton;
 
+        [SerializeField] private Slider _volume;
+
         [SerializeField] private View _settingsOverlay;
 
-        private void Awake()
+        private void ChangeVolume(float volume) 
         {
+            GameManager.GetMonoSystem<IAudioMonoSystem>().SetVolume(volume);
         }
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             _startButton.onClick.AddListener(OnStartClicked);
             _settingsButton.onClick.AddListener(OnSettingsClicked);
+
+            _volume.onValueChanged.AddListener(ChangeVolume);
+
+            _volume.value = GameManager.GetMonoSystem<IAudioMonoSystem>().GetVolume();
         }
 
-        // Update is called once per frame
         void Update()
         {
         
