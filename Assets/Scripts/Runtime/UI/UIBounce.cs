@@ -10,7 +10,7 @@ namespace LoJam
 
         private Vector3 _initialPosition;
 
-        private void Awake()
+        private void Start()
         {
             _initialPosition = transform.position;
         }
