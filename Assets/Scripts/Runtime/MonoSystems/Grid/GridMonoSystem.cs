@@ -68,6 +68,33 @@ namespace LoJam.MonoSystem
 
         public Side GetFirewallSide(Vector2 worldPos) => GetFirewallSide(WorldToGrid(worldPos));
 
+        public void ResetGrid()
+        {
+            _firewall.transform.position = new Vector3(_bounds.x / 2f, _bounds.y / 2f, 0);
+
+            for (int y = _tiles.GetLength(0); y < _tiles.GetLength(0); y++)
+            {
+                for (int x = _tiles.GetLength(1); x < _tiles.GetLength(1); x++)
+                {
+                    if (_tiles[y, x].GetInteractable() is PowerupBase || _tiles[y, x].GetInteractable() is CraftingMaterial)
+                    {
+                        _tiles[y, x].SetInteractable(null);
+                    }
+                }
+            }
+
+            _playerLastPos = new List<Vector2Int>();
+            for (int i = 0; i < LoJamGameManager.players.Count; i++)
+            {
+                _playerLastPos.Add(WorldToGrid(LoJamGameManager.players[i].transform.position));
+
+                if (LoJamGameManager.players[i].GetSide() == Side.Left)
+                    LoJamGameManager.players[i].transform.position = new Vector3(GridToWorld(new Vector2Int(GetNumberOfTile().x / 4, GetNumberOfTile().y / 2)).x, GridToWorld(new Vector2Int(GetNumberOfTile().x / 4, GetNumberOfTile().y / 2)).y, 0);
+                else
+                    LoJamGameManager.players[i].transform.position = new Vector3(GridToWorld(new Vector2Int(3 * GetNumberOfTile().x / 4, GetNumberOfTile().y / 2)).x, GridToWorld(new Vector2Int(3 * GetNumberOfTile().x / 4, GetNumberOfTile().y / 2)).y, 0);
+            }
+        }
+
         public Side GetFirewallSide(Vector2Int gridPos)
         {
             Vector2Int firwallPos = WorldToGrid(_firewall.transform.position);

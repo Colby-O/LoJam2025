@@ -501,6 +501,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _powerups:
   - {fileID: 3844155752577393710, guid: 0b7197d84ece67a408f09501e19d9562, type: 3}
+  - {fileID: 4382498819002034249, guid: aaccf2e3526ff444cad7f24e924f4356, type: 3}
+  - {fileID: 6258837037526855172, guid: 8f0824cb414d6ef4db5863fe448909af, type: 3}
+  - {fileID: 2707736168231649503, guid: 35d409ba701013d48bba6cd09f166df3, type: 3}
+  - {fileID: 3292371552893427652, guid: 1b8c59dd23aacca40978b19135046dea, type: 3}
   _materialPickups:
   - {fileID: 6770530441651440910, guid: 26bab8eb975fee44d8ae1295f14cb149, type: 3}
   - {fileID: 5923193029577481616, guid: 9416b0662f11a504686a1921dee248e9, type: 3}

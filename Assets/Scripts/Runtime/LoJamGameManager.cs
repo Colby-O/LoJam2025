@@ -6,6 +6,7 @@ using LoJam.Player;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace LoJam
 {
@@ -21,7 +22,7 @@ namespace LoJam
 		[SerializeField] private CraftingMonoSystem _craftingSystem;
 		[SerializeField] private AudioMonoSystem _audioSystem;
 
-		public static float time = 45f;//5f * 60f;
+		public static float time = 5f * 60f;
 		public static  bool isPaused;
 
 		public static List<Interactor> players;
@@ -81,6 +82,24 @@ namespace LoJam
 			Interactor.ResetRegisteredControllerList();
 			foreach (Interactor player in players) player.myId = -1;
 		}
+
+		public static void RestartGame()
+		{
+			isPaused = true;
+			time = 5f * 60f;
+
+            LoJamGameManager.isPaused = true;
+            GameManager.GetMonoSystem<IAudioMonoSystem>().PlayMusic(0);
+
+            (_instance as LoJamGameManager)._gridSystem.ResetGrid();
+            (_instance as LoJamGameManager)._craftingSystem.Restart();
+
+
+            LoJamGameManager.GetMonoSystem<IUIMonoSystem>().PopView();
+            LoJamGameManager.GetMonoSystem<IUIMonoSystem>().PopView();
+            MainMenu mm = FindFirstObjectByType<MainMenu>(FindObjectsInactive.Include);
+			LoJamGameManager.GetMonoSystem<IUIMonoSystem>().PushView(mm);
+        }
 
 		private void Awake()
 		{
