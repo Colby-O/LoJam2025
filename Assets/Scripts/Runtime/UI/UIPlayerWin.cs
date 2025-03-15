@@ -32,6 +32,7 @@ namespace LoJam
         {
             _image.gameObject.SetActive(true);
             _image.sprite = side == Side.Left ? _leftWinSprite : _rightWinSprite;
+            LoJamGameManager.isPaused = true;
         }
 
         private void Update()
