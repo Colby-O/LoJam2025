@@ -12,14 +12,14 @@ namespace LoJam
 
         private void Start()
         {
-            _initialPosition = transform.position;
+            _initialPosition = transform.localPosition;
         }
 
         private void Update()
         {
             Vector3 localPosition = _initialPosition;
             localPosition.y += _amplitude * Mathf.Cos(Time.time * _speed);
-            transform.position = localPosition;
+            transform.localPosition = localPosition;
         }
     }
 }
