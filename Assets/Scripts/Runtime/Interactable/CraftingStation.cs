@@ -130,7 +130,11 @@ namespace LoJam.Interactable
         {
             if (_hacked) return;
 
-            if (player.GetSide() != _side) Hack(true, 20f);
+            if (player.GetSide() != _side)
+            {
+                Hack(true, 20f);
+                return;
+            }
 
             if (player.HasCraftingMaterial())
             {
