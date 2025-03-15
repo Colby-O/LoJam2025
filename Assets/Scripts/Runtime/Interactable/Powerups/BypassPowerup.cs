@@ -2,6 +2,8 @@ using LoJam.Interactable;
 using LoJam.Logic;
 using LoJam.Player;
 using UnityEngine;
+using LoJam.Core;
+using LoJam.MonoSystem;
 
 namespace LoJam
 {
@@ -17,6 +19,7 @@ namespace LoJam
         public override void OnPlayerEnter(Interactor player)
         {
             base.OnPlayerEnter(player);
+            GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(4);
             FindFirstObjectByType<FirewallController>().Open(player, _duration);
             RemovePowerup();
         }
