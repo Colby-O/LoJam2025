@@ -32,12 +32,12 @@ namespace LoJam
 
         public override void OnPush()
         {
-            _settingsPanel.DOAnchorPos(visiblePosition, 0.66f).SetEase(Ease.OutBack);
+            _settingsPanel.DOAnchorPos(visiblePosition, 0.5f).SetEase(Ease.OutExpo);
         }
 
         public override void OnPop()
         {
-            base.OnPush();
+            _settingsPanel.anchoredPosition = hiddenPosition;
         }
     }
 }

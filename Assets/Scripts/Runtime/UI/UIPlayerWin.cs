@@ -25,7 +25,12 @@ namespace LoJam
 
         public override void OnPush()
         {
-            _transform.DOAnchorPos(visiblePosition, 1.0f).SetEase(Ease.OutBack);
+            _transform.DOAnchorPos(visiblePosition, 1.0f).SetEase(Ease.OutExpo);
+        }
+
+        public override void OnPop()
+        {
+            _transform.anchoredPosition = hiddenPosition;
         }
 
         public void SetWinner(Side side)
