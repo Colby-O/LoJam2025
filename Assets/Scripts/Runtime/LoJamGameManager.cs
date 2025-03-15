@@ -83,7 +83,8 @@ namespace LoJam
 		private void Awake()
 		{
 			craftingStations = new List<CraftingStation>();
-		}
+			LoJamGameManager.isPaused = true;
+        }
 
 		private void Start()
 		{
@@ -96,6 +97,8 @@ namespace LoJam
 
 		private void Update()
 		{
+			if (LoJamGameManager.isPaused) return;
+
 			time = time - Time.deltaTime;
 
             if (time < 0)
