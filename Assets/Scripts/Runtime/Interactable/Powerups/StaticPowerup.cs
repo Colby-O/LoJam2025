@@ -18,6 +18,8 @@ namespace LoJam.Interactable
         {
             base.OnPlayerEnter(player);
 
+            GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(8);
+
             Interactor other = LoJamGameManager.players.Find(p => p != player);
 
             SpawnStatic(other.GetSide());

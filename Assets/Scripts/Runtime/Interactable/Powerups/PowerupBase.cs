@@ -25,7 +25,7 @@ namespace LoJam.Interactable
 
         public virtual void OnPlayerEnter(Interactor player)
         {
-            GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(0);
+            //GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(0);
         }
 
         public abstract void OnPlayerExit(Interactor player);

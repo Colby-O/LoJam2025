@@ -1,6 +1,8 @@
 using LoJam.Grid;
 using LoJam.Player;
 using UnityEngine;
+using LoJam.Core;
+using LoJam.MonoSystem;
 
 namespace LoJam.Interactable
 {
@@ -17,6 +19,7 @@ namespace LoJam.Interactable
         public override void OnPlayerEnter(Interactor player)
         {
             base.OnPlayerEnter(player);
+            GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(7);
             player.GetComponent<PlayerController>().AddSpeedEffector(_amount, _length);
             RemovePowerup();
         }

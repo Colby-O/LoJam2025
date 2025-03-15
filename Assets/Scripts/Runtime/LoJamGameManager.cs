@@ -5,6 +5,7 @@ using LoJam.MonoSystem;
 using LoJam.Player;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LoJam
@@ -21,8 +22,20 @@ namespace LoJam
 		[SerializeField] private CraftingMonoSystem _craftingSystem;
 		[SerializeField] private AudioMonoSystem _audioSystem;
 
+		public static float time = 0;
+		public static  bool isPaused;
+
 		public static List<Interactor> players;
 		public static List<CraftingStation> craftingStations;
+
+		public static string GetFormattedTime() 
+		{
+        	float minutes = Mathf.FloorToInt(time / 60);
+        	float seconds = Mathf.FloorToInt(time % 60);
+			float ms = (time - Mathf.Floor(time)) * 60;
+
+        	return string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, ms);
+		}
 
 		private void AddEvents() {
 			//AddEvent<GameEvents.TestEvent>(DeleteMe);
@@ -66,6 +79,11 @@ namespace LoJam
 		private void Start()
 		{
 			players = FindObjectsByType<Interactor>(FindObjectsSortMode.None).ToList();
+		}
+
+		private void Update()
+		{
+			time = time + Time.deltaTime;
 		}
 	}
 }
