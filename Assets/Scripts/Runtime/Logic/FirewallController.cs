@@ -18,7 +18,7 @@ namespace LoJam.Logic
     {
         public static Side Opposide(this Side side)
         {
-            return (side == Side.Left) ? Side.Left : Side.Right;
+            return (side == Side.Left) ? Side.Right : Side.Left;
         }
     }
 
