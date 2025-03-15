@@ -22,7 +22,7 @@ namespace LoJam
 		[SerializeField] private CraftingMonoSystem _craftingSystem;
 		[SerializeField] private AudioMonoSystem _audioSystem;
 
-		public static float time = 0;
+		public static float time = 5f * 60f;
 		public static  bool isPaused;
 
 		public static List<Interactor> players;
@@ -83,7 +83,8 @@ namespace LoJam
 
 		private void Update()
 		{
-			time = time + Time.deltaTime;
+			Debug.Log(GetFormattedTime());
+			time = time - Time.deltaTime;
 		}
 	}
 }

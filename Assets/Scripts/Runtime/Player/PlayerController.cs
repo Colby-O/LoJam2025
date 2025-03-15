@@ -86,6 +86,8 @@ namespace LoJam
 
 		private void Move(InputAction.CallbackContext e)
 		{
+			if (_startedReturn || LoJamGameManager.isPaused) return;
+
 			InputDevice device = e.control.device;
 			if (device != null)
 			{
@@ -123,8 +125,6 @@ namespace LoJam
 
 		private void Update()
 		{
-			ProcessMovement();
-
 			if (_startedReturn) 
 			{
 				_returnTimer += Time.deltaTime;
@@ -147,6 +147,8 @@ namespace LoJam
 					_returnTimer = 0;
 				}
 			}
+
+			ProcessMovement();
 
 			if (_effectDuration != 0)
 			{

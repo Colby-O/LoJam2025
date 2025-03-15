@@ -1,6 +1,7 @@
 using LoJam.Core;
 using LoJam.Interactable;
 using LoJam.Player;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -113,11 +114,21 @@ namespace LoJam.Crafting
             {
                 _recipe.Add(GetRandomMaterial());
             }
+
+            while (_recipe.Where(r => r == MaterialType.Cross).Count() > 1)
+            {
+                _recipe[_recipe.IndexOf(MaterialType.Cross)] = (MaterialType)UnityEngine.Random.Range(0, 3);
+            }
+
+            while (_recipe.Where(r => r == MaterialType.Square).Count() > 2)
+            {
+                _recipe[_recipe.IndexOf(MaterialType.Square)] = (MaterialType)UnityEngine.Random.Range(0, 2);
+            }
         }
 
         private MaterialType GetRandomMaterial()
         {
-            return (MaterialType)Random.Range(0, (int)System.Enum.GetValues(typeof(MaterialType)).Cast<MaterialType>().Max());
+            return (MaterialType)UnityEngine.Random.Range(0, (int)System.Enum.GetValues(typeof(MaterialType)).Cast<MaterialType>().Max());
         }
     }
 }
