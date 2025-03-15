@@ -70,7 +70,7 @@ namespace LoJam.MonoSystem
 
         public void ResetGrid()
         {
-            _firewall.transform.position = new Vector3(_bounds.x / 2f, _bounds.y / 2f, 0);
+            _firewall.Restart();
 
             for (int y = _tiles.GetLength(0); y < _tiles.GetLength(0); y++)
             {
@@ -78,6 +78,7 @@ namespace LoJam.MonoSystem
                 {
                     if (_tiles[y, x].GetInteractable() is PowerupBase || _tiles[y, x].GetInteractable() is CraftingMaterial)
                     {
+                        Destroy(_tiles[y, x].GetInteractable().GetTransform().gameObject);
                         _tiles[y, x].SetInteractable(null);
                     }
                 }

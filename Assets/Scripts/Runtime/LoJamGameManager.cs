@@ -22,7 +22,7 @@ namespace LoJam
 		[SerializeField] private CraftingMonoSystem _craftingSystem;
 		[SerializeField] private AudioMonoSystem _audioSystem;
 
-		public static float time = 5f * 60f;
+		public static float time = 1f * 60f;
 		public static  bool isPaused;
 
 		public static List<Interactor> players;
@@ -90,6 +90,15 @@ namespace LoJam
 
             LoJamGameManager.isPaused = true;
             GameManager.GetMonoSystem<IAudioMonoSystem>().PlayMusic(0);
+
+            CraftingStation[] css = FindObjectsByType<CraftingStation>(FindObjectsSortMode.None);
+			foreach (CraftingStation cs in css) cs.Hack(false, 0);
+
+            UIPusher[] up = FindObjectsByType<UIPusher>(FindObjectsSortMode.None);
+			InventorySlot[] islots = FindObjectsByType<InventorySlot>(FindObjectsSortMode.None);
+
+            foreach (UIPusher u in up) u.UpdateDameonText();
+			foreach (InventorySlot s in islots) s.SetItemSprite(null);
 
             (_instance as LoJamGameManager)._gridSystem.ResetGrid();
             (_instance as LoJamGameManager)._craftingSystem.Restart();

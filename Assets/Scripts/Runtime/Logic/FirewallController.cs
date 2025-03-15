@@ -1,4 +1,5 @@
 using LoJam.Core;
+using LoJam.Grid;
 using LoJam.MonoSystem;
 using LoJam.Player;
 using System.Collections.Generic;
@@ -49,6 +50,21 @@ namespace LoJam.Logic
 
         public UnityEvent OnMove = new UnityEvent();
         public UnityEvent OnDameonChange = new UnityEvent();
+
+        public void Restart()
+        {
+            _leftDaemonCount = 0;
+            _rightDaemonCount = 0;
+            foreach (FireElement f in _tiles)
+            {
+                Physics2D.IgnoreCollision(LoJamGameManager.players[0].GetComponent<Collider2D>(), f.Collider, false);
+                Physics2D.IgnoreCollision(LoJamGameManager.players[1].GetComponent<Collider2D>(), f.Collider, false);
+                f.SpriteRenderer.material.SetColor("_Intensity", _baseColor);
+            }
+
+            _virtualPosition = GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x / 2f;
+            ProcessMovement(false);
+        }
 
         public void AddDaemon(Side side)
         {
@@ -105,7 +121,7 @@ namespace LoJam.Logic
             _currentPlayer = null;
         }
 
-        public void ProcessMovement()
+        public void ProcessMovement(bool playSound = true)
         {
             Vector2Int bounds = GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds();
 
@@ -120,7 +136,7 @@ namespace LoJam.Logic
 
             if (Mathf.Abs(_virtualPosition - transform.position.x) >= _movementStep)
             {
-                GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(3);
+                if (playSound) GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(3);
                 transform.position = transform.position.SetX(_virtualPosition);
                 OnMove.Invoke();
             }
