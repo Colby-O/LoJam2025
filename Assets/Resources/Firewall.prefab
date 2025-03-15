@@ -47,6 +47,9 @@ MonoBehaviour:
   _movementUnit: 0.0003
   _movementStep: 0.25
   _baseColor: {r: 8.474189, g: 0.75060445, b: 0, a: 1}
-  _leftColor: {r: 0, g: 8.47419, b: 7.7514343, a: 0.13725491}
-  _rightColor: {r: 8.47419, g: 0, b: 5.4472604, a: 0.13725491}
+  _leftColor: {r: 0, g: 30.550894, b: 30.550894, a: 0.14117648}
+  _rightColor: {r: 40.787838, g: 0, b: 40.480717, a: 0.13333334}
   _virtualPosition: 0
+  OnMove:
+    m_PersistentCalls:
+      m_Calls: []
