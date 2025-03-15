@@ -5,6 +5,7 @@ using LoJam.MonoSystem;
 using LoJam.Player;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.Progress;
 
@@ -22,8 +23,20 @@ namespace LoJam
 		[SerializeField] private CraftingMonoSystem _craftingSystem;
 		[SerializeField] private AudioMonoSystem _audioSystem;
 
+		public static float time = 5f * 60f;
+		public static  bool isPaused;
+
 		public static List<Interactor> players;
 		public static List<CraftingStation> craftingStations;
+
+		public static string GetFormattedTime() 
+		{
+        	float minutes = Mathf.FloorToInt(time / 60);
+        	float seconds = Mathf.FloorToInt(time % 60);
+			float ms = (time - Mathf.Floor(time)) * 60;
+
+        	return string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, ms);
+		}
 
 		private void AddEvents() {
 			//AddEvent<GameEvents.TestEvent>(DeleteMe);
@@ -60,6 +73,7 @@ namespace LoJam
 				ui.PushView(playerWin);
 				playerWin.SetWinner(side);
             }
+			Debug.Log($"Wow game is over! Side {side} won.");
         }
 
 		public void ReassignControllers()
@@ -78,6 +92,18 @@ namespace LoJam
 			players = FindObjectsByType<Interactor>(FindObjectsSortMode.None).ToList();
 
             _uiSystem.PushView(FindObjectsByType<MainMenu>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault());
+		}
+
+		private void Update()
+		{
+			Debug.Log(GetFormattedTime());
+			time = time - Time.deltaTime;
+		}
+
+		private void Update()
+		{
+			Debug.Log(GetFormattedTime());
+			time = time - Time.deltaTime;
 		}
 	}
 }

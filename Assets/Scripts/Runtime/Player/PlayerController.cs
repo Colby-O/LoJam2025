@@ -27,6 +27,9 @@ namespace LoJam
 		private float _effectDuration = 0;
 		private float _effectTime = 0;
 
+		private bool _startedReturn;
+		private float _returnTimer = 0;
+
 		public void AddSpeedEffector(float boost, float time)
 		{
 			if (_movementMul != 1) RemoveSpeedEffector();
@@ -49,6 +52,9 @@ namespace LoJam
 
 		private IEnumerator ReturnAnimation()
 		{
+			_startedReturn = true; 
+			_returnTimer = 0;
+
 			float prog = 0;
 			while (prog < 1.2)
 			{
@@ -74,10 +80,14 @@ namespace LoJam
 			}
 
 			_sr.material.SetFloat("_DissolveAmount", 0);
+
+			_startedReturn = false;
 		}
 
 		private void Move(InputAction.CallbackContext e)
 		{
+			if (_startedReturn || LoJamGameManager.isPaused) return;
+
 			InputDevice device = e.control.device;
 			if (device != null)
 			{
@@ -115,6 +125,29 @@ namespace LoJam
 
 		private void Update()
 		{
+			if (_startedReturn) 
+			{
+				_returnTimer += Time.deltaTime;
+				
+				if (_returnTimer > 3f) 
+				{
+
+					if (_interator.GetSide() == Side.Left)
+					{
+						transform.position = new Vector3(GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x / 4f, GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().y / 2f, 0);
+					}
+					else
+					{
+						transform.position = new Vector3(3f * GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x / 4f, GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().y / 2f, 0);
+					}
+
+					_sr.material.SetFloat("_DissolveAmount", 0);
+
+					_startedReturn = false;
+					_returnTimer = 0;
+				}
+			}
+
 			ProcessMovement();
 
 			if (_effectDuration != 0)

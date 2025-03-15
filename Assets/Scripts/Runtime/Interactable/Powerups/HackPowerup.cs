@@ -1,5 +1,7 @@
 using LoJam.Player;
 using UnityEngine;
+using LoJam.Core;
+using LoJam.MonoSystem;
 
 namespace LoJam.Interactable
 {
@@ -15,6 +17,7 @@ namespace LoJam.Interactable
         public override void OnPlayerEnter(Interactor player)
         {
             base.OnPlayerEnter(player);
+            GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(5);
             Interactor other = LoJamGameManager.players.Find(p => p != player);
             LoJamGameManager.craftingStations.Find(cs => cs.GetSide() == other.GetSide()).Hack(true, _duration);
             RemovePowerup();
