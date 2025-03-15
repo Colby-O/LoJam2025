@@ -5,9 +5,7 @@ using LoJam.MonoSystem;
 using LoJam.Player;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 namespace LoJam
 {
@@ -97,6 +95,15 @@ namespace LoJam
 		private void Update()
 		{
 			time = time - Time.deltaTime;
-		}
+
+            if (time < 0)
+            {
+				EndGame(GameManager.GetMonoSystem<IGridMonoSystem>().GetSide(GameManager.GetMonoSystem<IGridMonoSystem>().GetFirewallController().transform.position).Opposide());
+            }
+			else if (time < 30f)
+			{
+				// Set new music
+			}
+        }
 	}
 }

@@ -4,15 +4,11 @@ using LoJam.Grid;
 using LoJam.Logic;
 using LoJam.MonoSystem;
 using LoJam.Player;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using static UnityEditor.Progress;
 
 namespace LoJam.Interactable
 {
@@ -177,7 +173,7 @@ namespace LoJam.Interactable
 
         private void ShowRecipe(Recipe recipe)
         {
-            _label.text = $"Crafting: {recipe.Label}";
+            _label.text = string.Empty;//$"Crafting: {recipe.Label}";
 
             List<MaterialType> copyRecipe = new List<MaterialType>(recipe.GetMaterials());
 

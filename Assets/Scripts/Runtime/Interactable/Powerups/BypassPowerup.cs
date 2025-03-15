@@ -20,6 +20,7 @@ namespace LoJam
         {
             base.OnPlayerEnter(player);
             GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(4);
+            GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(13);
             FindFirstObjectByType<FirewallController>().Open(player, _duration);
             RemovePowerup();
         }

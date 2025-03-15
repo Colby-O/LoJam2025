@@ -19,6 +19,7 @@ namespace LoJam.Interactable
             base.OnPlayerEnter(player);
 
             GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(8);
+            GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(11);
 
             Interactor other = LoJamGameManager.players.Find(p => p != player);
 

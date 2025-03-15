@@ -20,6 +20,7 @@ namespace LoJam.Interactable
         {
             base.OnPlayerEnter(player);
             GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(6);
+            GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(9);
             PlayerController other = LoJamGameManager.players.Find(p => p != player).GetComponent<PlayerController>();
             other.AddSpeedEffector(_amount, _length);
             RemovePowerup();
