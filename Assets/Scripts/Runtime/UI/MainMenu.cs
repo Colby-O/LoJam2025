@@ -10,6 +10,7 @@ namespace LoJam
     {
         [SerializeField] private Button _startButton;
         [SerializeField] private Button _settingsButton;
+        [SerializeField] private Button _quitButton;
 
         [SerializeField] private Slider _volume;
 
@@ -24,15 +25,16 @@ namespace LoJam
         {
             _startButton.onClick.AddListener(OnStartClicked);
             _settingsButton.onClick.AddListener(OnSettingsClicked);
+            _quitButton.onClick.AddListener(OnQuitClicked);
 
             _volume.onValueChanged.AddListener(ChangeVolume);
 
             _volume.value = GameManager.GetMonoSystem<IAudioMonoSystem>().GetVolume();
         }
 
-        void Update()
+        private void OnQuitClicked()
         {
-        
+            Application.Quit();
         }
 
         private void OnStartClicked()

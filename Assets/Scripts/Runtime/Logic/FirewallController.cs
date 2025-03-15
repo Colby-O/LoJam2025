@@ -182,8 +182,8 @@ namespace LoJam.Logic
 
             if 
             (
-                Mathf.Abs(transform.position.x - GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x) >= GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x - 4f || 
-                Mathf.Abs(transform.position.x - GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x) <= 4f 
+                Mathf.Abs(transform.position.x - GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x) >= GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x - 3f || 
+                Mathf.Abs(transform.position.x - GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x) <= 3f 
             )
             {
                 LoJamGameManager.EndGame(GameManager.GetMonoSystem<IGridMonoSystem>().GetSide(transform.position).Opposide());

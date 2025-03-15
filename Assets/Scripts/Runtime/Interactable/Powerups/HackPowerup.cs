@@ -18,6 +18,7 @@ namespace LoJam.Interactable
         {
             base.OnPlayerEnter(player);
             GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(5);
+            GameManager.GetMonoSystem<IAudioMonoSystem>().PlaySfX(12);
             Interactor other = LoJamGameManager.players.Find(p => p != player);
             LoJamGameManager.craftingStations.Find(cs => cs.GetSide() == other.GetSide()).Hack(true, _duration);
             RemovePowerup();

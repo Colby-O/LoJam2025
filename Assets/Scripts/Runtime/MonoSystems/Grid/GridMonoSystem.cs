@@ -423,19 +423,19 @@ namespace LoJam.MonoSystem
 
             GenerateMap();
 
-            SpawnCraftingStations(3, GetNumberOfTile().y / 2, Side.Left, -0.25f);
+            SpawnCraftingStations(2, GetNumberOfTile().y / 2, Side.Left, -0.25f);
 
-            SpawnDisp(3, 6 * GetNumberOfTile().y / 7, Side.Left, "Circle");
-            SpawnDisp(3, 5 * GetNumberOfTile().y / 7, Side.Left, "Triangle");
-            SpawnDisp(3, 2 * GetNumberOfTile().y / 7, Side.Left, "Square");
-            SpawnDisp(3, GetNumberOfTile().y / 7, Side.Left, "Cross");
+            SpawnDisp(2, 6 * GetNumberOfTile().y / 7, Side.Left, "Circle");
+            SpawnDisp(2, 5 * GetNumberOfTile().y / 7, Side.Left, "Triangle");
+            SpawnDisp(2, 2 * GetNumberOfTile().y / 7, Side.Left, "Square");
+            SpawnDisp(2, GetNumberOfTile().y / 7, Side.Left, "Cross");
 
-            SpawnCraftingStations(GetNumberOfTile().x - 3, GetNumberOfTile().y / 2, Side.Right, 0.25f);
+            SpawnCraftingStations(GetNumberOfTile().x - 2, GetNumberOfTile().y / 2, Side.Right, 0.25f);
 
-            SpawnDisp(GetNumberOfTile().x - 3, 6 * GetNumberOfTile().y / 7 + 1, Side.Right, "Circle");
-            SpawnDisp(GetNumberOfTile().x - 3, 5 * GetNumberOfTile().y / 7 + 1, Side.Right, "Triangle");
-            SpawnDisp(GetNumberOfTile().x - 3, 2 * GetNumberOfTile().y / 7 + 1, Side.Right, "Square");
-            SpawnDisp(GetNumberOfTile().x - 3, GetNumberOfTile().y / 7 + 1, Side.Right, "Cross");
+            SpawnDisp(GetNumberOfTile().x - 2, 6 * GetNumberOfTile().y / 7 + 1, Side.Right, "Circle");
+            SpawnDisp(GetNumberOfTile().x - 2, 5 * GetNumberOfTile().y / 7 + 1, Side.Right, "Triangle");
+            SpawnDisp(GetNumberOfTile().x - 2, 2 * GetNumberOfTile().y / 7 + 1, Side.Right, "Square");
+            SpawnDisp(GetNumberOfTile().x - 2, GetNumberOfTile().y / 7 + 1, Side.Right, "Cross");
 
             GenerateSpawnPoints();
         }
