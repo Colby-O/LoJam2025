@@ -87,6 +87,8 @@ namespace LoJam
 
 		private void Start()
 		{
+			GameManager.GetMonoSystem<IAudioMonoSystem>().PlayMusic(0);
+
 			players = FindObjectsByType<Interactor>(FindObjectsSortMode.None).ToList();
 
             _uiSystem.PushView(FindObjectsByType<MainMenu>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault());
@@ -102,8 +104,8 @@ namespace LoJam
             }
 			else if (time < 30f)
 			{
-				// Set new music
-			}
+                GameManager.GetMonoSystem<IAudioMonoSystem>().PlayMusic(2);
+            }
         }
 	}
 }
