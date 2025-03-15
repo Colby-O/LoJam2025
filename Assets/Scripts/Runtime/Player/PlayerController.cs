@@ -20,7 +20,7 @@ namespace LoJam
 		[SerializeField] private float _movementSpeed;
 		[SerializeField] private float _dissolveRate = 0.05f;
 
-		private Vector2 _rawMovement;
+        [SerializeField] private Vector2 _rawMovement;
 
 		private float _movementMul = 1;
 
@@ -86,7 +86,7 @@ namespace LoJam
 
 		private void Move(InputAction.CallbackContext e)
 		{
-			if (_startedReturn || LoJamGameManager.isPaused) return;
+            if (_startedReturn || LoJamGameManager.isPaused) return;
 
 			InputDevice device = e.control.device;
 			if (device != null)
@@ -97,16 +97,44 @@ namespace LoJam
 					if (device.deviceId == _interator.myId)
 					{
 						_rawMovement = e.ReadValue<Vector2>();
-						_rb.linearVelocity = _rawMovement * _movementSpeed * _movementMul;
+						//_rb.linearVelocity = _rawMovement * _movementSpeed * _movementMul;
 					}
+					else
+					{
+						// Note: Really we should be instacing the input system. This is Scuffed but due to time is unaviodable
+						// This this called when someone is using a controller and the game thinks it's a gamepad since only one 
+						// device can be binded at once. Two controller might have some issues might not idk can't test.
+
+                        int x = 0;
+                        int y = 0;
+
+						if (_interator.GetSide() == Side.Left)
+						{
+                            if (Keyboard.current.wKey.IsPressed()) y += 1;
+                            if (Keyboard.current.sKey.IsPressed()) y -= 1;
+                            if (Keyboard.current.dKey.IsPressed()) x += 1;
+                            if (Keyboard.current.aKey.IsPressed()) x -= 1;
+                        }
+						else
+						{
+                            if (Keyboard.current.upArrowKey.IsPressed()) y += 1;
+                            if (Keyboard.current.downArrowKey.IsPressed()) y -= 1;
+                            if (Keyboard.current.rightArrowKey.IsPressed()) x += 1;
+                            if (Keyboard.current.leftArrowKey.IsPressed()) x -= 1;
+                        }
+
+                        _rawMovement = (new Vector2(x, y)).normalized;
+                    }
 				}
 				else if (device is Keyboard)
 				{
-					_rawMovement = e.ReadValue<Vector2>();
-					_rb.linearVelocity = _rawMovement * _movementSpeed * _movementMul;
+                    _rawMovement = e.ReadValue<Vector2>();
+					//_rb.linearVelocity = _rawMovement * _movementSpeed * _movementMul;
 				}
 			}
-		}
+
+            _rb.linearVelocity = _rawMovement * _movementSpeed * _movementMul;
+        }
 
 		private void ProcessMovement()
 		{
@@ -125,7 +153,7 @@ namespace LoJam
 
 		private void Update()
 		{
-			if (_startedReturn) 
+            if (_startedReturn) 
 			{
 				_returnTimer += Time.deltaTime;
 				
@@ -156,5 +184,5 @@ namespace LoJam
 				if (_effectTime > _effectDuration) RemoveSpeedEffector();
 			}
 		}
-	}
+    }
 }

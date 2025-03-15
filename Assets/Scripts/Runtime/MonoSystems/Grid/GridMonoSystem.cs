@@ -364,13 +364,13 @@ namespace LoJam.MonoSystem
             }
         }
 
-        private void SpawnCraftingStations(int x, int y, Side side)
+        private void SpawnCraftingStations(int x, int y, Side side, float offset = 0f)
         {
             CraftingStation cs = Instantiate(
             Resources.Load<CraftingStation>((side == Side.Left) ? "CraftingStationLeft" : "CraftingStationRight"),
             new Vector3(
                 GridToWorld(new Vector2Int(x, y)).x,
-                GridToWorld(new Vector2Int(x, y)).y,
+                GridToWorld(new Vector2Int(x, y)).y + offset,
                 0
             ),
            Quaternion.Euler(0f, 0f, (side == Side.Left) ? 90f : -90f),
@@ -421,19 +421,19 @@ namespace LoJam.MonoSystem
 
             GenerateMap();
 
-            SpawnCraftingStations(3, GetNumberOfTile().y / 2, Side.Left);
+            SpawnCraftingStations(3, GetNumberOfTile().y / 2, Side.Left, -0.25f);
 
             SpawnDisp(3, 6 * GetNumberOfTile().y / 7, Side.Left, "Circle");
             SpawnDisp(3, 5 * GetNumberOfTile().y / 7, Side.Left, "Triangle");
             SpawnDisp(3, 2 * GetNumberOfTile().y / 7, Side.Left, "Square");
             SpawnDisp(3, GetNumberOfTile().y / 7, Side.Left, "Cross");
 
-            SpawnCraftingStations(GetNumberOfTile().x - 3, GetNumberOfTile().y / 2, Side.Right);
+            SpawnCraftingStations(GetNumberOfTile().x - 3, GetNumberOfTile().y / 2, Side.Right, 0.25f);
 
-            SpawnDisp(GetNumberOfTile().x - 3, 6 * GetNumberOfTile().y / 7, Side.Right, "Circle");
-            SpawnDisp(GetNumberOfTile().x - 3, 5 * GetNumberOfTile().y / 7, Side.Right, "Triangle");
-            SpawnDisp(GetNumberOfTile().x - 3, 2 * GetNumberOfTile().y / 7, Side.Right, "Square");
-            SpawnDisp(GetNumberOfTile().x - 3, GetNumberOfTile().y / 7, Side.Right, "Cross");
+            SpawnDisp(GetNumberOfTile().x - 3, 6 * GetNumberOfTile().y / 7 + 1, Side.Right, "Circle");
+            SpawnDisp(GetNumberOfTile().x - 3, 5 * GetNumberOfTile().y / 7 + 1, Side.Right, "Triangle");
+            SpawnDisp(GetNumberOfTile().x - 3, 2 * GetNumberOfTile().y / 7 + 1, Side.Right, "Square");
+            SpawnDisp(GetNumberOfTile().x - 3, GetNumberOfTile().y / 7 + 1, Side.Right, "Cross");
 
             GenerateSpawnPoints();
         }

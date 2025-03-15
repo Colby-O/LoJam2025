@@ -14,6 +14,14 @@ namespace LoJam.Logic
         Right
     }
 
+    public static class SideExtension 
+    {
+        public static Side Opposide(this Side side)
+        {
+            return (side == Side.Left) ? Side.Right : Side.Left;
+        }
+    }
+
     public class FirewallController : MonoBehaviour
     {
         [SerializeField] private float _movementUnit = 0.001f;
@@ -173,8 +181,7 @@ namespace LoJam.Logic
                 Mathf.Abs(transform.position.x - GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x) <= 4f 
             )
             {
-                //Debug.Log(Mathf.Abs(transform.position.x - GameManager.GetMonoSystem<IGridMonoSystem>().GetBounds().x));
-                LoJamGameManager.EndGame(GameManager.GetMonoSystem<IGridMonoSystem>().GetSide(transform.position));
+                LoJamGameManager.EndGame(GameManager.GetMonoSystem<IGridMonoSystem>().GetSide(transform.position).Opposide());
             }
         }
 

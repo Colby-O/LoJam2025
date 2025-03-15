@@ -349,7 +349,7 @@ MonoBehaviour:
       - {fileID: 492666048, guid: 02aaeb7d2e0e4844e90ae45ed4474685, type: 3}
     keyCollision: 0
   _craftingAnimSpeed: 1
-  _bounds: {x: 3, y: 4}
+  _bounds: {x: 3, y: 1}
   _side: 1
   _stationType: 3
   _selectedRecipe:
