@@ -33,5 +33,7 @@ namespace LoJam.MonoSystem
         public bool Spawn<T>(Side side, T obj) where T : MonoBehaviour, IInteractable;
         public bool Spawn<T>(Side side, T obj, out T cm) where T : MonoBehaviour, IInteractable;
         public void RemoveItemReference(CraftingMaterial cm);
+        public void FillBackground(Camera camera);
+        public FirewallController GetFirewallController();
     }
 }

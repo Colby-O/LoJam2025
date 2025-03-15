@@ -15,6 +15,7 @@ namespace LoJam
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            Hide();
             _settingsPanel.anchoredPosition = hiddenPosition;
         }
 
@@ -25,7 +26,7 @@ namespace LoJam
 
         public override void OnPush()
         {
-            _settingsPanel.DOAnchorPos(visiblePosition, 0.5f).SetEase(Ease.OutExpo);
+            _settingsPanel.DOAnchorPos(visiblePosition, 0.66f).SetEase(Ease.OutBack);
         }
 
         public override void OnPop()

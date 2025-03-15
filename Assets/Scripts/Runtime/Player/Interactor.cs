@@ -14,7 +14,7 @@ namespace LoJam.Player
         static List<int> _registeredControllers = new();
         public int myId = -1;
 
-        public IInteractable Item
+        public IHoldable Item
         {
             get
             {
@@ -34,10 +34,16 @@ namespace LoJam.Player
                     GarbageCollecter gc = _item.GetTransform().GetComponent<GarbageCollecter>();
                     if (gc != null) gc.Pause = true;
                 }
+
+                bool found = LoJamGameManager.GetMonoSystem<IUIMonoSystem>().GetViews().TryGetValue("HUD", out View view);
+                if (found && view is Hud hud)
+                {
+                    hud.GetInventory().UpdateInventorySlot(GetSide(), _item);
+                }
             }
         }
 
-        private IInteractable _item;
+        private IHoldable _item;
 
         private CraftingStation _lastNearbyCraftingStation;
 
