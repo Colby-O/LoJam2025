@@ -86,8 +86,27 @@ namespace LoJam.Interactable
             if (state) _spriteRenderer.color = Color.red;
             else _spriteRenderer.color = Color.white;
 
-            _fireIcon.SetActive(!state && _isFire);
-            _powerupIcon.SetActive(!state && !_isFire);
+            if (_stationType == StationType.Main)
+            {
+                _fireIcon.SetActive(!state && _isFire);
+                _powerupIcon.SetActive(!state && !_isFire);
+            }
+            else if (_stationType == StationType.Circle)
+            {
+                _icon[0].SetActive(!state);
+            }
+            else if (_stationType == StationType.Triangle)
+            {
+                _icon[1].SetActive(!state);
+            }
+            else if (_stationType == StationType.Square)
+            {
+                _icon[2].SetActive(!state);
+            }
+            else if (_stationType == StationType.Cross)
+            {
+                _icon[3].SetActive(!state);
+            }
         }
 
         public void OnPlayerAdjancent(Interactor player)
