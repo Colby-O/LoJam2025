@@ -6,6 +6,7 @@ using LoJam.Player;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 namespace LoJam
 {
@@ -49,7 +50,17 @@ namespace LoJam
 
 		public static void EndGame(Side side)
 		{
-		}
+			IUIMonoSystem ui = GetMonoSystem<IUIMonoSystem>();
+
+            bool foundFade = ui.GetViews().TryGetValue("FadedOverlay", out View vFadedOverlay);
+            bool foundPlayer = ui.GetViews().TryGetValue("PlayerWin", out View vPlayerWin);
+            if (foundFade && foundPlayer && vFadedOverlay is FadedOverlay fadedOverlay && vPlayerWin is UIPlayerWin playerWin)
+            {
+                ui.PushView(fadedOverlay);
+				ui.PushView(playerWin);
+				playerWin.SetWinner(side);
+            }
+        }
 
 		public void ReassignControllers()
 		{

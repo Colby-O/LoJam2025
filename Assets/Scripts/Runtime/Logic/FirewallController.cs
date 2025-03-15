@@ -23,8 +23,8 @@ namespace LoJam.Logic
         [SerializeField, ColorUsage(true, true)] private Color _leftColor;
         [SerializeField, ColorUsage(true, true)] private Color _rightColor;
 
-        private int _leftDaemonCount;
-        private int _rightDaemonCount;
+        private int _leftDaemonCount = 0;
+        private int _rightDaemonCount = 0;
 
         private float _netMovement;
 
