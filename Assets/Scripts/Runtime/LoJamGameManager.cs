@@ -21,7 +21,7 @@ namespace LoJam
 		[SerializeField] private CraftingMonoSystem _craftingSystem;
 		[SerializeField] private AudioMonoSystem _audioSystem;
 
-		public static float time = 5f * 60f;
+		public static float time = 45f;//5f * 60f;
 		public static  bool isPaused;
 
 		public static List<Interactor> players;
@@ -29,6 +29,8 @@ namespace LoJam
 
 		public static string GetFormattedTime() 
 		{
+			if (time < 0) time = 0;
+
         	float minutes = Mathf.FloorToInt(time / 60);
         	float seconds = Mathf.FloorToInt(time % 60);
 			float ms = (time - Mathf.Floor(time)) * 60;
@@ -101,7 +103,7 @@ namespace LoJam
 
 			time = time - Time.deltaTime;
 
-            if (time < 0)
+            if (time <= 0)
             {
 				EndGame(GameManager.GetMonoSystem<IGridMonoSystem>().GetSide(GameManager.GetMonoSystem<IGridMonoSystem>().GetFirewallController().transform.position).Opposide());
             }

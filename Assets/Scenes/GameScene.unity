@@ -659,6 +659,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 68.8
       objectReference: {fileID: 0}
+    - target: {fileID: 1911550717508929673, guid: 8c0b2ced68dc2b24783f1765b12cb319, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 53
+      objectReference: {fileID: 0}
     - target: {fileID: 3737739479182352398, guid: 8c0b2ced68dc2b24783f1765b12cb319, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 101.9
@@ -747,6 +751,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5430873318052612192, guid: 8c0b2ced68dc2b24783f1765b12cb319, type: 3}
+      propertyPath: m_text
+      value: '= Pushing Power
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 6753013196830888756, guid: 8c0b2ced68dc2b24783f1765b12cb319, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 100.8
@@ -755,9 +765,25 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 69.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7479055088964446844, guid: 8c0b2ced68dc2b24783f1765b12cb319, type: 3}
+      propertyPath: m_text
+      value: The goal is to collect shapes that can be used to generate pushing power,
+        propelling the firewall toward your opponent. You can also create power-ups
+        to temporarily gain an advantage. The player who loses all their space or
+        the most space to the firewall within the 5-minute time limit loses.
+      objectReference: {fileID: 0}
     - target: {fileID: 7639908498126294118, guid: 8c0b2ced68dc2b24783f1765b12cb319, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -17.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8066865289972456180, guid: 8c0b2ced68dc2b24783f1765b12cb319, type: 3}
+      propertyPath: m_text
+      value: You get Circles and Triangles for free! Use these basic resources to
+        craft more complex materials. Once you've gathered enough, bring them to
+        your crafting bench at the center of the map to push the firewall forward
+        or create power-ups that help you gather more resources. You will know what
+        resources you need based on the shape molts infront of the crafting table.
+        <b>Remember you can swap recipes at the middle (big) bench!</b>.
       objectReference: {fileID: 0}
     - target: {fileID: 8449271813004562567, guid: 8c0b2ced68dc2b24783f1765b12cb319, type: 3}
       propertyPath: m_Name
@@ -820,7 +846,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 6.8, y: -219.4}
+  m_AnchoredPosition: {x: 6.8, y: -193.3}
   m_SizeDelta: {x: 735.5315, y: 96.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &429135662
