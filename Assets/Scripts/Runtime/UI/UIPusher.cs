@@ -27,9 +27,11 @@ public class UIPusher : MonoBehaviour
     {
         if (_firewallController != null)
         {
-            _count = _firewallController.GetDaemonCount(_side);
-            //leftCount = _firewallController.GetDaemonCount(Side.Left);
-            //rightCount = _firewallController.GetDaemonCount(Side.Right);
+            //_count = _firewallController.GetDaemonCount(_side);
+            int leftCount = _firewallController.GetDaemonCount(Side.Left);
+            int rightCount = _firewallController.GetDaemonCount(Side.Right);
+
+            _count = (_side == Side.Left) ? Mathf.Clamp(leftCount - rightCount, 0, 4) : Mathf.Clamp(rightCount - leftCount, 0, 4);
             //_daemonCountText.text = $"Left: {leftCount} | Right: {rightCount}";
         }
 
